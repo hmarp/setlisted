@@ -6,7 +6,61 @@ Built on the [setlist.fm API](https://api.setlist.fm/docs/1.0/index.html) and th
 
 ## Status
 
-Pre-development. Intent, spec, architecture decisions and the implementation plan are approved. Implementation starts with [step 01](docs/plan/01-go-skeleton/brief.md). See [`docs/`](docs/).
+In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. Nothing is deployed yet. Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
+
+## Running locally
+
+### Prerequisites
+
+- [Go](https://go.dev/dl/) 1.27 or later (see `go.mod`)
+- Optional: Docker, to build the container image
+
+### Configuration
+
+Settings come from environment variables only ([ADR-007](docs/adr/007-configuration-and-secrets.md)). For local development, put them in a `.env` file, which is git-ignored and optional. Variables already set in the environment take precedence.
+
+```sh
+cp .env.example .env
+openssl rand -base64 32   # paste the output into SESSION_KEY
+```
+
+| Variable | Required | Description |
+|---|---|---|
+| `PORT` | no | Port to listen on. Default `8080`. |
+| `BASE_URL` | yes | Public base URL, no trailing slash. Locally `http://127.0.0.1:8080`. |
+| `SPOTIFY_CLIENT_ID` | yes | Spotify app client ID. |
+| `SPOTIFY_CLIENT_SECRET` | yes | Spotify app client secret. |
+| `SETLISTFM_API_KEY` | yes | setlist.fm API key. |
+| `SESSION_KEY` | yes | Base64 of 32 random bytes (`openssl rand -base64 32`). |
+
+The Spotify and setlist.fm features don't exist yet, so any non-empty placeholder works for their variables for now. If a variable is missing or invalid, the app refuses to start and names the variable (never its value).
+
+### Run
+
+```sh
+go run ./cmd/setlisted
+```
+
+Then open <http://127.0.0.1:8080/> or check <http://127.0.0.1:8080/api/health>, which returns `{"status":"ok"}`. Logs are JSON on stdout.
+
+### Test
+
+```sh
+gofmt -l .        # should print nothing
+go vet ./...
+go test ./...
+```
+
+CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the same three checks on every pull request to `main`.
+
+### Docker
+
+```sh
+docker build -t setlisted .
+docker run --rm -p 8080:8080 --env-file .env setlisted
+```
+
+Use `BASE_URL=http://127.0.0.1:8080` in `.env` so the address matches the published port.
 
 ## Stack
 

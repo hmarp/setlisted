@@ -17,7 +17,7 @@
 
 | # | Step | Depends on | Status |
 |---|---|---|---|
-| 01 | [Go skeleton: config, health, static serving, CI](plan/01-go-skeleton/brief.md) | — | Not started |
+| 01 | [Go skeleton: config, health, static serving, CI](plan/01-go-skeleton/brief.md) | — | Done |
 | 02 | [First deploy to Cloud Run](plan/02-first-deploy/brief.md) | 01 | Not started |
 | 03 | [Continuous deployment on merge](plan/03-continuous-deployment/brief.md) | 02 | Not started |
 | 04 | [Spotify login and session](plan/04-spotify-login/brief.md) | 03 | Not started |
