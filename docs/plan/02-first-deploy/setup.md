@@ -2,6 +2,8 @@
 
 One-off setup for hosting Setlisted on Cloud Run. The owner runs these steps. They can be repeated to rebuild the setup from scratch (for example in a new project).
 
+"Console" means the **Google Cloud console**, the web UI at <https://console.cloud.google.com>, signed in with the same Google account as `gcloud auth login`. Everything else is a command.
+
 Run the commands in **Git Bash** (on Windows, not the WSL `bash` in `System32`), or any bash on Linux or macOS. Set these variables first and keep the same shell open:
 
 ```bash
@@ -28,7 +30,7 @@ gcloud projects create "$PROJECT_ID" --name=setlisted
 gcloud config set project "$PROJECT_ID"
 ```
 
-- [ ] In the console, go to **Billing**. Create a billing account if you don't have one (this is where the card details go), then **link it to the project** (Billing → Account management → My projects, or "Link a billing account" on the project's Billing page). The command-line equivalent, once the billing account exists:
+- [ ] In the console, go to **Billing** (<https://console.cloud.google.com/billing>). Create a billing account if you don't have one (this is where the card details go), then **link it to the project** (Billing → Account management → My projects, or "Link a billing account" on the project's Billing page). The command-line equivalent, once the billing account exists:
 
 ```bash
 gcloud billing accounts list
@@ -39,7 +41,7 @@ gcloud billing projects link "$PROJECT_ID" --billing-account=XXXXXX-XXXXXX-XXXXX
 
 Budgets warn and don't stop spending. The hard cost ceiling is Cloud Run's max instances = 1 (set by the deploy script).
 
-- [ ] Console → **Billing → Budgets & alerts → Create budget**:
+- [ ] Console → **Billing → Budgets & alerts → Create budget** (<https://console.cloud.google.com/billing/budgets>; pick the billing account if asked):
   - Name: `setlisted`
   - Scope: this project (or all projects on the billing account)
   - Amount: **specified amount, £1**. The currency is the billing account's. If it isn't GBP, use the equivalent.
