@@ -62,6 +62,31 @@ docker run --rm -p 8080:8080 --env-file .env setlisted
 
 Use `BASE_URL=http://127.0.0.1:8080` in `.env` so the address matches the published port.
 
+## Deploying
+
+The app runs on Google Cloud Run at its `*.run.app` HTTPS address ([ADR-003](docs/adr/003-hosting-google-cloud-run.md)). Secrets are stored in Secret Manager and reach the service as environment variables. Non-secret settings are set on the service by the deploy script ([ADR-007](docs/adr/007-configuration-and-secrets.md)).
+
+### One-off setup
+
+The owner sets up the Google Cloud project, billing, the £1 budget alert, Artifact Registry, the runtime service account and the secrets by following [`docs/plan/02-first-deploy/setup.md`](docs/plan/02-first-deploy/setup.md).
+
+### Deploy
+
+Requirements: the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install), logged in as the owner (`gcloud auth login`), plus `git` and `curl`. On Windows, use Git Bash.
+
+```bash
+scripts/deploy.sh
+```
+
+The script:
+
+- refuses to run if there are uncommitted changes;
+- builds the image with Cloud Build (no local Docker needed), tagged with the commit SHA;
+- deploys the `setlisted` service with max instances 1, min instances 0, the `setlisted-runtime` service account, the non-secret settings and the Secret Manager references;
+- checks `/api/health` on the live URL.
+
+Project, region, `BASE_URL` and `SPOTIFY_CLIENT_ID` come from [`scripts/deploy-config.sh`](scripts/deploy-config.sh), which holds no secrets. Automatic deploys on merge arrive in step 03. This script stays as the fallback.
+
 ## Stack
 
 - **Backend:** Go, standard library first, exposing a JSON API ([ADR-001](docs/adr/001-go-backend-json-api.md))

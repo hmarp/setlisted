@@ -1,0 +1,9 @@
+# Files `gcloud builds submit` leaves out of the uploaded source.
+# Without this file gcloud would fall back to .gitignore alone.
+.gcloudignore
+.git
+.gitignore
+.github
+.claude
+docs
+#!include:.gitignore
