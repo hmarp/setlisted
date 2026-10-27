@@ -6,7 +6,7 @@
 PROJECT_ID=REPLACE_ME
 
 # Cloud Run, Artifact Registry and Cloud Build region.
-REGION=REPLACE_ME
+REGION=europe-west1
 
 # Cloud Run service and Artifact Registry repository names.
 SERVICE=setlisted
