@@ -60,6 +60,8 @@ Put these in `docs/plan/04-spotify-login/setup.md`.
    - `<BASE_URL from step 02>/auth/callback`
 3. Allowlist the owner's own account and the friends' accounts (User Management).
 4. Put the real `SPOTIFY_CLIENT_ID` into the Cloud Run service's environment, and the real secret into the `spotify-client-secret` secret (a new version). Update the local `.env`.
+   - Since step 03, merges deploy **only a new image**, so they don't change env vars. Set `SPOTIFY_CLIENT_ID` in `scripts/deploy-config.sh` (committed in this step's PR) **and** on the live service, e.g. `gcloud run services update setlisted --region=europe-west1 --update-env-vars SPOTIFY_CLIENT_ID=…` (or run `scripts/deploy.sh` once). See `docs/plan/03-continuous-deployment/handoff.md`.
+   - The new secret version needs no extra deploy: the revision created by the merge reads `spotify-client-secret:latest`.
 
 ## What to build
 

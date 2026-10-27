@@ -19,7 +19,7 @@
 |---|---|---|---|
 | 01 | [Go skeleton: config, health, static serving, CI](plan/01-go-skeleton/brief.md) | — | Done |
 | 02 | [First deploy to Cloud Run](plan/02-first-deploy/brief.md) | 01 | Done |
-| 03 | [Continuous deployment on merge](plan/03-continuous-deployment/brief.md) | 02 | Not started |
+| 03 | [Continuous deployment on merge](plan/03-continuous-deployment/brief.md) | 02 | Done |
 | 04 | [Spotify login and session](plan/04-spotify-login/brief.md) | 03 | Not started |
 | 05 | [setlist.fm client: artist search and show list API](plan/05-setlistfm-search-shows/brief.md) | 04 | Not started |
 | 06 | [Entry classification rules](plan/06-entry-classification/brief.md) | 05 | Not started |
