@@ -1,6 +1,6 @@
 # ADR-004: Spotify login with a stateless, encrypted-cookie session
 
-- **Status:** Accepted
+- **Status:** Accepted. The session cookie's `Max-Age` is superseded by [ADR-009](009-session-cookie-lifetime.md).
 - **Date:** 2026-10-07
 
 ## Context

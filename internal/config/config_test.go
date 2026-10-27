@@ -44,6 +44,18 @@ func TestLoadValid(t *testing.T) {
 	}
 }
 
+func TestLoadTrimsBaseURLSlash(t *testing.T) {
+	env := validEnv()
+	env[EnvBaseURL] = "https://setlisted.example/"
+	cfg, err := Load(getenvFrom(env))
+	if err != nil {
+		t.Fatalf("Load: unexpected error: %v", err)
+	}
+	if cfg.BaseURL != "https://setlisted.example" {
+		t.Errorf("BaseURL = %q", cfg.BaseURL)
+	}
+}
+
 func TestLoadDefaultPort(t *testing.T) {
 	cfg, err := Load(getenvFrom(validEnv()))
 	if err != nil {
@@ -61,6 +73,10 @@ func TestLoadInvalid(t *testing.T) {
 		value   string // "" means unset
 	}{
 		{"missing BASE_URL", EnvBaseURL, ""},
+		{"BASE_URL not absolute", EnvBaseURL, "setlisted.example"},
+		{"BASE_URL wrong scheme", EnvBaseURL, "ftp://setlisted.example"},
+		{"BASE_URL with path", EnvBaseURL, "https://setlisted.example/app"},
+		{"BASE_URL with query", EnvBaseURL, "https://setlisted.example?x=1"},
 		{"missing SPOTIFY_CLIENT_ID", EnvSpotifyClientID, ""},
 		{"missing SPOTIFY_CLIENT_SECRET", EnvSpotifyClientSecret, ""},
 		{"missing SETLISTFM_API_KEY", EnvSetlistFMAPIKey, ""},

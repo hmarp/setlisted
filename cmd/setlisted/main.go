@@ -15,6 +15,7 @@ import (
 
 	"github.com/joho/godotenv"
 
+	"github.com/hmarp/setlisted/internal/auth"
 	"github.com/hmarp/setlisted/internal/config"
 	"github.com/hmarp/setlisted/internal/httpapi"
 	"github.com/hmarp/setlisted/web"
@@ -48,7 +49,18 @@ func run(logger *slog.Logger) error {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, os.Interrupt)
 	defer stop()
 
-	srv := httpapi.NewServer(net.JoinHostPort("", cfg.Port), logger, web.Static())
+	a, err := auth.New(auth.Config{
+		ClientID:     cfg.SpotifyClientID,
+		ClientSecret: cfg.SpotifyClientSecret,
+		BaseURL:      cfg.BaseURL,
+		SessionKey:   cfg.SessionKey,
+		Logger:       logger,
+	})
+	if err != nil {
+		return err
+	}
+
+	srv := httpapi.NewServer(net.JoinHostPort("", cfg.Port), logger, web.Static(), a)
 
 	errc := make(chan error, 1)
 	go func() {

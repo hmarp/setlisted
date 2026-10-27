@@ -8,32 +8,80 @@ import (
 	"strings"
 	"testing"
 	"testing/fstest"
+	"time"
 
+	"github.com/hmarp/setlisted/internal/auth"
 	"github.com/hmarp/setlisted/web"
 )
 
+const testBaseURL = "https://setlisted.example"
+
 func discardLogger() *slog.Logger { return slog.New(slog.DiscardHandler) }
 
+func testAuth(t *testing.T) *auth.Auth {
+	t.Helper()
+	a, err := auth.New(auth.Config{
+		ClientID:   "client-id",
+		BaseURL:    testBaseURL,
+		SessionKey: bytes.Repeat([]byte{7}, 32),
+		// No Spotify server: these tests don't complete a login.
+		AuthURL: "https://accounts.invalid/authorize",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	return a
+}
+
+// loggedIn returns a valid session cookie for a.
+func loggedIn(t *testing.T, a *auth.Auth) *http.Cookie {
+	t.Helper()
+	c, err := a.NewSessionCookie(auth.Session{AccessToken: "token", Expiry: time.Now().Add(time.Hour), UserID: "user"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	return c
+}
+
 func TestRoutes(t *testing.T) {
-	h := NewHandler(discardLogger(), web.Static())
+	a := testAuth(t)
+	h := NewHandler(discardLogger(), web.Static(), a)
+	session := loggedIn(t, a)
+	notFound := `{"error":{"code":"not_found","message":"Not found."}}` + "\n"
+	notLoggedIn := `{"error":{"code":"not_logged_in","message":"You're not logged in. Log in with Spotify."}}` + "\n"
+	forbidden := `{"error":{"code":"forbidden_origin","message":"This request isn't allowed."}}` + "\n"
 	tests := []struct {
 		name         string
 		method, path string
+		origin       string
+		session      bool
 		wantStatus   int
 		wantType     string
 		wantBody     string // exact for JSON, substring for HTML
 	}{
-		{"health", "GET", "/api/health", 200, "application/json", `{"status":"ok"}` + "\n"},
-		{"unknown api path", "GET", "/api/x", 404, "application/json",
-			`{"error":{"code":"not_found","message":"Not found."}}` + "\n"},
-		{"wrong method on api path", "POST", "/api/health", 404, "application/json",
-			`{"error":{"code":"not_found","message":"Not found."}}` + "\n"},
-		{"placeholder page", "GET", "/", 200, "text/html", "Setlist data from"},
+		{"health", "GET", "/api/health", "", false, 200, "application/json", `{"status":"ok"}` + "\n"},
+		{"session logged out", "GET", "/api/session", "", false, 200, "application/json", `{"loggedIn":false}` + "\n"},
+		{"session logged in", "GET", "/api/session", "", true, 200, "application/json", `{"loggedIn":true}` + "\n"},
+		// Every other /api/ route is protected, including unknown ones.
+		{"api route without session", "GET", "/api/x", "", false, 401, "application/json", notLoggedIn},
+		{"unknown api path with session", "GET", "/api/x", "", true, 404, "application/json", notFound},
+		{"wrong method on api path", "POST", "/api/health", testBaseURL, true, 404, "application/json", notFound},
+		{"POST without Origin", "POST", "/api/x", "", true, 403, "application/json", forbidden},
+		{"POST with foreign Origin", "POST", "/auth/logout", "https://evil.example", true, 403, "application/json", forbidden},
+		{"placeholder page", "GET", "/", "", false, 200, "text/html", "Setlist data from"},
+		{"login link on placeholder page", "GET", "/", "", false, 200, "text/html", `href="/auth/login"`},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(tt.method, tt.path, nil)
+			if tt.origin != "" {
+				req.Header.Set("Origin", tt.origin)
+			}
+			if tt.session {
+				req.AddCookie(session)
+			}
 			rec := httptest.NewRecorder()
-			h.ServeHTTP(rec, httptest.NewRequest(tt.method, tt.path, nil))
+			h.ServeHTTP(rec, req)
 			if rec.Code != tt.wantStatus {
 				t.Errorf("status = %d, want %d", rec.Code, tt.wantStatus)
 			}
@@ -52,9 +100,35 @@ func TestRoutes(t *testing.T) {
 	}
 }
 
+func TestAuthRoutes(t *testing.T) {
+	a := testAuth(t)
+	h := NewHandler(discardLogger(), web.Static(), a)
+
+	rec := httptest.NewRecorder()
+	h.ServeHTTP(rec, httptest.NewRequest("GET", "/auth/login", nil))
+	if rec.Code != http.StatusFound || !strings.HasPrefix(rec.Header().Get("Location"), "https://accounts.invalid/authorize?") {
+		t.Errorf("login: %d %q, want a redirect to Spotify", rec.Code, rec.Header().Get("Location"))
+	}
+
+	rec = httptest.NewRecorder()
+	h.ServeHTTP(rec, httptest.NewRequest("GET", "/auth/callback?error=access_denied", nil))
+	if rec.Code != http.StatusFound || rec.Header().Get("Location") != "/?login=failed" {
+		t.Errorf("callback without login cookie: %d %q", rec.Code, rec.Header().Get("Location"))
+	}
+
+	req := httptest.NewRequest("POST", "/auth/logout", nil)
+	req.Header.Set("Origin", testBaseURL)
+	req.AddCookie(loggedIn(t, a))
+	rec = httptest.NewRecorder()
+	h.ServeHTTP(rec, req)
+	if rec.Code != http.StatusNoContent || !strings.Contains(rec.Header().Get("Set-Cookie"), auth.SessionCookie+"=; Path=/; Max-Age=0") {
+		t.Errorf("logout: %d, Set-Cookie %q", rec.Code, rec.Header().Get("Set-Cookie"))
+	}
+}
+
 func TestPlaceholderPageLinksToSetlistFM(t *testing.T) {
 	rec := httptest.NewRecorder()
-	NewHandler(discardLogger(), web.Static()).ServeHTTP(rec, httptest.NewRequest("GET", "/", nil))
+	NewHandler(discardLogger(), web.Static(), testAuth(t)).ServeHTTP(rec, httptest.NewRequest("GET", "/", nil))
 	if !strings.Contains(rec.Body.String(), `href="https://www.setlist.fm"`) {
 		t.Errorf("placeholder page has no setlist.fm link")
 	}
@@ -140,7 +214,7 @@ func TestLoggedStatus(t *testing.T) {
 func TestLogRequestsOmitsQueryString(t *testing.T) {
 	var logs bytes.Buffer
 	logger := slog.New(slog.NewJSONHandler(&logs, nil))
-	h := NewHandler(logger, fstest.MapFS{})
+	h := NewHandler(logger, fstest.MapFS{}, testAuth(t))
 
 	rec := httptest.NewRecorder()
 	h.ServeHTTP(rec, httptest.NewRequest("GET", "/api/health?q=secret+band", nil))

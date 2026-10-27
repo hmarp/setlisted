@@ -8,9 +8,32 @@
 <body>
   <main>
     <h1>Setlisted - Welcome!</h1>
+    <!-- Bare controls for testing login (step 04). The real UI is step 12. -->
+    <p id="status">Checking session…</p>
+    <p id="login-result" hidden></p>
+    <p><a href="/auth/login">Log in with Spotify</a></p>
+    <p><button id="logout" type="button">Log out</button></p>
   </main>
   <footer>
     <p>Setlist data from <a href="https://www.setlist.fm">setlist.fm</a></p>
   </footer>
+  <script>
+    async function showStatus() {
+      const res = await fetch("/api/session");
+      const body = await res.json();
+      document.getElementById("status").textContent = body.loggedIn ? "Logged in." : "Not logged in.";
+    }
+    const login = new URLSearchParams(location.search).get("login");
+    if (login) {
+      const el = document.getElementById("login-result");
+      el.textContent = "Login result: " + login;
+      el.hidden = false;
+    }
+    document.getElementById("logout").addEventListener("click", async () => {
+      await fetch("/auth/logout", { method: "POST" });
+      showStatus();
+    });
+    showStatus();
+  </script>
 </body>
 </html>

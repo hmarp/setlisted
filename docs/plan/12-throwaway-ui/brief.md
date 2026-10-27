@@ -110,7 +110,7 @@ An **extremely basic**, functional UI that covers the whole journey on phone and
    Browser back-button support is nice to have but not required. If it's cheap (e.g. hash routing), add it.
 5. **Phone usability (GEN-1):** no horizontal scrolling at 375 px width; tap targets are comfortable.
 6. **`docs/manual-test-checklist.md`:** a step-by-step journey with expected results, covering every requirement above. Include:
-   - login, cancel, invite-only (if a test account is available), log out, and session expiry (wait an hour, or delete the cookie);
+   - login, cancel, invite-only (if a test account is available), log out, and session expiry (wait an hour, close and reopen the browser, or delete the cookie; ADR-009);
    - a clear match, the picker, no results;
    - a band with no setlists;
    - a preview with covers, tapes, medleys and encores;

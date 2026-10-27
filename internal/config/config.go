@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -74,6 +75,9 @@ func Load(getenv func(string) string) (Config, error) {
 
 	// A trailing slash would break the Origin check and the redirect URL.
 	cfg.BaseURL = strings.TrimRight(cfg.BaseURL, "/")
+	if cfg.BaseURL != "" && !validBaseURL(cfg.BaseURL) {
+		fail(EnvBaseURL, "must be an absolute http or https URL with no path, e.g. https://example.com")
+	}
 
 	if raw := getenv(EnvSessionKey); raw == "" {
 		fail(EnvSessionKey, "is required")
@@ -89,4 +93,14 @@ func Load(getenv func(string) string) (Config, error) {
 		return Config{}, errors.Join(errs...)
 	}
 	return cfg, nil
+}
+
+// validBaseURL reports whether s is scheme://host[:port] with nothing after
+// it. The app is served from the root, and BASE_URL is both the Spotify
+// redirect URL's prefix and the origin that state-changing requests must
+// come from.
+func validBaseURL(s string) bool {
+	u, err := url.Parse(s)
+	return err == nil && (u.Scheme == "http" || u.Scheme == "https") && u.Host != "" &&
+		u.User == nil && u.Path == "" && !u.ForceQuery && u.RawQuery == "" && !strings.Contains(s, "#")
 }
