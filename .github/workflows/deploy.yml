@@ -1,0 +1,124 @@
+name: Deploy
+
+# Every push to main (in practice, every merged PR) re-runs CI, builds an image
+# tagged with the commit SHA, deploys it to Cloud Run and checks /api/health
+# (ADR-008). If any job fails, the later ones don't run.
+#
+# Authentication is Workload Identity Federation: no key files, no secrets.
+# The settings are repository variables (Settings → Secrets and variables →
+# Actions → Variables); see docs/plan/03-continuous-deployment/setup.md.
+
+on:
+  push:
+    branches: [main]
+
+# One deploy at a time. A later merge waits for the running one rather than
+# racing it. (GitHub keeps only the newest waiting run, so after three quick
+# merges the middle one is skipped and the newest is deployed.)
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  SERVICE: setlisted
+  REPOSITORY: setlisted
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    needs: ci
+    # Never on forks: they can't authenticate anyway.
+    if: github.repository == 'hmarp/setlisted'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # to request the OIDC token that Workload Identity Federation exchanges
+    outputs:
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      REGION: ${{ vars.GCP_REGION }}
+    steps:
+      - name: Check repository variables
+        env:
+          GCP_WIF_PROVIDER: ${{ vars.GCP_WIF_PROVIDER }}
+          GCP_DEPLOY_SERVICE_ACCOUNT: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
+        run: |
+          missing=0
+          for name in PROJECT_ID REGION GCP_WIF_PROVIDER GCP_DEPLOY_SERVICE_ACCOUNT; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Repository variable for $name is not set (see docs/plan/03-continuous-deployment/setup.md)"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - uses: actions/checkout@v5
+
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
+
+      - uses: google-github-actions/setup-gcloud@v3
+
+      # Docker on the runner rather than Cloud Build: the deploy account then
+      # only needs to push to Artifact Registry, with no Cloud Build or storage roles.
+      - name: Build and push the image
+        run: |
+          image="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${SERVICE}:${GITHUB_SHA}"
+          gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+          docker build --tag "$image" .
+          docker push "$image"
+          echo "IMAGE=$image" >> "$GITHUB_ENV"
+
+      # Only --image: the service keeps its env vars, secrets, service account
+      # and scaling, which scripts/deploy.sh sets. Secrets never pass through here.
+      - name: Deploy to Cloud Run
+        id: deploy
+        run: |
+          gcloud run deploy "$SERVICE" \
+            --project "$PROJECT_ID" \
+            --region "$REGION" \
+            --image "$IMAGE" \
+            --quiet
+          # After a rollback, traffic is pinned to an older revision and a new
+          # revision gets none. Merging to main means "serve main", so route
+          # all traffic to the revision just deployed.
+          gcloud run services update-traffic "$SERVICE" \
+            --project "$PROJECT_ID" \
+            --region "$REGION" \
+            --to-latest \
+            --quiet
+          url="$(gcloud run services describe "$SERVICE" \
+            --project "$PROJECT_ID" \
+            --region "$REGION" \
+            --format='value(status.url)')"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Deployed"
+            echo "- Commit: \`${GITHUB_SHA}\`"
+            echo "- Image: \`${IMAGE}\`"
+            echo "- URL: $url"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # Flags a broken deploy; it doesn't roll back. See README "Rolling back".
+  smoke:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check /api/health
+        env:
+          URL: ${{ needs.deploy.outputs.url }}
+        run: |
+          health="$(curl -fsS --retry 3 --retry-delay 5 --retry-all-errors "${URL}/api/health")"
+          if [ "$health" != '{"status":"ok"}' ]; then
+            echo "::error::Unexpected /api/health response: $health"
+            exit 1
+          fi
+          echo "$URL/api/health returned $health"

@@ -6,7 +6,7 @@ Built on the [setlist.fm API](https://api.setlist.fm/docs/1.0/index.html) and th
 
 ## Status
 
-In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. [Step 02](docs/plan/02-first-deploy/handoff.md) (first deploy) is done: the skeleton runs on Cloud Run at <https://setlisted-613938414647.europe-west1.run.app>, deployed manually with `scripts/deploy.sh`. Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
+In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. [Step 02](docs/plan/02-first-deploy/handoff.md) (first deploy) is done: the skeleton runs on Cloud Run at <https://setlisted-613938414647.europe-west1.run.app>, deployed manually with `scripts/deploy.sh`. [Step 03](docs/plan/03-continuous-deployment/handoff.md) (continuous deployment) is done: every merge to `main` deploys automatically through GitHub Actions. Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
 
 ## Running locally
 
@@ -51,7 +51,7 @@ go vet ./...
 go test ./...
 ```
 
-CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the same three checks on every pull request to `main`.
+CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the same three checks on every pull request to `main`, and again on the merged code before each deploy. A PR can't be merged until its `test` check passes.
 
 ### Docker
 
@@ -68,11 +68,51 @@ The app runs on Google Cloud Run at its `*.run.app` HTTPS address ([ADR-003](doc
 
 ### One-off setup
 
-The owner sets up the Google Cloud project, billing, the £1 budget alert, Artifact Registry, the runtime service account and the secrets by following [`docs/plan/02-first-deploy/setup.md`](docs/plan/02-first-deploy/setup.md).
+The owner sets up:
 
-### Deploy
+- the Google Cloud project, billing, the £1 budget alert, Artifact Registry, the runtime service account and the secrets, by following [`docs/plan/02-first-deploy/setup.md`](docs/plan/02-first-deploy/setup.md);
+- Workload Identity Federation, the deploy service account, the image clean-up policy, the GitHub repository variables and the `main` ruleset, by following [`docs/plan/03-continuous-deployment/setup.md`](docs/plan/03-continuous-deployment/setup.md).
 
-Requirements: the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install), logged in as the owner (`gcloud auth login`), plus `git` and `curl`. On Windows, use Git Bash.
+### Merging deploys
+
+`main` only changes through pull requests: direct pushes and force pushes are blocked, and the `test` CI check must pass before merging ([ADR-008](docs/adr/008-continuous-deployment-on-merge.md)). Every merge runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), one at a time:
+
+1. **`ci / test`**: the CI checks again, on the merged code.
+2. **`deploy`**: builds the image, pushes it to Artifact Registry tagged with the commit SHA, deploys it to the `setlisted` service and sends all traffic to the new revision. Only the image changes; the service keeps its env vars, secrets, service account and scaling.
+3. **`smoke`**: checks `/api/health` on the live URL. A failure flags the problem; it doesn't roll back.
+
+If a job fails, the later ones don't run. GitHub authenticates to Google Cloud with Workload Identity Federation: there are no key files or stored cloud credentials.
+
+**Watching a deploy:** [Actions → Deploy](https://github.com/hmarp/setlisted/actions/workflows/deploy.yml), then the run for the merge commit. The `deploy` job's summary shows the commit, image and URL. To see which revision is serving:
+
+```bash
+gcloud run services describe setlisted --region=europe-west1 --format='yaml(status.traffic)'
+```
+
+A failed run can be re-run from its page (Re-run jobs).
+
+**Changing a non-secret setting** (such as `SPOTIFY_CLIENT_ID`): merges don't change env vars. Update [`scripts/deploy-config.sh`](scripts/deploy-config.sh) and apply it once with `scripts/deploy.sh` (or `gcloud run services update setlisted --region=europe-west1 --update-env-vars NAME=value`). A new **secret version** needs no deploy-config change: the next revision reads `latest`.
+
+### Rolling back
+
+Route traffic back to an earlier revision (newest first in the list):
+
+```bash
+gcloud run revisions list --service=setlisted --region=europe-west1 --limit=5
+gcloud run services update-traffic setlisted --region=europe-west1 --to-revisions=<previous-revision>=100
+```
+
+Return to the latest revision when ready:
+
+```bash
+gcloud run services update-traffic setlisted --region=europe-west1 --to-latest
+```
+
+The next merge also sends traffic to its new revision, so a rollback lasts until then. Only the 10 most recent images are kept, so roll back only to recent revisions.
+
+### Manual deploy (fallback)
+
+If GitHub Actions is unavailable, the owner can deploy from their machine. Requirements: the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install), logged in as the owner (`gcloud auth login`), plus `git` and `curl`. On Windows, use Git Bash.
 
 ```bash
 scripts/deploy.sh
@@ -85,7 +125,7 @@ The script:
 - deploys the `setlisted` service with max instances 1, min instances 0, the `setlisted-runtime` service account, the non-secret settings and the Secret Manager references;
 - checks `/api/health` on the live URL.
 
-Project, region, `BASE_URL` and `SPOTIFY_CLIENT_ID` come from [`scripts/deploy-config.sh`](scripts/deploy-config.sh), which holds no secrets. Automatic deploys on merge arrive in step 03. This script stays as the fallback.
+Project, region, `BASE_URL` and `SPOTIFY_CLIENT_ID` come from [`scripts/deploy-config.sh`](scripts/deploy-config.sh), which holds no secrets. Unlike the workflow, the script re-applies every setting, and it doesn't move traffic after a rollback: run `update-traffic --to-latest` afterwards if traffic was pinned.
 
 ## Stack
 
