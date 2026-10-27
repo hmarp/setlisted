@@ -15,6 +15,7 @@ cd "$repo_root"
 
 # shellcheck source=deploy-config.sh
 source scripts/deploy-config.sh
+BASE_URL="${BASE_URL%/}"
 
 for name in PROJECT_ID REGION SERVICE REPOSITORY RUNTIME_SERVICE_ACCOUNT BASE_URL SPOTIFY_CLIENT_ID; do
   value="${!name:-}"

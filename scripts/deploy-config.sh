@@ -3,7 +3,7 @@
 # See docs/plan/02-first-deploy/setup.md for how each value is chosen.
 
 # Google Cloud project ID.
-PROJECT_ID=REPLACE_ME
+PROJECT_ID=setlisted-2026
 
 # Cloud Run, Artifact Registry and Cloud Build region.
 REGION=europe-west1
@@ -16,7 +16,7 @@ REPOSITORY=setlisted
 RUNTIME_SERVICE_ACCOUNT="setlisted-runtime@${PROJECT_ID}.iam.gserviceaccount.com"
 
 # Public URL of the service: https://<service>-<project-number>.<region>.run.app
-BASE_URL=REPLACE_ME
+BASE_URL=https://setlisted-613938414647.europe-west1.run.app
 
 # Spotify app client ID. Not secret. Placeholder until step 04.
 SPOTIFY_CLIENT_ID=placeholder-set-in-step-04
