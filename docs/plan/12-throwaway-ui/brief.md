@@ -83,7 +83,7 @@ An **extremely basic**, functional UI that covers the whole journey on phone and
 
 ## What to build
 
-1. **`web/`:** one `index.html`, one `app.js` and one small `style.css` (or split them further if that's clearer), plus anything else that's needed. A single page that switches between views is fine.
+1. **`web/static/`:** one `index.html`, one `app.js` and one small `style.css` (or split them further if that's clearer), plus anything else that's needed. A single page that switches between views is fine. Step 01 embeds everything under `web/static/` into the binary and serves it at `/` (see its handoff); replace the placeholder `index.html`.
 2. **Views:**
    - login (with the `/?login=cancelled | invite_only | failed` messages);
    - search;
