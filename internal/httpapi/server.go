@@ -34,7 +34,7 @@ func NewServer(addr string, logger *slog.Logger, static fs.FS) *http.Server {
 }
 
 // NewHandler builds the router and wraps it in the middleware chain:
-// request logging, then panic recovery.
+// request logging and panic recovery.
 func NewHandler(logger *slog.Logger, static fs.FS) http.Handler {
 	mux := http.NewServeMux()
 
@@ -49,7 +49,7 @@ func NewHandler(logger *slog.Logger, static fs.FS) http.Handler {
 	// Everything else is the static UI.
 	mux.Handle("/", http.FileServerFS(static))
 
-	return logRequests(logger, recoverPanics(logger, mux))
+	return logAndRecover(logger, mux)
 }
 
 func handleHealth(w http.ResponseWriter, r *http.Request) {

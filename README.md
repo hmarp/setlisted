@@ -27,7 +27,7 @@ openssl rand -base64 32   # paste the output into SESSION_KEY
 | Variable | Required | Description |
 |---|---|---|
 | `PORT` | no | Port to listen on. Default `8080`. |
-| `BASE_URL` | yes | Public base URL, no trailing slash. Locally `http://127.0.0.1:8080`. |
+| `BASE_URL` | yes | Public base URL (not validated), no trailing slash. Locally `http://127.0.0.1:8080`. |
 | `SPOTIFY_CLIENT_ID` | yes | Spotify app client ID. |
 | `SPOTIFY_CLIENT_SECRET` | yes | Spotify app client secret. |
 | `SETLISTFM_API_KEY` | yes | setlist.fm API key. |

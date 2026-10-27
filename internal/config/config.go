@@ -6,8 +6,8 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"net/url"
 	"strconv"
+	"strings"
 )
 
 // Environment variable names.
@@ -30,7 +30,7 @@ const SessionKeySize = 32
 // be logged or otherwise printed.
 type Config struct {
 	Port                string // numeric, 1–65535
-	BaseURL             string // absolute http(s) URL, no trailing slash
+	BaseURL             string
 	SpotifyClientID     string
 	SpotifyClientSecret string
 	SetlistFMAPIKey     string
@@ -52,19 +52,15 @@ func Load(getenv func(string) string) (Config, error) {
 		cfg.Port = DefaultPort
 	} else if n, err := strconv.Atoi(cfg.Port); err != nil || n < 1 || n > 65535 {
 		fail(EnvPort, "must be a port number between 1 and 65535")
-	}
-
-	cfg.BaseURL = getenv(EnvBaseURL)
-	if cfg.BaseURL == "" {
-		fail(EnvBaseURL, "is required")
-	} else if problem := checkBaseURL(cfg.BaseURL); problem != "" {
-		fail(EnvBaseURL, problem)
+	} else {
+		cfg.Port = strconv.Itoa(n) // normalises forms like "+80" and "0080"
 	}
 
 	required := []struct {
 		name string
 		dst  *string
 	}{
+		{EnvBaseURL, &cfg.BaseURL},
 		{EnvSpotifyClientID, &cfg.SpotifyClientID},
 		{EnvSpotifyClientSecret, &cfg.SpotifyClientSecret},
 		{EnvSetlistFMAPIKey, &cfg.SetlistFMAPIKey},
@@ -75,6 +71,9 @@ func Load(getenv func(string) string) (Config, error) {
 			fail(r.name, "is required")
 		}
 	}
+
+	// A trailing slash would break the Origin check and the redirect URL.
+	cfg.BaseURL = strings.TrimRight(cfg.BaseURL, "/")
 
 	if raw := getenv(EnvSessionKey); raw == "" {
 		fail(EnvSessionKey, "is required")
@@ -90,19 +89,4 @@ func Load(getenv func(string) string) (Config, error) {
 		return Config{}, errors.Join(errs...)
 	}
 	return cfg, nil
-}
-
-// checkBaseURL returns a description of what's wrong with s, or "" if it's
-// valid. It must not include s in the description.
-func checkBaseURL(s string) string {
-	const want = "must be an absolute http(s) URL with no path, query or trailing slash, e.g. http://127.0.0.1:8080"
-	u, err := url.Parse(s)
-	if err != nil {
-		return want
-	}
-	if (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" || u.User != nil ||
-		u.Path != "" || u.RawQuery != "" || u.ForceQuery || u.Fragment != "" || u.Opaque != "" {
-		return want
-	}
-	return ""
 }

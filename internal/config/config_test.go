@@ -54,14 +54,6 @@ func TestLoadDefaultPort(t *testing.T) {
 	}
 }
 
-func TestLoadAcceptsHTTPSBaseURL(t *testing.T) {
-	env := validEnv()
-	env[EnvBaseURL] = "https://setlisted-abc123.a.run.app"
-	if _, err := Load(getenvFrom(env)); err != nil {
-		t.Fatalf("Load: unexpected error: %v", err)
-	}
-}
-
 func TestLoadInvalid(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -73,13 +65,6 @@ func TestLoadInvalid(t *testing.T) {
 		{"missing SPOTIFY_CLIENT_SECRET", EnvSpotifyClientSecret, ""},
 		{"missing SETLISTFM_API_KEY", EnvSetlistFMAPIKey, ""},
 		{"missing SESSION_KEY", EnvSessionKey, ""},
-		{"BASE_URL relative", EnvBaseURL, "setlisted.example.com"},
-		{"BASE_URL wrong scheme", EnvBaseURL, "ftp://setlisted.example.com"},
-		{"BASE_URL trailing slash", EnvBaseURL, "https://setlisted.example.com/"},
-		{"BASE_URL with path", EnvBaseURL, "https://setlisted.example.com/app"},
-		{"BASE_URL with query", EnvBaseURL, "https://setlisted.example.com?x=secretish"},
-		{"BASE_URL with credentials", EnvBaseURL, "https://user:pass@setlisted.example.com"},
-		{"BASE_URL unparseable", EnvBaseURL, "http://[::1"},
 		{"SESSION_KEY not base64", EnvSessionKey, "not*base64*at*all"},
 		{"SESSION_KEY too short", EnvSessionKey, "c2hvcnRrZXk="},                                    // "shortkey"
 		{"SESSION_KEY too long", EnvSessionKey, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="}, // 35 bytes

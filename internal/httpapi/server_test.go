@@ -2,7 +2,6 @@ package httpapi
 
 import (
 	"bytes"
-	"io"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
@@ -42,10 +41,11 @@ func TestRoutes(t *testing.T) {
 				t.Errorf("Content-Type = %q, want prefix %q", ct, tt.wantType)
 			}
 			body := rec.Body.String()
-			if tt.wantType == "application/json" && body != tt.wantBody {
-				t.Errorf("body = %q, want %q", body, tt.wantBody)
-			}
-			if !strings.Contains(body, tt.wantBody) {
+			if tt.wantType == "application/json" {
+				if body != tt.wantBody {
+					t.Errorf("body = %q, want %q", body, tt.wantBody)
+				}
+			} else if !strings.Contains(body, tt.wantBody) {
 				t.Errorf("body %q does not contain %q", body, tt.wantBody)
 			}
 		})
@@ -63,9 +63,9 @@ func TestPlaceholderPageLinksToSetlistFM(t *testing.T) {
 func TestRecoverPanics(t *testing.T) {
 	var logs bytes.Buffer
 	logger := slog.New(slog.NewJSONHandler(&logs, nil))
-	h := logRequests(logger, recoverPanics(logger, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	h := logAndRecover(logger, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		panic("boom")
-	})))
+	}))
 
 	rec := httptest.NewRecorder()
 	h.ServeHTTP(rec, httptest.NewRequest("GET", "/api/panic", nil))
@@ -82,6 +82,61 @@ func TestRecoverPanics(t *testing.T) {
 	}
 }
 
+func TestPanicAfterWriteAbortsResponse(t *testing.T) {
+	var logs bytes.Buffer
+	logger := slog.New(slog.NewJSONHandler(&logs, nil))
+	h := logAndRecover(logger, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("partial"))
+		panic("boom")
+	}))
+
+	rec := httptest.NewRecorder()
+	func() {
+		defer func() {
+			if v := recover(); v != http.ErrAbortHandler {
+				t.Errorf("recovered %v, want http.ErrAbortHandler", v)
+			}
+		}()
+		h.ServeHTTP(rec, httptest.NewRequest("GET", "/", nil))
+	}()
+
+	if got := rec.Body.String(); got != "partial" {
+		t.Errorf("body = %q, want only the partial write", got)
+	}
+	if !strings.Contains(logs.String(), `"status":200`) {
+		t.Errorf("request log does not record status 200: %s", logs.String())
+	}
+}
+
+func TestLoggedStatus(t *testing.T) {
+	tests := []struct {
+		name    string
+		handler http.HandlerFunc
+		want    string
+	}{
+		{"status then body", func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusCreated)
+			w.Write([]byte("x"))
+		}, `"status":201`},
+		{"body only", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("x")) }, `"status":200`},
+		{"WriteHeader twice logs the last", func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			w.WriteHeader(http.StatusNotFound)
+		}, `"status":404`},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var logs bytes.Buffer
+			h := logAndRecover(slog.New(slog.NewJSONHandler(&logs, nil)), tt.handler)
+			h.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest("GET", "/", nil))
+			if !strings.Contains(logs.String(), tt.want) {
+				t.Errorf("log %s does not contain %s", logs.String(), tt.want)
+			}
+		})
+	}
+}
+
 func TestLogRequestsOmitsQueryString(t *testing.T) {
 	var logs bytes.Buffer
 	logger := slog.New(slog.NewJSONHandler(&logs, nil))
@@ -89,7 +144,6 @@ func TestLogRequestsOmitsQueryString(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 	h.ServeHTTP(rec, httptest.NewRequest("GET", "/api/health?q=secret+band", nil))
-	io.Copy(io.Discard, rec.Body)
 
 	out := logs.String()
 	for _, want := range []string{`"method":"GET"`, `"path":"/api/health"`, `"status":200`, `"duration_ms":`} {

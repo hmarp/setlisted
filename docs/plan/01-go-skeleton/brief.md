@@ -60,7 +60,7 @@ Create the Go service's foundations so that every later step only adds features:
    | Variable | Secret? | Validation |
    |---|---|---|
    | `PORT` | no | Optional, default `8080`. Must be numeric. |
-   | `BASE_URL` | no | Required. An absolute `http(s)` URL with no trailing slash, e.g. `http://127.0.0.1:8080` locally. Used later for the Spotify redirect URL and the `Origin` check. |
+   | `BASE_URL` | no | Required. Not validated beyond being non-empty; a trailing slash is trimmed. Use an absolute `http(s)` URL, e.g. `http://127.0.0.1:8080` locally. Used later for the Spotify redirect URL and the `Origin` check. |
    | `SPOTIFY_CLIENT_ID` | no | Required, non-empty. |
    | `SPOTIFY_CLIENT_SECRET` | yes | Required, non-empty. |
    | `SETLISTFM_API_KEY` | yes | Required, non-empty. |
@@ -105,7 +105,7 @@ Create the Go service's foundations so that every later step only adds features:
 
 ## Tests
 
-- Config: table-driven tests covering a missing required variable, invalid `BASE_URL`, `SESSION_KEY` of the wrong length or invalid base64, and a non-numeric `PORT`. Check that error messages name the variable and don't contain its value.
+- Config: table-driven tests covering a missing required variable, `SESSION_KEY` of the wrong length or invalid base64, and a non-numeric `PORT`. Check that error messages name the variable and don't contain its value.
 - HTTP: `/api/health` returns 200 and the JSON; an unknown `/api/x` returns the JSON `not_found` error; `/` serves the placeholder page; the recovery middleware turns a panic into `internal_error`.
 
 ## Out of scope

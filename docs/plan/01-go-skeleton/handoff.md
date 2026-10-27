@@ -70,7 +70,7 @@ mux.Handle("/", http.FileServerFS(static))
 
 - Always register API routes **with a method** (`"GET /api/…"`, `"POST /api/…"`). A request to a known path with another method falls through to the `/api/` catch-all and gets `404 not_found` rather than Go's plain-text 405.
 - Non-API routes such as step 04's `/auth/login` and `/auth/logout` must be registered explicitly with a method, e.g. `"GET /auth/login"`. They don't conflict with the `/` catch-all. Unknown non-API paths get the file server's plain-text 404.
-- The middleware chain is `logRequests(recoverPanics(mux))`. Middleware that applies only to some routes (e.g. step 04's session check for `/api/*`) can wrap individual handlers or a sub-mux. Step 04 decides.
+- The middleware chain is `logAndRecover(mux)` (one middleware that logs each request and recovers from panics). Middleware that applies only to some routes (e.g. step 04's session check for `/api/*`) can wrap individual handlers or a sub-mux. Step 04 decides.
 - `NewHandler(logger, static fs.FS)` takes its dependencies as arguments. Handler tests use `httptest` with `slog.DiscardHandler` and `web.Static()` or `fstest.MapFS{}`. As later steps add dependencies (config, clients), extend the arguments, or turn them into a small struct if the list grows.
 
 ## Configuration
@@ -79,14 +79,14 @@ mux.Handle("/", http.FileServerFS(static))
 
 | Variable | Field | Rule |
 |---|---|---|
-| `PORT` | `Port string` | Optional, default `8080`, integer 1–65535 |
-| `BASE_URL` | `BaseURL string` | Required. `http`/`https`, a host, and no path, query, fragment, credentials or trailing slash |
+| `PORT` | `Port string` | Optional, default `8080`, integer 1–65535 (stored normalised, so `+80` becomes `80`) |
+| `BASE_URL` | `BaseURL string` | Required. Not validated beyond being non-empty; trailing `/` characters are trimmed |
 | `SPOTIFY_CLIENT_ID` | `SpotifyClientID` | Required |
 | `SPOTIFY_CLIENT_SECRET` | `SpotifyClientSecret` | Required |
 | `SETLISTFM_API_KEY` | `SetlistFMAPIKey` | Required |
 | `SESSION_KEY` | `SessionKey []byte` | Required. Standard (padded) base64 of exactly 32 bytes, as `openssl rand -base64 32` produces. Stored decoded. |
 
-- `BASE_URL` doesn't allow a path, because the app assumes it's served from the root (static files at `/`, redirect URL at `BASE_URL + "/auth/..."`).
+- `BASE_URL` is not validated beyond being non-empty. The app assumes it's served from the root (static files at `/`, redirect URL at `BASE_URL + "/auth/..."`), so give it an absolute URL with no path or trailing slash.
 - `Config` holds secrets. Never log it or pass it to `slog`.
 - `.env` is loaded with `godotenv.Load()` from the working directory, only if it exists. Existing environment variables win.
 
