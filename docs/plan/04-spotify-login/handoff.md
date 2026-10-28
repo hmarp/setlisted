@@ -114,4 +114,3 @@ To do with the owner (setup.md §5–7). Fill in:
 - **No security headers** on HTML yet (still as in step 01).
 - **Spotify can't be asked to revoke tokens**, so logging out only deletes the cookie. A copied cookie stays usable until its expiry (at most an hour). This is accepted in ADR-004.
 - **Some browsers restore session cookies** when they "continue where you left off". The one-hour server-side limit still applies (ADR-009).
-- **`SPOTIFY_CLIENT_ID` in `scripts/deploy-config.sh`** must hold the real ID before merging (it's `REPLACE_ME` until the owner provides it, and `scripts/deploy.sh` refuses to run until then).

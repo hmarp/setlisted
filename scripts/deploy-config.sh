@@ -20,4 +20,4 @@ BASE_URL=https://setlisted-613938414647.europe-west1.run.app
 
 # Spotify app client ID (Spotify Dashboard → app → Settings). Not secret.
 # Merges don't change env vars: after changing it, apply it once (see docs/plan/04-spotify-login/setup.md §6).
-SPOTIFY_CLIENT_ID=REPLACE_ME
+SPOTIFY_CLIENT_ID=2d7607fbbdd9462892990e71494eefd9

@@ -52,7 +52,7 @@ SPOTIFY_CLIENT_SECRET=<client secret>
 
 `.env` is git-ignored. Never paste the secret into a commit, an issue, a PR or a chat.
 
-- [ ] **Send Claude the Client ID** (it isn't secret) so it can be committed in `scripts/deploy-config.sh` in this PR. Or edit that file yourself: replace `REPLACE_ME` in `SPOTIFY_CLIENT_ID=REPLACE_ME`.
+- [x] **Send Claude the Client ID** (it isn't secret) so it can be committed in `scripts/deploy-config.sh` in this PR. Done: `2d7607fbbdd9462892990e71494eefd9`. If the app is ever recreated, update that file and section 6.
 
 ## 5. Local check (with Claude, before merging)
 
@@ -95,7 +95,7 @@ gcloud secrets versions list spotify-client-secret
 
 ```bash
 gcloud run services update setlisted --region="$REGION" \
-  --update-env-vars SPOTIFY_CLIENT_ID=<client ID>
+  --update-env-vars SPOTIFY_CLIENT_ID=2d7607fbbdd9462892990e71494eefd9
 ```
 
   (Alternatively, once `scripts/deploy-config.sh` has the real ID and is committed, run `scripts/deploy.sh` once from a clean checkout of `main`. It re-applies every setting.)
