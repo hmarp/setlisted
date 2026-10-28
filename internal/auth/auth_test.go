@@ -29,8 +29,10 @@ var (
 )
 
 // fakeSpotify is a fake Spotify accounts and Web API server. Codes it accepts:
-// "good" (an allowlisted user), "not-allowlisted" (GET /me answers 403),
-// "me-fails" (GET /me answers 500), "short" (token expires in 10 minutes).
+// "good" (an allowlisted user, token for an hour), "not-allowlisted" (GET /me
+// answers 403), "me-fails" (GET /me answers 500), and for token lifetimes
+// "short" (10 minutes), "long" (2 hours), "noexpiry" (no expires_in),
+// "expired" (already expired) and "form" (10 minutes, form-encoded).
 type fakeSpotify struct {
 	*httptest.Server
 	mu        sync.Mutex
@@ -44,7 +46,7 @@ func newFakeSpotify(t *testing.T) *fakeSpotify {
 	mux.HandleFunc("POST /api/token", f.token)
 	mux.HandleFunc("GET /v1/me", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Header.Get("Authorization") {
-		case "Bearer access-good", "Bearer access-short":
+		case "Bearer access-good", "Bearer access-short", "Bearer access-long", "Bearer access-noexpiry":
 			w.Header().Set("Content-Type", "application/json")
 			w.Write([]byte(`{"id":"user-123","display_name":"Test"}`))
 		case "Bearer access-not-allowlisted":
@@ -98,6 +100,12 @@ func (f *fakeSpotify) token(w http.ResponseWriter, r *http.Request) {
 	case "good", "not-allowlisted", "me-fails":
 	case "short":
 		expiresIn = 600
+	case "long":
+		expiresIn = 7200
+	case "noexpiry":
+		expiresIn = 0 // omitted below
+	case "expired":
+		expiresIn = -5
 	case "form":
 		// oauth2 fills only Token.Expiry (not ExpiresIn) for form responses.
 		w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
@@ -107,14 +115,17 @@ func (f *fakeSpotify) token(w http.ResponseWriter, r *http.Request) {
 		refuse("unknown code")
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]any{
+	body := map[string]any{
 		"access_token":  "access-" + code,
 		"token_type":    "Bearer",
-		"expires_in":    expiresIn,
 		"refresh_token": testRefreshToken,
 		"scope":         Scope,
-	})
+	}
+	if expiresIn != 0 {
+		body["expires_in"] = expiresIn
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(body)
 }
 
 func newTestAuth(t *testing.T, f *fakeSpotify, logs *bytes.Buffer) *Auth {
@@ -170,11 +181,14 @@ func login(t *testing.T, a *Auth, f *fakeSpotify) (url.Values, *http.Cookie) {
 	return q, c
 }
 
-// callback runs GET /auth/callback with the given query and cookie.
-func callback(a *Auth, query string, c *http.Cookie) *httptest.ResponseRecorder {
+// callback runs GET /auth/callback with the given query and cookies (nil
+// ones are skipped).
+func callback(a *Auth, query string, cookies ...*http.Cookie) *httptest.ResponseRecorder {
 	req := httptest.NewRequest("GET", CallbackPath+"?"+query, nil)
-	if c != nil {
-		req.AddCookie(c)
+	for _, c := range cookies {
+		if c != nil {
+			req.AddCookie(c)
+		}
 	}
 	rec := httptest.NewRecorder()
 	a.Callback(rec, req)
@@ -284,8 +298,8 @@ func TestCallbackSuccess(t *testing.T) {
 	if s.AccessToken != "access-good" || s.UserID != "user-123" {
 		t.Errorf("session = %+v", s)
 	}
-	if !s.Expiry.After(testNow) || s.Expiry.After(testNow.Add(time.Hour)) {
-		t.Errorf("expiry %v not within an hour of %v", s.Expiry, testNow)
+	if !s.Expiry.Equal(testNow.Add(time.Hour)) {
+		t.Errorf("expiry = %v, want %v", s.Expiry, testNow.Add(time.Hour))
 	}
 
 	// The login cookie is deleted.
@@ -310,27 +324,67 @@ func TestCallbackSuccess(t *testing.T) {
 	}
 }
 
-func TestCallbackShortToken(t *testing.T) {
-	// The session ends when the token does, if that's sooner than an hour,
-	// whether Spotify answers in JSON or (hypothetically) form-encoded.
-	for _, code := range []string{"short", "form"} {
-		t.Run(code, func(t *testing.T) {
+func TestCallbackSessionExpiry(t *testing.T) {
+	// The session ends when the token does, and never more than an hour
+	// after login (AUTH-6), whether Spotify answers in JSON or
+	// (hypothetically) form-encoded.
+	tests := []struct {
+		code      string
+		want      time.Duration
+		tolerance time.Duration // form responses use the real clock
+	}{
+		{"good", time.Hour, 0},
+		{"long", time.Hour, 0}, // capped
+		{"noexpiry", time.Hour, 0},
+		{"short", 10 * time.Minute, 0},
+		{"form", 10 * time.Minute, time.Minute},
+	}
+	for _, tt := range tests {
+		t.Run(tt.code, func(t *testing.T) {
 			f := newFakeSpotify(t)
 			a := newTestAuth(t, f, nil)
 			q, lc := login(t, a, f)
-			rec := callback(a, "code="+code+"&state="+url.QueryEscape(q.Get("state")), lc)
+			rec := callback(a, "code="+tt.code+"&state="+url.QueryEscape(q.Get("state")), lc)
 			c := findCookie(rec.Result(), SessionCookie)
-			if c == nil {
+			if c == nil || c.Value == "" {
 				t.Fatalf("no session cookie; Location %q", rec.Header().Get("Location"))
 			}
 			var s Session
 			if err := a.sealer.open(SessionCookie, c.Value, &s); err != nil {
 				t.Fatal(err)
 			}
-			if want := testNow.Add(10 * time.Minute); s.Expiry.Sub(want).Abs() > time.Minute {
-				t.Errorf("expiry = %v, want about %v", s.Expiry, want)
+			if want := testNow.Add(tt.want); s.Expiry.Sub(want).Abs() > tt.tolerance {
+				t.Errorf("expiry = %v, want %v", s.Expiry, want)
 			}
 		})
+	}
+
+	t.Run("expired", func(t *testing.T) {
+		f := newFakeSpotify(t)
+		a := newTestAuth(t, f, nil)
+		q, lc := login(t, a, f)
+		rec := callback(a, "code=expired&state="+url.QueryEscape(q.Get("state")), lc)
+		if rec.Header().Get("Location") != "/?login=failed" {
+			t.Errorf("Location = %q, want /?login=failed", rec.Header().Get("Location"))
+		}
+	})
+}
+
+func TestHeadDoesNotRunLogin(t *testing.T) {
+	f := newFakeSpotify(t)
+	a := newTestAuth(t, f, nil)
+	q, lc := login(t, a, f)
+	for path, h := range map[string]http.HandlerFunc{
+		"/auth/login": a.Login,
+		CallbackPath + "?code=good&state=" + url.QueryEscape(q.Get("state")): a.Callback,
+	} {
+		req := httptest.NewRequest("HEAD", path, nil)
+		req.AddCookie(lc)
+		rec := httptest.NewRecorder()
+		h(rec, req)
+		if rec.Code != http.StatusMethodNotAllowed || len(rec.Result().Cookies()) != 0 {
+			t.Errorf("HEAD %s: status %d, cookies %v; want 405 and no cookies", path, rec.Code, rec.Result().Cookies())
+		}
 	}
 }
 
@@ -366,12 +420,23 @@ func TestCallbackFailures(t *testing.T) {
 			if tt.noCookie {
 				lc = nil
 			}
-			rec := callback(a, tt.query(url.QueryEscape(q.Get("state"))), lc)
+			// Someone else is already logged in in this browser: a failed
+			// login must end that session, not leave it in place.
+			existing := sessionCookie(t, testKey, validSession())
+			rec := callback(a, tt.query(url.QueryEscape(q.Get("state"))), lc, existing)
 			if rec.Code != http.StatusFound || rec.Header().Get("Location") != tt.wantLoc {
 				t.Errorf("status %d, Location %q, want 302 to %s", rec.Code, rec.Header().Get("Location"), tt.wantLoc)
 			}
-			if c := findCookie(rec.Result(), SessionCookie); c != nil {
-				t.Errorf("session cookie set: %+v", c)
+			for _, c := range rec.Result().Cookies() {
+				if c.Name == SessionCookie && (c.MaxAge >= 0 || c.Value != "") {
+					t.Errorf("session cookie set, not deleted: %+v", c)
+				}
+			}
+			if c := findCookie(rec.Result(), SessionCookie); c == nil {
+				t.Error("existing session not deleted")
+			}
+			if c := findCookie(rec.Result(), loginCookie); c == nil || c.MaxAge >= 0 {
+				t.Errorf("login cookie not deleted: %+v", c)
 			}
 		})
 	}
@@ -430,6 +495,7 @@ func TestRequireSession(t *testing.T) {
 		{"empty", &http.Cookie{Name: SessionCookie, Value: ""}},
 		{"login cookie value", login()},
 		{"no token", sessionCookie(t, testKey, Session{Expiry: testNow.Add(time.Minute), UserID: "u"})},
+		{"no user ID", sessionCookie(t, testKey, Session{AccessToken: "t", Expiry: testNow.Add(time.Minute)})},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -516,14 +582,18 @@ func TestRequireSameOrigin(t *testing.T) {
 
 func TestStatus(t *testing.T) {
 	a := newTestAuth(t, nil, nil)
+	expired := validSession()
+	expired.Expiry = testNow.Add(-time.Second)
 	for _, tt := range []struct {
-		name   string
-		cookie *http.Cookie
-		want   string
+		name      string
+		cookie    *http.Cookie
+		want      string
+		wantClear bool
 	}{
-		{"logged out", nil, `{"loggedIn":false}`},
-		{"logged in", sessionCookie(t, testKey, validSession()), `{"loggedIn":true}`},
-		{"tampered", tamper(sessionCookie(t, testKey, validSession())), `{"loggedIn":false}`},
+		{"logged out", nil, `{"loggedIn":false}`, false},
+		{"logged in", sessionCookie(t, testKey, validSession()), `{"loggedIn":true}`, false},
+		{"tampered", tamper(sessionCookie(t, testKey, validSession())), `{"loggedIn":false}`, true},
+		{"expired", sessionCookie(t, testKey, expired), `{"loggedIn":false}`, true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			req := httptest.NewRequest("GET", "/api/session", nil)
@@ -534,6 +604,10 @@ func TestStatus(t *testing.T) {
 			a.Status(rec, req)
 			if rec.Code != 200 || rec.Body.String() != tt.want+"\n" {
 				t.Errorf("got %d %q, want 200 %s", rec.Code, rec.Body.String(), tt.want)
+			}
+			c := findCookie(rec.Result(), SessionCookie)
+			if cleared := c != nil && c.MaxAge < 0; cleared != tt.wantClear {
+				t.Errorf("cookie cleared = %v, want %v", cleared, tt.wantClear)
 			}
 		})
 	}

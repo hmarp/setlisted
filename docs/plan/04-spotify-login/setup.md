@@ -143,7 +143,7 @@ In the console the same settings are on the [Cloud Run service page](https://con
 |---|---|
 | Spotify says **"INVALID_CLIENT: Invalid redirect URI"** | The URI isn't registered exactly (scheme, host, port, path, no trailing slash), or you opened the app on `localhost` instead of `127.0.0.1`. |
 | Spotify says **"INVALID_CLIENT: Invalid client"** | `SPOTIFY_CLIENT_ID` is wrong or still a placeholder (locally in `.env`; on Cloud Run, section 6). |
-| You come back to `/?login=failed` | Often a wrong client secret (the token exchange is refused). The app logs `login failed` with a `reason` (and Spotify's status code). Locally it's on the terminal; on Cloud Run, in [Logs Explorer](https://console.cloud.google.com/logs/query?project=setlisted-2026). Logs never contain tokens or codes. |
+| You come back to `/?login=failed` | Often a wrong client secret (the token exchange is refused). The app logs `login failed` with a `reason` (and Spotify's status code). Locally it's on the terminal; on Cloud Run, in [Logs Explorer](https://console.cloud.google.com/logs/query?project=setlisted-2026). The app's own logs never contain tokens or codes. |
 | `/?login=failed` straight after clicking login | The login cookie didn't survive the round trip: more than 10 minutes on Spotify's page, cookies blocked, or the app was opened on a different host than `BASE_URL`. |
 | `/?login=invite_only` for an allowlisted user | The email in User Management doesn't match their Spotify account, or the app owner's Premium lapsed. |
 | Log out does nothing; `POST /auth/logout` returns `403` | The page's origin isn't `BASE_URL` (for example `localhost` instead of `127.0.0.1`). |

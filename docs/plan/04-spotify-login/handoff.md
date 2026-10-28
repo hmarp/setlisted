@@ -29,7 +29,7 @@ The brief and ADR-004 said the session cookie gets `Max-Age` = the token's remai
 - Both are `HttpOnly`, `Secure`, `SameSite=Lax`, with no `Domain`.
 - **Format:** `base64url-no-padding(nonce ‖ AES-256-GCM ciphertext)`. A random 12-byte nonce for each cookie. The key is `SESSION_KEY`. The plaintext is JSON. **The cookie name is the GCM additional data**, so a login cookie can't be passed off as a session cookie.
 - Session JSON: `{"t": access token, "e": expiry (RFC 3339), "u": Spotify user ID}`. There is no refresh token: `Callback` drops it straight after the exchange.
-- **Expiry** = login time + the token's `expires_in`, capped at one hour (`auth.MaxSessionAge`).
+- **Expiry** = the time just before the token exchange + the token's `expires_in`, capped at one hour (`auth.MaxSessionAge`). With no `expires_in`, it's one hour. A token that's already expired fails the login.
 - A session is valid only if it decrypts with the current key, has a token and a user ID, and `now < expiry`. Otherwise the request counts as logged out, and the cookie is cleared in the response.
 
 ## How handlers use it
@@ -73,7 +73,9 @@ Constants: `auth.LoginCancelled`, `auth.LoginInviteOnly`, `auth.LoginFailed`. Th
 - **Wrong methods on the public paths** (`/api/health`, `/api/session`) answer `404 not_found`, not the session check's `401`.
 - **Token lifetime** comes from `expires_in` (`Token.ExpiresIn`), falling back to `Token.Expiry` for a non-JSON token response.
 - **The `/me` call doesn't use `oauth2`'s client.** It's a plain request with the bearer token, so nothing ever tries to refresh.
-- **Spotify calls in the callback** have a 10-second timeout.
+- **Spotify calls in the callback** (the token exchange and `GET /me`) each have their own 10-second timeout.
+- **A login that doesn't succeed ends any existing session in the browser** (cancel, invite-only, failed), so a second person's refused login on a shared browser never leaves the first person logged in.
+- **`HEAD` on `/auth/login` and `/auth/callback` answers `405`.** Go's `GET` patterns also match `HEAD`, and a link scanner or prefetch would otherwise use up the single-use login cookie and code.
 - **Logging:** `login failed` (WARNING) with a `reason` and, where there is one, `spotify_status`; `login cancelled` and `login succeeded` (INFO). Tokens, codes, state, cookies and the user ID are never logged. A test checks this. `oauth2` error text isn't logged, because it can include Spotify's response body.
 - **Key rotation:** a new `SESSION_KEY` version logs everyone out at the next revision.
 
@@ -109,6 +111,10 @@ To do with the owner (setup.md §5–7). Fill in:
 - [ ] After the merge deploys: the same login and logout work on `https://setlisted-613938414647.europe-west1.run.app`.
 
 ## Known gaps
+
+- **Cloud Run's own request logs record full URLs**, so the callback's `code` and `state` appear there (the app's own logs leave out query strings). A code is single-use, short-lived, and useless without the PKCE verifier (in the user's login cookie) and the client secret. Accepted.
+- **Any link to `/auth/callback?error=access_denied` cancels a login in progress** and shows "Login was cancelled." It creates no session and leaks nothing. This is the cost of showing AUTH-5's message even after the login cookie expires. Accepted.
+- **The app must be opened at exactly `BASE_URL`.** On another host (`localhost`, or another Cloud Run URL for the service) the login cookie doesn't come back (`/?login=failed`) and logout gets `403`. Documented in setup.md, README and `.env.example`; there's no redirect to `BASE_URL`.
 
 - **AUTH-1, AUTH-3 and AUTH-7 screens** are step 12. The placeholder page shows only test controls.
 - **No security headers** on HTML yet (still as in step 01).

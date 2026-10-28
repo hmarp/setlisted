@@ -73,6 +73,18 @@ func TestNormalizeBaseURL(t *testing.T) {
 	}
 }
 
+func TestNormalizeBaseURLRejects(t *testing.T) {
+	for _, in := range []string{
+		"", "setlisted.example", "ftp://setlisted.example", "https://",
+		"https://setlisted.example/app", "https://setlisted.example?x=1", "https://setlisted.example?",
+		"https://setlisted.example#top", "https://user:pass@setlisted.example",
+	} {
+		if got, err := NormalizeBaseURL(in); err == nil {
+			t.Errorf("NormalizeBaseURL(%q) = %q, want an error", in, got)
+		}
+	}
+}
+
 func TestLoadDefaultPort(t *testing.T) {
 	cfg, err := Load(getenvFrom(validEnv()))
 	if err != nil {

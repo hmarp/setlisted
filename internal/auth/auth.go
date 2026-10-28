@@ -39,7 +39,8 @@ const CallbackPath = "/auth/callback"
 // loginCookieMaxAge bounds the round trip to Spotify's login screen.
 const loginCookieMaxAge = 10 * 60 // seconds
 
-// spotifyTimeout bounds each call to Spotify during the callback.
+// spotifyTimeout bounds each of the callback's two calls to Spotify (the
+// token exchange and GET /me) separately.
 const spotifyTimeout = 10 * time.Second
 
 // Values of the login query parameter on "/" after a failed login. The UI
@@ -135,6 +136,9 @@ type loginState struct {
 // Login handles GET /auth/login: it stores a fresh state and PKCE verifier
 // in the login cookie and redirects to Spotify's authorise page.
 func (a *Auth) Login(w http.ResponseWriter, r *http.Request) {
+	if refuseHead(w, r) {
+		return
+	}
 	ls := loginState{State: rand.Text(), Verifier: oauth2.GenerateVerifier()}
 	value, err := a.sealer.seal(loginCookie, ls)
 	if err != nil {
@@ -148,11 +152,19 @@ func (a *Auth) Login(w http.ResponseWriter, r *http.Request) {
 
 // Callback handles GET /auth/callback, where Spotify sends the user back.
 // It always ends with a redirect to "/" (logged in) or "/?login=<reason>".
+//
+// Any outcome other than success also ends an existing session in this
+// browser, so a refused login (say, a second person on a shared browser)
+// never leaves the previous user logged in.
 func (a *Auth) Callback(w http.ResponseWriter, r *http.Request) {
+	if refuseHead(w, r) {
+		return
+	}
 	w.Header().Set("Cache-Control", "no-store")
 	clearCookie(w, loginCookie, "/auth") // single use, whatever happens next
 
 	fail := func(login, reason string, attrs ...slog.Attr) {
+		clearSession(w)
 		attrs = append(attrs, slog.String("reason", reason))
 		a.logger.LogAttrs(r.Context(), slog.LevelWarn, "login failed", attrs...)
 		http.Redirect(w, r, "/?login="+login, http.StatusFound)
@@ -163,6 +175,7 @@ func (a *Auth) Callback(w http.ResponseWriter, r *http.Request) {
 	// login cookie expired): it creates no session, so there's nothing to
 	// protect, and the user should see AUTH-5's message.
 	if q.Get("error") == "access_denied" {
+		clearSession(w)
 		a.logger.LogAttrs(r.Context(), slog.LevelInfo, "login cancelled")
 		http.Redirect(w, r, "/?login="+LoginCancelled, http.StatusFound)
 		return
@@ -187,9 +200,12 @@ func (a *Auth) Callback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.WithValue(r.Context(), oauth2.HTTPClient, a.client), spotifyTimeout)
+	// Read the clock before the exchange: Spotify's expires_in counts from
+	// when it issues the token, so the session can't outlive it.
+	now := a.now()
+	exchangeCtx, cancel := context.WithTimeout(context.WithValue(r.Context(), oauth2.HTTPClient, a.client), spotifyTimeout)
 	defer cancel()
-	tok, err := a.oauth.Exchange(ctx, code, oauth2.VerifierOption(ls.Verifier))
+	tok, err := a.oauth.Exchange(exchangeCtx, code, oauth2.VerifierOption(ls.Verifier))
 	if err != nil {
 		// Log only the category: the error text can include Spotify's body.
 		var re *oauth2.RetrieveError
@@ -214,13 +230,14 @@ func (a *Auth) Callback(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	now := a.now()
 	expiry := now.Add(MaxSessionAge)
 	if lifetime > 0 && lifetime < MaxSessionAge {
 		expiry = now.Add(lifetime)
 	}
 
-	userID, status, err := a.fetchUserID(ctx, tok.AccessToken)
+	meCtx, cancelMe := context.WithTimeout(r.Context(), spotifyTimeout)
+	defer cancelMe()
+	userID, status, err := a.fetchUserID(meCtx, tok.AccessToken)
 	switch {
 	case status == http.StatusForbidden:
 		// In development mode Spotify refuses API calls from users who
@@ -240,6 +257,18 @@ func (a *Auth) Callback(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, sc)
 	a.logger.LogAttrs(r.Context(), slog.LevelInfo, "login succeeded")
 	http.Redirect(w, r, "/", http.StatusFound)
+}
+
+// refuseHead answers HEAD with 405. Go's "GET" route patterns also match
+// HEAD, and running the login flow for a HEAD (a link scanner or prefetch)
+// would use up the single-use login cookie and code.
+func refuseHead(w http.ResponseWriter, r *http.Request) bool {
+	if r.Method != http.MethodHead {
+		return false
+	}
+	w.Header().Set("Allow", http.MethodGet)
+	w.WriteHeader(http.StatusMethodNotAllowed)
+	return true
 }
 
 // fetchUserID calls Spotify's GET /me. status is Spotify's HTTP status, or 0

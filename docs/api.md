@@ -84,7 +84,7 @@ Where Spotify sends the user back (the registered redirect URI). Always redirect
 | Spotify refused the user (not allowlisted) | `/?login=invite_only` | "Setlisted is invite-only. Ask the owner to add your Spotify account." (AUTH-4) |
 | Anything else (bad or missing state, expired login cookie, other Spotify error) | `/?login=failed` | a generic login error (wording chosen in step 12; no technical details, ERR-5) |
 
-No session cookie is set except on success.
+No session cookie is set except on success. Any other outcome also clears an existing session cookie, so a refused login never leaves a previous user logged in. `HEAD` on `/auth/login` and `/auth/callback` answers `405` and does nothing.
 
 ### `POST /auth/logout`
 
