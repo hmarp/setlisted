@@ -91,6 +91,18 @@ read -rs -p "Spotify client secret: " v && printf '%s' "$v" | gcloud secrets ver
 gcloud secrets versions list spotify-client-secret
 ```
 
+  Paste at the hidden prompt with **Shift+Insert** or a **right-click** (in Git Bash, Ctrl+V doesn't paste; it can insert an invisible character), then press Enter.
+
+- [ ] **Check the stored value without showing it.** It should be 32 characters, with the same fingerprint as the secret in your local `.env`:
+
+```bash
+gcloud secrets versions access latest --secret=spotify-client-secret | wc -c      # expect 32
+gcloud secrets versions access latest --secret=spotify-client-secret | sha256sum
+grep '^SPOTIFY_CLIENT_SECRET=' .env | cut -d= -f2- | tr -d '\r\n' | sha256sum   # must match the line above
+```
+
+  If they don't match, add another version (the `read` command again), check again, then disable the bad version: `gcloud secrets versions disable <number> --secret=spotify-client-secret`.
+
 - [ ] **Client ID:** set it on the live service. This starts a new revision of the image that's already deployed, which also reads the new secret version (`spotify-client-secret:latest`):
 
 ```bash
