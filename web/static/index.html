@@ -8,9 +8,46 @@
 <body>
   <main>
     <h1>Setlisted - Welcome!</h1>
+    <!-- Bare controls for testing login (step 04). The real UI is step 12. -->
+    <p id="status">Checking session…</p>
+    <p id="login-result" hidden></p>
+    <p><a href="/auth/login">Log in with Spotify</a></p>
+    <p><button id="logout" type="button">Log out</button></p>
   </main>
   <footer>
     <p>Setlist data from <a href="https://www.setlist.fm">setlist.fm</a></p>
   </footer>
+  <script>
+    const statusEl = document.getElementById("status");
+    async function showStatus() {
+      try {
+        const res = await fetch("/api/session");
+        const body = await res.json();
+        statusEl.textContent = body.loggedIn ? "Logged in." : "Not logged in.";
+      } catch {
+        statusEl.textContent = "Couldn't check the session.";
+      }
+    }
+    const login = new URLSearchParams(location.search).get("login");
+    if (login) {
+      const el = document.getElementById("login-result");
+      el.textContent = "Login result: " + login;
+      el.hidden = false;
+    }
+    document.getElementById("logout").addEventListener("click", async () => {
+      try {
+        const res = await fetch("/auth/logout", { method: "POST" });
+        if (!res.ok) {
+          statusEl.textContent = "Log out failed (" + res.status + "). Is the page open at BASE_URL?";
+          return;
+        }
+      } catch {
+        statusEl.textContent = "Log out failed.";
+        return;
+      }
+      showStatus();
+    });
+    showStatus();
+  </script>
 </body>
 </html>

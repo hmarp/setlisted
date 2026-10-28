@@ -18,5 +18,6 @@ RUNTIME_SERVICE_ACCOUNT="setlisted-runtime@${PROJECT_ID}.iam.gserviceaccount.com
 # Public URL of the service: https://<service>-<project-number>.<region>.run.app
 BASE_URL=https://setlisted-613938414647.europe-west1.run.app
 
-# Spotify app client ID. Not secret. Placeholder until step 04.
-SPOTIFY_CLIENT_ID=placeholder-set-in-step-04
+# Spotify app client ID (Spotify Dashboard → app → Settings). Not secret.
+# Merges don't change env vars: after changing it, apply it once (see docs/plan/04-spotify-login/setup.md §6).
+SPOTIFY_CLIENT_ID=2d7607fbbdd9462892990e71494eefd9

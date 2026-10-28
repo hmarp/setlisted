@@ -1,7 +1,7 @@
 # Plan
 
 - **Status:** Approved (2026-10-08)
-- **Covers:** the MVP, as defined in [`intent.md`](intent.md) and [`spec.md`](spec.md), built according to ADR-001 to ADR-008.
+- **Covers:** the MVP, as defined in [`intent.md`](intent.md) and [`spec.md`](spec.md), built according to ADR-001 to ADR-009.
 
 ## How this plan works
 
@@ -20,7 +20,7 @@
 | 01 | [Go skeleton: config, health, static serving, CI](plan/01-go-skeleton/brief.md) | — | Done |
 | 02 | [First deploy to Cloud Run](plan/02-first-deploy/brief.md) | 01 | Done |
 | 03 | [Continuous deployment on merge](plan/03-continuous-deployment/brief.md) | 02 | Done |
-| 04 | [Spotify login and session](plan/04-spotify-login/brief.md) | 03 | Not started |
+| 04 | [Spotify login and session](plan/04-spotify-login/brief.md) | 03 | Done |
 | 05 | [setlist.fm client: artist search and show list API](plan/05-setlistfm-search-shows/brief.md) | 04 | Not started |
 | 06 | [Entry classification rules](plan/06-entry-classification/brief.md) | 05 | Not started |
 | 07 | [Matching rules (pure)](plan/07-matching-rules/brief.md) | 06 | Not started |

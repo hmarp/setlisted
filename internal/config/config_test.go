@@ -44,6 +44,47 @@ func TestLoadValid(t *testing.T) {
 	}
 }
 
+func TestLoadTrimsBaseURLSlash(t *testing.T) {
+	env := validEnv()
+	env[EnvBaseURL] = "https://setlisted.example/"
+	cfg, err := Load(getenvFrom(env))
+	if err != nil {
+		t.Fatalf("Load: unexpected error: %v", err)
+	}
+	if cfg.BaseURL != "https://setlisted.example" {
+		t.Errorf("BaseURL = %q", cfg.BaseURL)
+	}
+}
+
+func TestNormalizeBaseURL(t *testing.T) {
+	for in, want := range map[string]string{
+		"https://setlisted.example":      "https://setlisted.example",
+		"https://Setlisted.Example/":     "https://setlisted.example",
+		"HTTPS://setlisted.example:443":  "https://setlisted.example",
+		"http://127.0.0.1:80":            "http://127.0.0.1",
+		"http://127.0.0.1:8080":          "http://127.0.0.1:8080",
+		"https://setlisted.example:8443": "https://setlisted.example:8443",
+		"http://[::1]:8080":              "http://[::1]:8080",
+	} {
+		got, err := NormalizeBaseURL(in)
+		if err != nil || got != want {
+			t.Errorf("NormalizeBaseURL(%q) = %q, %v; want %q", in, got, err, want)
+		}
+	}
+}
+
+func TestNormalizeBaseURLRejects(t *testing.T) {
+	for _, in := range []string{
+		"", "setlisted.example", "ftp://setlisted.example", "https://",
+		"https://setlisted.example/app", "https://setlisted.example?x=1", "https://setlisted.example?",
+		"https://setlisted.example#top", "https://user:pass@setlisted.example",
+	} {
+		if got, err := NormalizeBaseURL(in); err == nil {
+			t.Errorf("NormalizeBaseURL(%q) = %q, want an error", in, got)
+		}
+	}
+}
+
 func TestLoadDefaultPort(t *testing.T) {
 	cfg, err := Load(getenvFrom(validEnv()))
 	if err != nil {
@@ -61,6 +102,10 @@ func TestLoadInvalid(t *testing.T) {
 		value   string // "" means unset
 	}{
 		{"missing BASE_URL", EnvBaseURL, ""},
+		{"BASE_URL not absolute", EnvBaseURL, "setlisted.example"},
+		{"BASE_URL wrong scheme", EnvBaseURL, "ftp://setlisted.example"},
+		{"BASE_URL with path", EnvBaseURL, "https://setlisted.example/app"},
+		{"BASE_URL with query", EnvBaseURL, "https://setlisted.example?x=1"},
 		{"missing SPOTIFY_CLIENT_ID", EnvSpotifyClientID, ""},
 		{"missing SPOTIFY_CLIENT_SECRET", EnvSpotifyClientSecret, ""},
 		{"missing SETLISTFM_API_KEY", EnvSetlistFMAPIKey, ""},

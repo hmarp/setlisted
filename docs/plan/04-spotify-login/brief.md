@@ -37,7 +37,7 @@ The UI screens and messages themselves are built in step 12. This step provides 
   - **The refresh token is discarded immediately.** It is never stored, sent to the browser or logged.
 - **Session cookie:**
   - It holds the **access token**, its **expiry** and the **Spotify user ID**, encrypted and authenticated with **AES-GCM** (`crypto/aes`, `crypto/cipher`) using `SESSION_KEY`.
-  - Attributes: `HttpOnly`, `Secure`, `SameSite=Lax`, `Path=/`, and **`Max-Age` = the token's remaining lifetime** (at most one hour).
+  - Attributes: `HttpOnly`, `Secure`, `SameSite=Lax`, `Path=/`, and **no `Max-Age` or `Expires`**, so it ends with the browser session; the server enforces the one-hour limit from the expiry inside the cookie. (ADR-009, which supersedes ADR-004's `Max-Age = remaining lifetime`; a persistent cookie would outlive the browser session and break AUTH-6.)
   - The server keeps **no session state**.
   - A missing, undecryptable or expired cookie, or Spotify rejecting the token, means **logged out**.
   - Logging out clears the cookie.
@@ -91,7 +91,7 @@ Put these in `docs/plan/04-spotify-login/setup.md`.
   - a bad or missing `state` → rejected;
   - `access_denied` → `/?login=cancelled`;
   - `/me` returning 403 → `/?login=invite_only` and no session cookie;
-  - success → a session cookie with the right attributes and a `Max-Age` of at most 3600.
+  - success → a session cookie with the right attributes, no `Max-Age`/`Expires`, and an expiry inside it at most one hour away.
 - The refresh token doesn't appear in the cookie (decrypt and inspect it in the test).
 - A tampered cookie, a cookie encrypted with a different key, and an expired session are all treated as logged out.
 - The `Origin` check: a POST with no `Origin`, or a foreign one → `403 forbidden_origin`; a matching `Origin` → allowed.

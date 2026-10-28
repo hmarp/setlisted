@@ -15,9 +15,11 @@ import (
 type Code string
 
 const (
-	CodeInvalidRequest Code = "invalid_request"
-	CodeNotFound       Code = "not_found"
-	CodeInternalError  Code = "internal_error"
+	CodeInvalidRequest  Code = "invalid_request"
+	CodeNotFound        Code = "not_found"
+	CodeInternalError   Code = "internal_error"
+	CodeNotLoggedIn     Code = "not_logged_in"
+	CodeForbiddenOrigin Code = "forbidden_origin"
 )
 
 // Error is an API error. Message is user-facing text and must not contain
@@ -49,6 +51,18 @@ func NotFound() *Error {
 // InternalError returns a 500 internal_error error.
 func InternalError() *Error {
 	return &Error{Status: http.StatusInternalServerError, Code: CodeInternalError, Message: "Something went wrong. Try again."}
+}
+
+// NotLoggedIn returns a 401 not_logged_in error: there is no valid session,
+// or Spotify rejected the user's token. The UI shows the login screen.
+func NotLoggedIn() *Error {
+	return &Error{Status: http.StatusUnauthorized, Code: CodeNotLoggedIn, Message: "You're not logged in. Log in with Spotify."}
+}
+
+// ForbiddenOrigin returns a 403 forbidden_origin error: a state-changing
+// request didn't come from the app's own origin.
+func ForbiddenOrigin() *Error {
+	return &Error{Status: http.StatusForbidden, Code: CodeForbiddenOrigin, Message: "This request isn't allowed."}
 }
 
 // WriteJSON writes v as a JSON response with the given status.
