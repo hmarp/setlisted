@@ -7,7 +7,7 @@
 - **Every `/api/` route except `/api/health` and `/api/session` requires a session**, including unknown paths.
 - **Every request other than `GET`/`HEAD` must carry the app's own `Origin`**, on every path.
 - New error codes `not_logged_in` (401) and `forbidden_origin` (403) in `internal/jsonapi` and `docs/api.md`.
-- `BASE_URL` is now validated: `scheme://host[:port]`, `http` or `https`, no path, query or fragment (a trailing `/` is still trimmed).
+- `BASE_URL` is now validated and normalised by `config.NormalizeBaseURL`: `scheme://host[:port]`, `http` or `https`, no path, query or fragment; trailing `/` trimmed; scheme and host lower-cased and a default port (`:443`, `:80`) dropped, so it equals the `Origin` browsers send. `auth.New` uses the same function.
 - The placeholder page has a bare "Log in with Spotify" link, a "Log out" button, the session status and the `?login=` value, for manual testing only. Step 12 replaces it.
 - **ADR-009** (see below), `docs/plan/04-spotify-login/setup.md` (owner checklist), README, `.env.example`.
 
@@ -69,7 +69,9 @@ Constants: `auth.LoginCancelled`, `auth.LoginInviteOnly`, `auth.LoginFailed`. Th
 ## Behaviour worth knowing
 
 - **Unknown `/api/` paths need a session too.** They answer `401` without one and `404` with one. A `POST` to any path without the right `Origin` answers `403` before routing. `POST /api/health` (with `Origin` and a session) still answers `404 not_found`.
-- **State is checked before `error`.** A cancel with a missing or expired login cookie (more than 10 minutes on Spotify's page) lands on `failed`, not `cancelled`.
+- **`error=access_denied` is checked before the state.** A cancel is reported as `cancelled` even if the login cookie has expired or was replaced by a second login tab. It creates no session, so skipping the state check there is harmless. Every other outcome needs a valid state.
+- **Wrong methods on the public paths** (`/api/health`, `/api/session`) answer `404 not_found`, not the session check's `401`.
+- **Token lifetime** comes from `expires_in` (`Token.ExpiresIn`), falling back to `Token.Expiry` for a non-JSON token response.
 - **The `/me` call doesn't use `oauth2`'s client.** It's a plain request with the bearer token, so nothing ever tries to refresh.
 - **Spotify calls in the callback** have a 10-second timeout.
 - **Logging:** `login failed` (WARNING) with a `reason` and, where there is one, `spotify_status`; `login cancelled` and `login succeeded` (INFO). Tokens, codes, state, cookies and the user ID are never logged. A test checks this. `oauth2` error text isn't logged, because it can include Spotify's response body.

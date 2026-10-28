@@ -73,10 +73,12 @@ func Load(getenv func(string) string) (Config, error) {
 		}
 	}
 
-	// A trailing slash would break the Origin check and the redirect URL.
-	cfg.BaseURL = strings.TrimRight(cfg.BaseURL, "/")
-	if cfg.BaseURL != "" && !validBaseURL(cfg.BaseURL) {
-		fail(EnvBaseURL, "must be an absolute http or https URL with no path, e.g. https://example.com")
+	if cfg.BaseURL != "" {
+		if base, err := NormalizeBaseURL(cfg.BaseURL); err != nil {
+			fail(EnvBaseURL, err.Error())
+		} else {
+			cfg.BaseURL = base
+		}
 	}
 
 	if raw := getenv(EnvSessionKey); raw == "" {
@@ -95,12 +97,28 @@ func Load(getenv func(string) string) (Config, error) {
 	return cfg, nil
 }
 
-// validBaseURL reports whether s is scheme://host[:port] with nothing after
-// it. The app is served from the root, and BASE_URL is both the Spotify
-// redirect URL's prefix and the origin that state-changing requests must
-// come from.
-func validBaseURL(s string) bool {
+// NormalizeBaseURL checks that s is scheme://host[:port] with nothing after
+// it (trailing "/" characters are trimmed), and returns it in the form
+// browsers send as the Origin header: lower-case scheme and host, and no
+// default port. The app is served from the root, and BASE_URL is both the
+// Spotify redirect URL's prefix and the origin that state-changing requests
+// must come from. The error never contains s.
+func NormalizeBaseURL(s string) (string, error) {
+	s = strings.TrimRight(s, "/")
 	u, err := url.Parse(s)
-	return err == nil && (u.Scheme == "http" || u.Scheme == "https") && u.Host != "" &&
-		u.User == nil && u.Path == "" && !u.ForceQuery && u.RawQuery == "" && !strings.Contains(s, "#")
+	if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Hostname() == "" ||
+		u.User != nil || u.Path != "" || u.ForceQuery || u.RawQuery != "" || strings.Contains(s, "#") {
+		return "", errors.New("must be an absolute http or https URL with no path, e.g. https://example.com")
+	}
+	scheme, host, port := strings.ToLower(u.Scheme), strings.ToLower(u.Hostname()), u.Port()
+	if (scheme == "https" && port == "443") || (scheme == "http" && port == "80") {
+		port = ""
+	}
+	if strings.Contains(host, ":") {
+		host = "[" + host + "]" // IPv6 literal
+	}
+	if port != "" {
+		host += ":" + port
+	}
+	return scheme + "://" + host, nil
 }

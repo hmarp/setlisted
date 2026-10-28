@@ -98,6 +98,11 @@ func (f *fakeSpotify) token(w http.ResponseWriter, r *http.Request) {
 	case "good", "not-allowlisted", "me-fails":
 	case "short":
 		expiresIn = 600
+	case "form":
+		// oauth2 fills only Token.Expiry (not ExpiresIn) for form responses.
+		w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+		w.Write([]byte("access_token=access-short&token_type=bearer&expires_in=600&refresh_token=" + testRefreshToken))
+		return
 	default:
 		refuse("unknown code")
 		return
@@ -306,21 +311,26 @@ func TestCallbackSuccess(t *testing.T) {
 }
 
 func TestCallbackShortToken(t *testing.T) {
-	f := newFakeSpotify(t)
-	a := newTestAuth(t, f, nil)
-	q, lc := login(t, a, f)
-	rec := callback(a, "code=short&state="+url.QueryEscape(q.Get("state")), lc)
-	c := findCookie(rec.Result(), SessionCookie)
-	if c == nil {
-		t.Fatal("no session cookie")
-	}
-	var s Session
-	if err := a.sealer.open(SessionCookie, c.Value, &s); err != nil {
-		t.Fatal(err)
-	}
-	// The session ends when the token does, if that's sooner than an hour.
-	if want := testNow.Add(10 * time.Minute); s.Expiry.Sub(want).Abs() > time.Minute {
-		t.Errorf("expiry = %v, want about %v", s.Expiry, want)
+	// The session ends when the token does, if that's sooner than an hour,
+	// whether Spotify answers in JSON or (hypothetically) form-encoded.
+	for _, code := range []string{"short", "form"} {
+		t.Run(code, func(t *testing.T) {
+			f := newFakeSpotify(t)
+			a := newTestAuth(t, f, nil)
+			q, lc := login(t, a, f)
+			rec := callback(a, "code="+code+"&state="+url.QueryEscape(q.Get("state")), lc)
+			c := findCookie(rec.Result(), SessionCookie)
+			if c == nil {
+				t.Fatalf("no session cookie; Location %q", rec.Header().Get("Location"))
+			}
+			var s Session
+			if err := a.sealer.open(SessionCookie, c.Value, &s); err != nil {
+				t.Fatal(err)
+			}
+			if want := testNow.Add(10 * time.Minute); s.Expiry.Sub(want).Abs() > time.Minute {
+				t.Errorf("expiry = %v, want about %v", s.Expiry, want)
+			}
+		})
 	}
 }
 
@@ -340,6 +350,7 @@ func TestCallbackFailures(t *testing.T) {
 		{"state from another login", func(s string) string { return "code=good&state=" + s }, false, true, "/?login=failed"},
 		{"no login cookie", func(s string) string { return "code=good&state=" + s }, true, false, "/?login=failed"},
 		{"cancelled", func(s string) string { return "error=access_denied&state=" + s }, false, false, "/?login=cancelled"},
+		{"cancelled after the login cookie expired", func(s string) string { return "error=access_denied&state=" + s }, true, false, "/?login=cancelled"},
 		{"other Spotify error", func(s string) string { return "error=server_error&state=" + s }, false, false, "/?login=failed"},
 		{"no code", func(s string) string { return "state=" + s }, false, false, "/?login=failed"},
 		{"code refused", func(s string) string { return "code=bogus&state=" + s }, false, false, "/?login=failed"},
@@ -549,9 +560,20 @@ func TestLogoutAndSpotifyUnauthorizedClearCookie(t *testing.T) {
 	}
 }
 
+func TestOriginIsNormalised(t *testing.T) {
+	a, err := New(Config{BaseURL: "HTTPS://Setlisted.Example:443/", SessionKey: testKey})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if a.origin != testBaseURL || a.oauth.RedirectURL != testBaseURL+CallbackPath {
+		t.Errorf("origin %q, redirect URL %q", a.origin, a.oauth.RedirectURL)
+	}
+}
+
 func TestNewRejectsBadConfig(t *testing.T) {
 	for _, cfg := range []Config{
 		{BaseURL: "setlisted.example", SessionKey: testKey},
+		{BaseURL: testBaseURL + "/app", SessionKey: testKey},
 		{BaseURL: testBaseURL, SessionKey: []byte("short")},
 	} {
 		if _, err := New(cfg); err == nil {

@@ -18,10 +18,15 @@
     <p>Setlist data from <a href="https://www.setlist.fm">setlist.fm</a></p>
   </footer>
   <script>
+    const statusEl = document.getElementById("status");
     async function showStatus() {
-      const res = await fetch("/api/session");
-      const body = await res.json();
-      document.getElementById("status").textContent = body.loggedIn ? "Logged in." : "Not logged in.";
+      try {
+        const res = await fetch("/api/session");
+        const body = await res.json();
+        statusEl.textContent = body.loggedIn ? "Logged in." : "Not logged in.";
+      } catch {
+        statusEl.textContent = "Couldn't check the session.";
+      }
     }
     const login = new URLSearchParams(location.search).get("login");
     if (login) {
@@ -30,7 +35,16 @@
       el.hidden = false;
     }
     document.getElementById("logout").addEventListener("click", async () => {
-      await fetch("/auth/logout", { method: "POST" });
+      try {
+        const res = await fetch("/auth/logout", { method: "POST" });
+        if (!res.ok) {
+          statusEl.textContent = "Log out failed (" + res.status + "). Is the page open at BASE_URL?";
+          return;
+        }
+      } catch {
+        statusEl.textContent = "Log out failed.";
+        return;
+      }
       showStatus();
     });
     showStatus();

@@ -14,11 +14,11 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"net/url"
 	"time"
 
 	"golang.org/x/oauth2"
 
+	"github.com/hmarp/setlisted/internal/config"
 	"github.com/hmarp/setlisted/internal/jsonapi"
 )
 
@@ -56,7 +56,7 @@ const (
 type Config struct {
 	ClientID     string
 	ClientSecret string
-	BaseURL      string // the app's absolute base URL, e.g. https://example.run.app
+	BaseURL      string // the app's base URL, e.g. https://example.run.app (see config.NormalizeBaseURL)
 	SessionKey   []byte // 32 bytes (AES-256)
 	Logger       *slog.Logger
 
@@ -71,7 +71,7 @@ type Config struct {
 type Auth struct {
 	oauth  oauth2.Config
 	sealer *sealer
-	origin string // scheme://host[:port] of BaseURL, for the Origin check
+	origin string // the normalised BaseURL, as browsers send it in Origin
 	meURL  string
 	client *http.Client
 	logger *slog.Logger
@@ -80,9 +80,9 @@ type Auth struct {
 
 // New validates cfg and returns an Auth.
 func New(cfg Config) (*Auth, error) {
-	u, err := url.Parse(cfg.BaseURL)
-	if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
-		return nil, errors.New("auth: BaseURL must be an absolute http or https URL")
+	base, err := config.NormalizeBaseURL(cfg.BaseURL)
+	if err != nil {
+		return nil, fmt.Errorf("auth: BaseURL %w", err)
 	}
 	s, err := newSealer(cfg.SessionKey)
 	if err != nil {
@@ -97,11 +97,11 @@ func New(cfg Config) (*Auth, error) {
 				TokenURL:  orDefault(cfg.TokenURL, SpotifyTokenURL),
 				AuthStyle: oauth2.AuthStyleInHeader,
 			},
-			RedirectURL: cfg.BaseURL + CallbackPath,
+			RedirectURL: base + CallbackPath,
 			Scopes:      []string{Scope},
 		},
 		sealer: s,
-		origin: u.Scheme + "://" + u.Host,
+		origin: base,
 		meURL:  orDefault(cfg.APIBaseURL, SpotifyAPIBaseURL) + "/me",
 		client: cfg.HTTPClient,
 		logger: cfg.Logger,
@@ -159,6 +159,14 @@ func (a *Auth) Callback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	q := r.URL.Query()
+	// A cancel is reported even without a valid state (for example after the
+	// login cookie expired): it creates no session, so there's nothing to
+	// protect, and the user should see AUTH-5's message.
+	if q.Get("error") == "access_denied" {
+		a.logger.LogAttrs(r.Context(), slog.LevelInfo, "login cancelled")
+		http.Redirect(w, r, "/?login="+LoginCancelled, http.StatusFound)
+		return
+	}
 	var ls loginState
 	c, err := r.Cookie(loginCookie)
 	if err != nil || a.sealer.open(loginCookie, c.Value, &ls) != nil {
@@ -169,12 +177,7 @@ func (a *Auth) Callback(w http.ResponseWriter, r *http.Request) {
 		fail(LoginFailed, "state mismatch")
 		return
 	}
-	if e := q.Get("error"); e != "" {
-		if e == "access_denied" {
-			a.logger.LogAttrs(r.Context(), slog.LevelInfo, "login cancelled")
-			http.Redirect(w, r, "/?login="+LoginCancelled, http.StatusFound)
-			return
-		}
+	if q.Get("error") != "" {
 		fail(LoginFailed, "spotify returned an error")
 		return
 	}
@@ -201,14 +204,20 @@ func (a *Auth) Callback(w http.ResponseWriter, r *http.Request) {
 	// sent to the browser or logged (ADR-004).
 
 	// The session ends when the token does, and at most an hour from now.
+	// (Exchange has already refused a response without an access token.)
+	// ExpiresIn is relative, so it works with the injected clock; oauth2 only
+	// fills it for JSON responses, so fall back to the absolute Expiry.
+	lifetime := time.Duration(tok.ExpiresIn) * time.Second
+	if lifetime <= 0 && !tok.Expiry.IsZero() {
+		if lifetime = time.Until(tok.Expiry); lifetime <= 0 {
+			fail(LoginFailed, "token already expired")
+			return
+		}
+	}
 	now := a.now()
 	expiry := now.Add(MaxSessionAge)
-	if lifetime := time.Duration(tok.ExpiresIn) * time.Second; lifetime > 0 && lifetime < MaxSessionAge {
+	if lifetime > 0 && lifetime < MaxSessionAge {
 		expiry = now.Add(lifetime)
-	}
-	if tok.AccessToken == "" {
-		fail(LoginFailed, "unusable token")
-		return
 	}
 
 	userID, status, err := a.fetchUserID(ctx, tok.AccessToken)

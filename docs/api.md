@@ -82,7 +82,7 @@ Where Spotify sends the user back (the registered redirect URI). Always redirect
 | Logged in: session cookie set | `/` | the search screen (AUTH-3) |
 | The user cancelled or declined on Spotify | `/?login=cancelled` | "Login was cancelled." (AUTH-5) |
 | Spotify refused the user (not allowlisted) | `/?login=invite_only` | "Setlisted is invite-only. Ask the owner to add your Spotify account." (AUTH-4) |
-| Anything else (bad or missing state, expired login cookie, Spotify error) | `/?login=failed` | a generic login error (wording chosen in step 12; no technical details, ERR-5) |
+| Anything else (bad or missing state, expired login cookie, other Spotify error) | `/?login=failed` | a generic login error (wording chosen in step 12; no technical details, ERR-5) |
 
 No session cookie is set except on success.
 

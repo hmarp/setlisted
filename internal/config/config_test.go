@@ -56,6 +56,23 @@ func TestLoadTrimsBaseURLSlash(t *testing.T) {
 	}
 }
 
+func TestNormalizeBaseURL(t *testing.T) {
+	for in, want := range map[string]string{
+		"https://setlisted.example":      "https://setlisted.example",
+		"https://Setlisted.Example/":     "https://setlisted.example",
+		"HTTPS://setlisted.example:443":  "https://setlisted.example",
+		"http://127.0.0.1:80":            "http://127.0.0.1",
+		"http://127.0.0.1:8080":          "http://127.0.0.1:8080",
+		"https://setlisted.example:8443": "https://setlisted.example:8443",
+		"http://[::1]:8080":              "http://[::1]:8080",
+	} {
+		got, err := NormalizeBaseURL(in)
+		if err != nil || got != want {
+			t.Errorf("NormalizeBaseURL(%q) = %q, %v; want %q", in, got, err, want)
+		}
+	}
+}
+
 func TestLoadDefaultPort(t *testing.T) {
 	cfg, err := Load(getenvFrom(validEnv()))
 	if err != nil {

@@ -66,6 +66,7 @@ func TestRoutes(t *testing.T) {
 		{"api route without session", "GET", "/api/x", "", false, 401, "application/json", notLoggedIn},
 		{"unknown api path with session", "GET", "/api/x", "", true, 404, "application/json", notFound},
 		{"wrong method on api path", "POST", "/api/health", testBaseURL, true, 404, "application/json", notFound},
+		{"wrong method on public path, logged out", "POST", "/api/session", testBaseURL, false, 404, "application/json", notFound},
 		{"POST without Origin", "POST", "/api/x", "", true, 403, "application/json", forbidden},
 		{"POST with foreign Origin", "POST", "/auth/logout", "https://evil.example", true, 403, "application/json", forbidden},
 		{"placeholder page", "GET", "/", "", false, 200, "text/html", "Setlist data from"},
@@ -111,7 +112,7 @@ func TestAuthRoutes(t *testing.T) {
 	}
 
 	rec = httptest.NewRecorder()
-	h.ServeHTTP(rec, httptest.NewRequest("GET", "/auth/callback?error=access_denied", nil))
+	h.ServeHTTP(rec, httptest.NewRequest("GET", "/auth/callback?code=x&state=y", nil))
 	if rec.Code != http.StatusFound || rec.Header().Get("Location") != "/?login=failed" {
 		t.Errorf("callback without login cookie: %d %q", rec.Code, rec.Header().Get("Location"))
 	}

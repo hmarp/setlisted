@@ -43,14 +43,15 @@ func NewHandler(logger *slog.Logger, static fs.FS, a *auth.Auth) http.Handler {
 	// Public API routes: no session needed.
 	mux.HandleFunc("GET /api/health", handleHealth)
 	mux.HandleFunc("GET /api/session", a.Status)
+	// Other methods on the public paths: not_found, not the session check.
+	mux.HandleFunc("/api/health", handleNotFound)
+	mux.HandleFunc("/api/session", handleNotFound)
 
 	// Every other /api/ route requires a session. Register protected routes
 	// on api, with a method, e.g. api.HandleFunc("GET /api/...", h).
 	api := http.NewServeMux()
 	// Any other /api/ path (or method) is a JSON not_found error.
-	api.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
-		jsonapi.WriteError(w, jsonapi.NotFound())
-	})
+	api.HandleFunc("/api/", handleNotFound)
 	mux.Handle("/api/", a.RequireSession(api))
 
 	// Spotify login.
@@ -62,6 +63,10 @@ func NewHandler(logger *slog.Logger, static fs.FS, a *auth.Auth) http.Handler {
 	mux.Handle("/", http.FileServerFS(static))
 
 	return logAndRecover(logger, a.RequireSameOrigin(mux))
+}
+
+func handleNotFound(w http.ResponseWriter, r *http.Request) {
+	jsonapi.WriteError(w, jsonapi.NotFound())
 }
 
 func handleHealth(w http.ResponseWriter, r *http.Request) {
