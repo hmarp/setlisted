@@ -82,7 +82,7 @@ Constants: `auth.LoginCancelled`, `auth.LoginInviteOnly`, `auth.LoginFailed`. Th
 - **Chromium 153 (headless, in the build sandbox):** stores a `Secure`, `HttpOnly`, `SameSite=Lax` cookie set over plain `http://127.0.0.1` and sends it back. The real app's login cookie was stored the same way. Same-origin `fetch` POSTs carry `Origin`, so logout returned `204`.
 - Chrome, Edge and Firefox treat loopback addresses as secure contexts. Safari has historically rejected `Secure` cookies over plain HTTP. For local development use a Chromium browser or Firefox.
 - **No development-only setting was needed**, so none was added. The app always sets `Secure`.
-- Owner's browser: <fill in from setup.md §5: browser and version, result>
+- **Owner's browser (2026-10-28, on Windows):** logging in on `http://127.0.0.1:8080` worked, so the browser accepted the `Secure` session cookie over plain HTTP. The browser name and version weren't recorded.
 
 ## Verification
 
@@ -102,10 +102,10 @@ The app also ran locally in headless Chromium against the real router: status, `
 
 To do with the owner (setup.md §5–7). Fill in:
 
-- [ ] Local login on `127.0.0.1` with an allowlisted account: cookie set, `/api/session` logged in, log out clears it. Browser: <…>
-- [ ] Cancel → `/?login=cancelled`.
-- [ ] Non-allowlisted account → `/?login=invite_only`, or: "no test account available; covered by tests only".
-- [ ] Cloud Run: real `SPOTIFY_CLIENT_ID` and secret version set (setup.md §6).
+- [x] Local login on `127.0.0.1` with the owner's account: the owner confirmed it works (2026-10-28). Browser not recorded.
+- [ ] Cancel → `/?login=cancelled`: not reported by the owner. Covered by tests, including a cancel after the login cookie has expired.
+- [x] Non-allowlisted account → `/?login=invite_only`: **covered by tests only.** The owner removed their own account from User Management and could still log in. That's expected: Spotify always lets the app owner's account through in development mode, so testing invite-only needs a second account that isn't on the list.
+- [x] Cloud Run: new `spotify-client-secret` version added by the owner in the console (2026-10-28). `SPOTIFY_CLIENT_ID` is in `scripts/deploy-config.sh`; it must also be set on the live service (setup.md §6) before the Cloud Run check.
 - [ ] After the merge deploys: the same login and logout work on `https://setlisted-613938414647.europe-west1.run.app`.
 
 ## Known gaps

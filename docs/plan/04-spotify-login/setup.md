@@ -38,6 +38,7 @@ https://setlisted-613938414647.europe-west1.run.app/auth/callback
 
 - [ ] In the app's **User Management** tab, add each person who may use Setlisted: their **name** and the **email address of their Spotify account**. Add yourself (the owner) first, then up to 4 friends.
 - Anyone not on this list can get through Spotify's login screen, but Setlisted then shows the invite-only message and creates no session (AUTH-4).
+- **The app owner's own account is always allowed**, listed or not. To test invite-only, use a second Spotify account that isn't on the list.
 
 ## 4. Client ID and secret into the local `.env`
 
