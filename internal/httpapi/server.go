@@ -9,6 +9,7 @@ import (
 
 	"github.com/hmarp/setlisted/internal/auth"
 	"github.com/hmarp/setlisted/internal/jsonapi"
+	"github.com/hmarp/setlisted/internal/setlistfm"
 )
 
 // Server timeouts. WriteTimeout is generous because later endpoints (the
@@ -21,11 +22,11 @@ const (
 )
 
 // NewServer returns an *http.Server listening on addr and serving
-// NewHandler(logger, static, a).
-func NewServer(addr string, logger *slog.Logger, static fs.FS, a *auth.Auth) *http.Server {
+// NewHandler(logger, static, a, sfm).
+func NewServer(addr string, logger *slog.Logger, static fs.FS, a *auth.Auth, sfm *setlistfm.Client) *http.Server {
 	return &http.Server{
 		Addr:              addr,
-		Handler:           NewHandler(logger, static, a),
+		Handler:           NewHandler(logger, static, a, sfm),
 		ReadHeaderTimeout: readHeaderTimeout,
 		ReadTimeout:       readTimeout,
 		WriteTimeout:      writeTimeout,
@@ -37,7 +38,7 @@ func NewServer(addr string, logger *slog.Logger, static fs.FS, a *auth.Auth) *ht
 // NewHandler builds the router and wraps it in the middleware chain:
 // request logging and panic recovery, then the Origin check for every
 // state-changing request.
-func NewHandler(logger *slog.Logger, static fs.FS, a *auth.Auth) http.Handler {
+func NewHandler(logger *slog.Logger, static fs.FS, a *auth.Auth, sfm *setlistfm.Client) http.Handler {
 	mux := http.NewServeMux()
 
 	// Public API routes: no session needed.
@@ -50,6 +51,9 @@ func NewHandler(logger *slog.Logger, static fs.FS, a *auth.Auth) http.Handler {
 	// Every other /api/ route requires a session. Register protected routes
 	// on api, with a method, e.g. api.HandleFunc("GET /api/...", h).
 	api := http.NewServeMux()
+	setlists := &setlistFMHandlers{logger: logger, client: sfm}
+	api.HandleFunc("GET /api/artists", setlists.searchArtists)
+	api.HandleFunc("GET /api/artists/{id}/shows", setlists.artistShows)
 	// Any other /api/ path (or method) is a JSON not_found error.
 	api.HandleFunc("/api/", handleNotFound)
 	mux.Handle("/api/", a.RequireSession(api))

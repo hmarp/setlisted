@@ -6,7 +6,7 @@ Built on the [setlist.fm API](https://api.setlist.fm/docs/1.0/index.html) and th
 
 ## Status
 
-In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. [Step 02](docs/plan/02-first-deploy/handoff.md) (first deploy) is done: the skeleton runs on Cloud Run at <https://setlisted-613938414647.europe-west1.run.app>, deployed manually with `scripts/deploy.sh`. [Step 03](docs/plan/03-continuous-deployment/handoff.md) (continuous deployment) is done: every merge to `main` deploys automatically through GitHub Actions. [Step 04](docs/plan/04-spotify-login/handoff.md) (Spotify login) is done: users log in with Spotify into a one-hour, browser-session cookie, and every `/api/` endpoint except health and session status needs a login. The placeholder page has bare login and logout controls for testing; there are no search or playlist features yet. Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
+In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. [Step 02](docs/plan/02-first-deploy/handoff.md) (first deploy) is done: the skeleton runs on Cloud Run at <https://setlisted-613938414647.europe-west1.run.app>, deployed manually with `scripts/deploy.sh`. [Step 03](docs/plan/03-continuous-deployment/handoff.md) (continuous deployment) is done: every merge to `main` deploys automatically through GitHub Actions. [Step 04](docs/plan/04-spotify-login/handoff.md) (Spotify login) is done: users log in with Spotify into a one-hour, browser-session cookie, and every `/api/` endpoint except health and session status needs a login. [Step 05](docs/plan/05-setlistfm-search-shows/handoff.md) (setlist.fm search and shows) is done: the API can search setlist.fm for a band (`GET /api/artists`) and list its 20 most recent shows with setlists (`GET /api/artists/{id}/shows`). The placeholder page has bare login and logout controls for testing; there's no search screen or playlist feature yet. Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
 
 ## Running locally
 
@@ -30,10 +30,10 @@ openssl rand -base64 32   # paste the output into SESSION_KEY
 | `BASE_URL` | yes | Public base URL, `scheme://host[:port]` with no path. Locally `http://127.0.0.1:8080` (not `localhost`). Used for the Spotify redirect URL and the `Origin` check. |
 | `SPOTIFY_CLIENT_ID` | yes | Spotify app client ID. |
 | `SPOTIFY_CLIENT_SECRET` | yes | Spotify app client secret. |
-| `SETLISTFM_API_KEY` | yes | setlist.fm API key. |
+| `SETLISTFM_API_KEY` | yes | setlist.fm API key ([settings](https://www.setlist.fm/settings/api)). Free for non-commercial use. |
 | `SESSION_KEY` | yes | Base64 of 32 random bytes (`openssl rand -base64 32`). |
 
-The app starts with placeholder Spotify values, but logging in needs the real client ID and secret (see [Spotify app](#spotify-app) below). The setlist.fm feature doesn't exist yet, so any non-empty placeholder works for `SETLISTFM_API_KEY` for now. If a variable is missing or invalid, the app refuses to start and names the variable (never its value).
+The app starts with placeholder Spotify and setlist.fm values, but logging in needs the real Spotify client ID and secret (see [Spotify app](#spotify-app) below), and the search and show list endpoints need a real setlist.fm key ([step 05's setup](docs/plan/05-setlistfm-search-shows/setup.md)); with a placeholder they answer `503 upstream_unavailable`. If a variable is missing or invalid, the app refuses to start and names the variable (never its value).
 
 ### Spotify app
 
@@ -52,7 +52,7 @@ go run ./cmd/setlisted
 
 Then open <http://127.0.0.1:8080/> or check <http://127.0.0.1:8080/api/health>, which returns `{"status":"ok"}`. Logs are JSON on stdout.
 
-**Logging in locally:** open the app at exactly `http://127.0.0.1:8080` (not `localhost`, or the Spotify redirect and the `Origin` check won't match), click **Log in with Spotify**, and log in with an allowlisted account. The page then says "Logged in.", and <http://127.0.0.1:8080/api/session> returns `{"loggedIn":true}`. **Log out** clears the session. Chrome, Edge and Firefox accept the session's `Secure` cookie over plain HTTP on `127.0.0.1`; Safari may not. The login lasts until the browser is closed or an hour has passed.
+**Logging in locally:** open the app at exactly `http://127.0.0.1:8080` (not `localhost`, or the Spotify redirect and the `Origin` check won't match), click **Log in with Spotify**, and log in with an allowlisted account. The page then says "Logged in.", and <http://127.0.0.1:8080/api/session> returns `{"loggedIn":true}`. **Log out** clears the session. While logged in, the same browser can try the setlist.fm endpoints, e.g. <http://127.0.0.1:8080/api/artists?q=gojira> and then `http://127.0.0.1:8080/api/artists/<id>/shows` with the returned `id` ([`docs/api.md`](docs/api.md)). Chrome, Edge and Firefox accept the session's `Secure` cookie over plain HTTP on `127.0.0.1`; Safari may not. The login lasts until the browser is closed or an hour has passed.
 
 ### Test
 
@@ -143,6 +143,7 @@ Project, region, `BASE_URL` and `SPOTIFY_CLIENT_ID` come from [`scripts/deploy-c
 - **Backend:** Go, standard library first, exposing a JSON API ([ADR-001](docs/adr/001-go-backend-json-api.md))
 - **UI (MVP):** throwaway static HTML and plain JavaScript, served by the Go backend ([ADR-002](docs/adr/002-throwaway-static-ui.md))
 - **Hosting:** Google Cloud Run ([ADR-003](docs/adr/003-hosting-google-cloud-run.md))
+- **setlist.fm:** one rate-limited client, calls spaced 600 ms apart, no caching ([ADR-005](docs/adr/005-matching-and-api-call-strategy.md))
 - **Login:** Spotify only, with a stateless encrypted-cookie session ([ADR-004](docs/adr/004-spotify-login-encrypted-cookie-session.md)), lasting for the browser session or one hour ([ADR-009](docs/adr/009-session-cookie-lifetime.md))
 - **Delivery:** every merge to `main` deploys automatically via GitHub Actions ([ADR-008](docs/adr/008-continuous-deployment-on-merge.md))
 

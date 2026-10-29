@@ -37,9 +37,8 @@ Every error response uses one format, with an HTTP status that matches the error
 | `not_found` | 404 | No such endpoint or resource. |
 | `not_logged_in` | 401 | No valid session (missing, invalid or expired cookie), or Spotify rejected the user's token. The session cookie is cleared. Message: "You're not logged in. Log in with Spotify." |
 | `forbidden_origin` | 403 | A request other than `GET`/`HEAD` with a missing or foreign `Origin` header. Message: "This request isn't allowed." |
+| `upstream_unavailable` | 503 | setlist.fm (or, from step 08, Spotify) couldn't be reached, returned an error, or was still rate-limiting after the server's quiet retries. `service` names it. Message: "Couldn't reach setlist.fm. Try again." (or "…Spotify…"). The UI shows it with a **Retry** action that repeats the same request (ERR-1, ERR-2). |
 | `internal_error` | 500 | An unexpected server error. Message: "Something went wrong. Try again." |
-
-Later steps add codes (e.g. `upstream_unavailable`) to this table.
 
 ## Endpoints
 
@@ -64,6 +63,66 @@ Whether the browser has a valid session. Needs no session. Never returns tokens 
 ```
 
 or `{ "loggedIn": false }`.
+
+### `GET /api/artists?q=…`
+
+Searches setlist.fm for artists named `q` (SRCH-2) and applies the clear-match rule. Needs a session.
+
+| Parameter | Rule |
+|---|---|
+| `q` | Required. The band name as typed. Surrounding spaces are ignored. Empty or whitespace-only → `400 invalid_request` ("Enter a band name."), as is anything over 200 characters ("That band name is too long."). |
+
+**Response `200`:**
+
+```json
+{
+  "match": "clear",
+  "artists": [
+    { "id": "5a85c140-dcf8-4a4f-b8d6-1e5a2a4e0f4b", "name": "Gojira", "disambiguation": "French metal band" }
+  ]
+}
+```
+
+| `match` | Meaning | `artists` | UI |
+|---|---|---|---|
+| `clear` | Exactly one result's normalised name equals the normalised `q` (case, accents and spaces ignored; `sword` ≠ `The Sword`). | that one artist | go straight to its shows (SRCH-3) |
+| `picker` | Results, but no single exact match (none, or several). | up to 10, in setlist.fm's relevance order | the artist picker: name, plus `disambiguation` when it isn't empty (SRCH-4) |
+| `none` | No results. | `[]` | "No artists found for '‹q›' on setlist.fm.", keeping the text in the box (SRCH-5) |
+
+- `id` is the artist's MusicBrainz ID (MBID). Use it in the show list path.
+- `disambiguation` is always present and is `""` when setlist.fm has none.
+
+**Errors:** `400 invalid_request`, `503 upstream_unavailable` (`service: "setlist.fm"`).
+
+### `GET /api/artists/{id}/shows`
+
+The band's up to 20 most recent shows that have at least one entry, newest first (SHOW-1, SHOW-2). Needs a session. `{id}` is an artist `id` from the search.
+
+**Response `200`:**
+
+```json
+{
+  "artist": { "id": "5a85c140-dcf8-4a4f-b8d6-1e5a2a4e0f4b", "name": "Gojira" },
+  "shows": [
+    { "id": "63de4613", "date": "14 Mar 2026", "city": "Leipzig", "venue": "Quarterback Immobilien Arena", "tour": "European Tour 2026", "songCount": 17 },
+    { "id": "2bd6a4f2", "date": "02 Mar 2026", "city": "Paris", "venue": "Zénith", "tour": null, "songCount": 15 }
+  ]
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `artist.name` | The band's name, for the heading (SHOW-1) and SHOW-5's message. |
+| `shows[].id` | The setlist.fm setlist ID. The preview (step 10) takes it. |
+| `shows[].date` | Already formatted as `DD Mon YYYY` with English month abbreviations (SHOW-3). |
+| `shows[].city`, `shows[].venue` | As setlist.fm has them. |
+| `shows[].tour` | The tour name, or `null` when setlist.fm has none. |
+| `shows[].songCount` | Entries across all sets, including tapes (SHOW-3). Always at least 1. |
+
+- `shows` is `[]` when the band has no shows with entries: show "No setlists found for ‹artist.name› on setlist.fm." (SHOW-5).
+- The server reads at most 3 pages (60 setlists) of setlist.fm's history to find the 20, so a band with many empty (e.g. announced) shows can get fewer than 20.
+
+**Errors:** `404 not_found` for an ID that isn't an MBID or that setlist.fm doesn't know; `503 upstream_unavailable` (`service: "setlist.fm"`).
 
 ## Login endpoints
 
