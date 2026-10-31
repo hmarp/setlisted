@@ -51,7 +51,7 @@ A Spotify search client, plus a **pipeline** that takes a classified show (step 
    - **401:** a distinct "unauthorised" error, so handlers can apply the step 04 helper;
    - other errors: a typed "Spotify unavailable" error.
 2. **Pipeline** (e.g. `internal/preview` or `internal/pipeline`):
-   - `MatchShow(ctx, show, searcher, market) ([]EntryResult, error)`;
+   - `MatchShow(ctx, show, searcher, market) ([]EntryResult, error)`, where `show` is a `setlist.Show` from step 06 (`setlistfm.Setlist.Show()`). Walk `show.Sets` → `set.Entries` to keep setlist order and each entry's `set.Heading`. `Entry.Kind` is `skipped`, `medley` or `song`; skipped entries are still in the show (with `Position` 0) and must be dropped here. `Entry.Position` is already the preview's row number;
    - for each entry of kind `song`, call step 07's `Resolve`, with candidates supplied by the searcher for each expected artist in turn. **Only search the original artist if the band pass found nothing.**
    - run at most 4 searches at once, and **keep the results in setlist order** whatever order they complete in;
    - skipped entries are omitted; medleys pass through as "not found (medley)" without searching;
