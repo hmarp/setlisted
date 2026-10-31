@@ -15,11 +15,18 @@ import (
 type Code string
 
 const (
-	CodeInvalidRequest  Code = "invalid_request"
-	CodeNotFound        Code = "not_found"
-	CodeInternalError   Code = "internal_error"
-	CodeNotLoggedIn     Code = "not_logged_in"
-	CodeForbiddenOrigin Code = "forbidden_origin"
+	CodeInvalidRequest      Code = "invalid_request"
+	CodeNotFound            Code = "not_found"
+	CodeInternalError       Code = "internal_error"
+	CodeNotLoggedIn         Code = "not_logged_in"
+	CodeForbiddenOrigin     Code = "forbidden_origin"
+	CodeUpstreamUnavailable Code = "upstream_unavailable"
+)
+
+// External services named in an Error's Service field.
+const (
+	ServiceSetlistFM = "setlist.fm"
+	ServiceSpotify   = "Spotify"
 )
 
 // Error is an API error. Message is user-facing text and must not contain
@@ -63,6 +70,18 @@ func NotLoggedIn() *Error {
 // request didn't come from the app's own origin.
 func ForbiddenOrigin() *Error {
 	return &Error{Status: http.StatusForbidden, Code: CodeForbiddenOrigin, Message: "This request isn't allowed."}
+}
+
+// UpstreamUnavailable returns a 503 upstream_unavailable error: service
+// couldn't be reached, returned an error, or kept rate-limiting (ERR-1,
+// ERR-2). The UI shows the message with a Retry action.
+func UpstreamUnavailable(service string) *Error {
+	return &Error{
+		Status:  http.StatusServiceUnavailable,
+		Code:    CodeUpstreamUnavailable,
+		Message: "Couldn't reach " + service + ". Try again.",
+		Service: service,
+	}
 }
 
 // WriteJSON writes v as a JSON response with the given status.

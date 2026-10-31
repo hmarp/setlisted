@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/hmarp/setlisted/internal/auth"
+	"github.com/hmarp/setlisted/internal/setlistfm"
 	"github.com/hmarp/setlisted/web"
 )
 
@@ -33,6 +34,11 @@ func testAuth(t *testing.T) *auth.Auth {
 	return a
 }
 
+// noSetlistFM returns a setlist.fm client for tests that don't call it.
+func noSetlistFM() *setlistfm.Client {
+	return setlistfm.New(setlistfm.Config{APIKey: "key", BaseURL: "http://setlistfm.invalid"})
+}
+
 // loggedIn returns a valid session cookie for a.
 func loggedIn(t *testing.T, a *auth.Auth) *http.Cookie {
 	t.Helper()
@@ -45,7 +51,7 @@ func loggedIn(t *testing.T, a *auth.Auth) *http.Cookie {
 
 func TestRoutes(t *testing.T) {
 	a := testAuth(t)
-	h := NewHandler(discardLogger(), web.Static(), a)
+	h := NewHandler(discardLogger(), web.Static(), a, noSetlistFM())
 	session := loggedIn(t, a)
 	notFound := `{"error":{"code":"not_found","message":"Not found."}}` + "\n"
 	notLoggedIn := `{"error":{"code":"not_logged_in","message":"You're not logged in. Log in with Spotify."}}` + "\n"
@@ -64,6 +70,9 @@ func TestRoutes(t *testing.T) {
 		{"session logged in", "GET", "/api/session", "", true, 200, "application/json", `{"loggedIn":true}` + "\n"},
 		// Every other /api/ route is protected, including unknown ones.
 		{"api route without session", "GET", "/api/x", "", false, 401, "application/json", notLoggedIn},
+		{"artist search without session", "GET", "/api/artists?q=gojira", "", false, 401, "application/json", notLoggedIn},
+		{"show list without session", "GET", "/api/artists/5a85c140-dcf8-4a4f-b8d6-1e5a2a4e0f4b/shows", "", false, 401, "application/json", notLoggedIn},
+		{"wrong method on artist search", "POST", "/api/artists?q=gojira", testBaseURL, true, 404, "application/json", notFound},
 		{"unknown api path with session", "GET", "/api/x", "", true, 404, "application/json", notFound},
 		{"wrong method on api path", "POST", "/api/health", testBaseURL, true, 404, "application/json", notFound},
 		{"wrong method on public path, logged out", "POST", "/api/session", testBaseURL, false, 404, "application/json", notFound},
@@ -103,7 +112,7 @@ func TestRoutes(t *testing.T) {
 
 func TestAuthRoutes(t *testing.T) {
 	a := testAuth(t)
-	h := NewHandler(discardLogger(), web.Static(), a)
+	h := NewHandler(discardLogger(), web.Static(), a, noSetlistFM())
 
 	rec := httptest.NewRecorder()
 	h.ServeHTTP(rec, httptest.NewRequest("GET", "/auth/login", nil))
@@ -129,7 +138,7 @@ func TestAuthRoutes(t *testing.T) {
 
 func TestPlaceholderPageLinksToSetlistFM(t *testing.T) {
 	rec := httptest.NewRecorder()
-	NewHandler(discardLogger(), web.Static(), testAuth(t)).ServeHTTP(rec, httptest.NewRequest("GET", "/", nil))
+	NewHandler(discardLogger(), web.Static(), testAuth(t), noSetlistFM()).ServeHTTP(rec, httptest.NewRequest("GET", "/", nil))
 	if !strings.Contains(rec.Body.String(), `href="https://www.setlist.fm"`) {
 		t.Errorf("placeholder page has no setlist.fm link")
 	}
@@ -215,7 +224,7 @@ func TestLoggedStatus(t *testing.T) {
 func TestLogRequestsOmitsQueryString(t *testing.T) {
 	var logs bytes.Buffer
 	logger := slog.New(slog.NewJSONHandler(&logs, nil))
-	h := NewHandler(logger, fstest.MapFS{}, testAuth(t))
+	h := NewHandler(logger, fstest.MapFS{}, testAuth(t), noSetlistFM())
 
 	rec := httptest.NewRecorder()
 	h.ServeHTTP(rec, httptest.NewRequest("GET", "/api/health?q=secret+band", nil))

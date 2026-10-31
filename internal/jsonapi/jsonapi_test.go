@@ -58,10 +58,9 @@ func TestWriteError(t *testing.T) {
 			wantBody:   `{"error":{"code":"internal_error","message":"Something went wrong. Try again."}}`,
 		},
 		{
-			name: "with service",
-			err: &Error{Status: http.StatusBadGateway, Code: "upstream_unavailable",
-				Message: "Couldn't reach setlist.fm. Try again.", Service: "setlist.fm"},
-			wantStatus: http.StatusBadGateway,
+			name:       "upstream_unavailable",
+			err:        UpstreamUnavailable(ServiceSetlistFM),
+			wantStatus: http.StatusServiceUnavailable,
 			wantBody:   `{"error":{"code":"upstream_unavailable","message":"Couldn't reach setlist.fm. Try again.","service":"setlist.fm"}}`,
 		},
 	}
