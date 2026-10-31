@@ -70,7 +70,7 @@ Helpers: `Setlist.SongCount()` (all entries across all sets, including tapes and
 | Timeout per HTTP call | 10 s | `requestTimeout` |
 
 - The limiter reserves a slot per call under a mutex and sleeps until it, so calls from concurrent requests are spaced too (ADR-005; one Cloud Run instance, ADR-003). Retries go through the limiter as well.
-- **Rate limit:** a standard setlist.fm key allows **2 requests/second and 1,440/day**. This comes from third-party documentation (the `setlistfm-ts` library README and the apis.io listing for setlist.fm); setlist.fm's own site couldn't be reached from the build sandbox. **The owner confirms it from the key's settings** (setup.md §1). Filled in by the owner: _not yet confirmed_.
+- **Rate limit (confirmed):** our key allows **max. 2.0 requests/second and max. 1,440/day**, as shown in the key's settings on setlist.fm (confirmed by the owner, 2026-10-31). This matches the standard-key figures in third-party documentation. The 600 ms spacing keeps us just below 2 per second.
 - The daily limit isn't enforced in-process. A show list costs at most 3 calls and a search 1, so 1,440 a day is far beyond a few friends' use. Hitting it would show up as `429`s and then ERR-1.
 - Worst case for one show list: about 30 s if all 3 page calls time out (timeouts aren't retried), or about 10 s if every call is rate-limited (3 pages × 3 s of backoff), both under the server's 60 s write timeout. A preview (step 10) needs only one setlist.fm call.
 
@@ -113,7 +113,7 @@ Done in this session: `gofmt -l .` (nothing), `go vet ./...`, `go test -race ./.
 
 To do with the owner (setup.md §1, §4, §5). Fill in:
 
-- [ ] Rate limit confirmed from the key's settings: ___
+- [x] Rate limit confirmed from the key's settings: max. 2.0/second and max. 1,440/day (2026-10-31).
 - [ ] Local check on `127.0.0.1` with the real key: `gojira` (clear), `ghost` (picker), `sword` (picker), nonsense (none), Gojira's show list.
 - [ ] After the merge deploys: the same on Cloud Run.
 

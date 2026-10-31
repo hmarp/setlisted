@@ -7,8 +7,7 @@ Nothing here changes code. Sections 1–3 can be done before the PR merges, and 
 ## 1. The API key and its rate limit
 
 - [ ] Open your [setlist.fm API settings](https://www.setlist.fm/settings/api) (log in to setlist.fm first). If there's no key yet, apply for one there: it's free for non-commercial use.
-- [ ] Note the **rate limit** shown for the key (or in the approval email). Send Claude the numbers (they aren't secret) so they go into the handoff.
-  - The code assumes the standard limit of **2 requests per second** (and **1,440 per day**), from third-party documentation, because setlist.fm's own pages couldn't be reached from Claude's sandbox. The limiter spaces calls **600 ms** apart (about 1.7 per second).
+- [x] Note the **rate limit** shown for the key and send Claude the numbers (they aren't secret) so they go into the handoff. Done (2026-10-31): **max. 2.0 requests per second and max. 1,440 per day**. The limiter spaces calls **600 ms** apart (about 1.7 per second).
   - If your key's limit is different, tell Claude: the interval is one constant (`setlistfm.DefaultInterval`).
 - [ ] Copy the **API key**. Never paste it into a commit, an issue, a PR or a chat.
 
