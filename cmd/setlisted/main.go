@@ -36,10 +36,8 @@ func main() {
 }
 
 func run(logger *slog.Logger) error {
-	// A local .env is optional. godotenv.Load never overrides variables that
-	// are already set in the environment.
-	if err := godotenv.Load(); err != nil && !errors.Is(err, fs.ErrNotExist) {
-		return fmt.Errorf("reading .env: %w", err)
+	if err := loadDotEnv(); err != nil {
+		return err
 	}
 
 	cfg, err := config.Load(os.Getenv)
@@ -81,6 +79,25 @@ func run(logger *slog.Logger) error {
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
 	defer cancel()
 	return srv.Shutdown(shutdownCtx)
+}
+
+// loadDotEnv loads a local .env, if there is one. godotenv.Load never
+// overrides variables that are already set in the environment.
+//
+// A parse error's text quotes the file's contents, which hold secrets, so
+// it's replaced by a generic message. File errors (e.g. permissions) only
+// name the path and are kept.
+func loadDotEnv() error {
+	err := godotenv.Load()
+	var pathErr *fs.PathError
+	switch {
+	case err == nil, errors.Is(err, fs.ErrNotExist):
+		return nil
+	case errors.As(err, &pathErr):
+		return fmt.Errorf("reading .env: %w", err)
+	default:
+		return errors.New("reading .env: the file couldn't be parsed; check that every line is NAME=value, with each value on the same line as its name")
+	}
 }
 
 // newLogger returns a JSON logger whose field names Cloud Logging recognises

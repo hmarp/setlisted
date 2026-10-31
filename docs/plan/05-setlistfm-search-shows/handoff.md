@@ -101,6 +101,10 @@ Full shapes are in `docs/api.md`. Summary:
 - No search text, artist names, MBIDs or the key in the app's own warning lines. Failures log `op` (`search_artists`, `artist_setlists`, `artist`) and the error category (e.g. `setlist.fm unavailable: status 403`).
 - **The request line logs the path**, so `/api/artists/{mbid}/shows` puts the chosen artist's MBID in the logs (the search's `q` is in the query string, which isn't logged). An MBID is a public ID, not a name, and Cloud Run's own request logs record full URLs, query strings included, anyway (step 04 known gap). Accepted.
 
+## Also fixed: `.env` parse errors leaked secrets (step 01 code)
+
+During the local check, a `.env` with a value on its own line made the app exit with godotenv's parse error, which **quotes the file's contents**, including secrets, on stdout. `cmd/setlisted/main.go` now loads `.env` through `loadDotEnv`: a parse error becomes the generic `reading .env: the file couldn't be parsed; check that every line is NAME=value, …`, while file-system errors (which only name the path) are kept. A missing `.env` is still fine. Cloud Run has no `.env`, so production was never affected. Tested in `cmd/setlisted/main_test.go`.
+
 ## Verification
 
 Done in this session: `gofmt -l .` (nothing), `go vet ./...`, `go test -race ./...` all pass. Tests cover:
@@ -114,7 +118,7 @@ Done in this session: `gofmt -l .` (nothing), `go vet ./...`, `go test -race ./.
 To do with the owner (setup.md §1, §4, §5). Fill in:
 
 - [x] Rate limit confirmed from the key's settings: max. 2.0/second and max. 1,440/day (2026-10-31).
-- [ ] Local check on `127.0.0.1` with the real key: `gojira` (clear), `ghost` (picker), `sword` (picker), nonsense (none), Gojira's show list.
+- [x] Local check on `127.0.0.1` with the real key: the owner confirmed searching works (2026-10-31).
 - [ ] After the merge deploys: the same on Cloud Run.
 
 ## Known gaps
