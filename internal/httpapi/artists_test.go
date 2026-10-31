@@ -354,3 +354,33 @@ func TestArtistShowsUnknownArtist(t *testing.T) {
 		t.Errorf("setlist.fm calls = %d, want 2", n)
 	}
 }
+
+func TestSetlistFMBudget(t *testing.T) {
+	// setlist.fm is slower than the request's budget: the user gets ERR-1's
+	// 503 rather than a dropped connection.
+	f := newFakeSetlistFM(t, func(w http.ResponseWriter, r *http.Request) {
+		select {
+		case <-time.After(2 * time.Second):
+		case <-r.Context().Done():
+		}
+	})
+	h := &setlistFMHandlers{logger: discardLogger(), client: f.client(), budget: 50 * time.Millisecond}
+	for name, serve := range map[string]func(http.ResponseWriter, *http.Request){
+		"search": h.searchArtists,
+		"shows":  h.artistShows,
+	} {
+		t.Run(name, func(t *testing.T) {
+			req := httptest.NewRequest("GET", "/api/artists/"+testMBID+"/shows?q=gojira", nil)
+			req.SetPathValue("id", testMBID)
+			rec := httptest.NewRecorder()
+			start := time.Now()
+			serve(rec, req)
+			if rec.Code != http.StatusServiceUnavailable {
+				t.Errorf("status = %d, want 503", rec.Code)
+			}
+			if d := time.Since(start); d > time.Second {
+				t.Errorf("took %v, want the budget to end it", d)
+			}
+		})
+	}
+}

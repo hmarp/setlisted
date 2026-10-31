@@ -19,7 +19,8 @@ type limiter struct {
 func newLimiter(interval time.Duration) *limiter { return &limiter{interval: interval} }
 
 // wait reserves the next free slot and sleeps until it, or returns ctx's
-// error if ctx ends first. A cancelled wait still uses up its slot, which
+// error if ctx ends first. A cancelled wait gives its slot back if no later
+// call has reserved one since; otherwise the slot stays used, which only
 // errs on the safe side.
 func (l *limiter) wait(ctx context.Context) error {
 	l.mu.Lock()
@@ -41,6 +42,11 @@ func (l *limiter) wait(ctx context.Context) error {
 	case <-t.C:
 		return nil
 	case <-ctx.Done():
+		l.mu.Lock()
+		if l.next.Equal(slot.Add(l.interval)) {
+			l.next = slot
+		}
+		l.mu.Unlock()
 		return ctx.Err()
 	}
 }

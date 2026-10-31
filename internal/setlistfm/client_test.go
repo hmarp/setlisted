@@ -106,7 +106,7 @@ func TestRateLimitGivesUp(t *testing.T) {
 	}
 }
 
-func TestRetryAfterIsCapped(t *testing.T) {
+func TestRetryAfter(t *testing.T) {
 	var calls atomic.Int32
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if calls.Add(1) == 1 {
@@ -124,6 +124,52 @@ func TestRetryAfterIsCapped(t *testing.T) {
 	}
 	if d := time.Since(start); d < time.Second {
 		t.Errorf("retried after %v, want Retry-After's 1s", d)
+	}
+}
+
+func TestRetryAfterTooLongGivesUp(t *testing.T) {
+	var calls atomic.Int32
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		calls.Add(1)
+		w.Header().Set("Retry-After", "30")
+		w.WriteHeader(http.StatusTooManyRequests)
+	}))
+	defer srv.Close()
+
+	start := time.Now()
+	_, err := testClient(srv, 2).Setlist(context.Background(), "abc")
+	if !errors.Is(err, ErrUnavailable) {
+		t.Errorf("err = %v, want ErrUnavailable", err)
+	}
+	if n := calls.Load(); n != 1 {
+		t.Errorf("calls = %d, want 1: no retry before Retry-After", n)
+	}
+	if d := time.Since(start); d > time.Second {
+		t.Errorf("took %v, want an immediate failure", d)
+	}
+}
+
+func TestRedirectNotFollowed(t *testing.T) {
+	var leaked atomic.Bool
+	other := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("x-api-key") != "" {
+			leaked.Store(true)
+		}
+		w.Write([]byte(`{}`))
+	}))
+	defer other.Close()
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, other.URL+"/setlist/abc", http.StatusFound)
+	}))
+	defer srv.Close()
+
+	// The default HTTP client, as in production.
+	c := New(Config{APIKey: testKey, BaseURL: srv.URL, Interval: time.Microsecond})
+	if _, err := c.Setlist(context.Background(), "abc"); !errors.Is(err, ErrUnavailable) {
+		t.Errorf("err = %v, want ErrUnavailable", err)
+	}
+	if leaked.Load() {
+		t.Error("the API key was sent to the redirect target")
 	}
 }
 
@@ -255,15 +301,18 @@ func TestLimiterSpacesCalls(t *testing.T) {
 
 	const interval = 50 * time.Millisecond
 	c := New(Config{APIKey: testKey, BaseURL: srv.URL, Interval: interval})
+	start := time.Now()
 	for range 4 {
 		if _, err := c.Setlist(context.Background(), "x"); err != nil {
 			t.Fatal(err)
 		}
 	}
-	for i := 1; i < len(times); i++ {
-		// Allow a little slack for timer and scheduling jitter.
-		if gap := times[i].Sub(times[i-1]); gap < interval-5*time.Millisecond {
-			t.Errorf("gap %d = %v, want at least %v", i, gap, interval)
+	// Call n can't be sent before its slot, (n-1) intervals after the first.
+	// Measured from the start rather than between arrivals, which network
+	// jitter can bring closer together.
+	for i, at := range times {
+		if d, want := at.Sub(start), time.Duration(i)*interval; d < want {
+			t.Errorf("call %d arrived after %v, want at least %v", i+1, d, want)
 		}
 	}
 }
@@ -277,5 +326,24 @@ func TestLimiterHonoursContext(t *testing.T) {
 	defer cancel()
 	if err := l.wait(ctx); !errors.Is(err, context.DeadlineExceeded) {
 		t.Errorf("err = %v, want DeadlineExceeded", err)
+	}
+}
+
+func TestLimiterCancelledWaitGivesSlotBack(t *testing.T) {
+	const interval = 100 * time.Millisecond
+	l := newLimiter(interval)
+	l.wait(context.Background()) // takes the free slot; the next is in 100 ms
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	l.wait(ctx) // reserves the slot in 100 ms, then gives it back
+
+	start := time.Now()
+	if err := l.wait(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	// Without the give-back this call would wait for the slot after the
+	// cancelled one, about 200 ms.
+	if d := time.Since(start); d > interval+50*time.Millisecond {
+		t.Errorf("waited %v, want about %v", d, interval)
 	}
 }

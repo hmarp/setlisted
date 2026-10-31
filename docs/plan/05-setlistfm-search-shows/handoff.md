@@ -2,7 +2,7 @@
 
 ## What was built
 
-- **`internal/normalize`**: `Name` and `Equal`, the spec's "normalised name".
+- **`internal/normalize`**: `Name`, the spec's "normalised name".
 - **`internal/setlistfm`**: a rate-limited client with typed responses: `SearchArtists`, `ArtistSetlists`, `Setlist` and `Artist`.
 - **Endpoints** (both need a session; documented in `docs/api.md`):
   - `GET /api/artists?q=…`: artist search with the clear-match rule;
@@ -15,11 +15,10 @@
 
 ```go
 normalize.Name(s string) string // "  Blue Öyster  Cult " → "blue oyster cult"
-normalize.Equal(a, b string) bool
 ```
 
-- Lower-cases (`strings.ToLower`), removes accents (NFD, drop combining marks `Mn`, then NFC), trims, and **collapses internal runs of whitespace to one space** (`strings.Fields`, so tabs and non-breaking spaces count). Collapsing isn't in the spec's definition; it was asked for by the brief and only makes more names equal that a person would call equal.
-- Only letters that decompose lose their accent: `ö → o`, `é → e`, but **`ø`, `ł`, `æ` and `ß` are kept** (they aren't "letter + accent" in Unicode). `Ørkenkjøtt` → `ørkenkjøtt`. Step 07 can add a small mapping if fixtures show it matters.
+- Case-folds (Unicode full folding, `cases.Fold`, so `Straße` = `STRASSE` = `strasse`), removes accents (NFD, drop combining marks `Mn`, then NFC), trims, and **collapses internal runs of whitespace to one space** (`strings.Fields`, so tabs and non-breaking spaces count). Collapsing isn't in the spec's definition; it was asked for by the brief and only makes more names equal that a person would call equal.
+- Only letters that decompose lose their accent: `ö → o`, `é → e`, but **`ø`, `ł` and `æ` are kept** (they aren't "letter + accent" in Unicode). Spacing marks (`Mc`, vowel signs in scripts such as Devanagari) are kept too: they're part of the letter, not an accent. `Ørkenkjøtt` → `ørkenkjøtt`. Step 07 can add a small mapping if fixtures show it matters.
 - Punctuation is untouched: `Ghost` ≠ `Ghost B.C.`, `The Sword` ≠ `sword`. Step 07 extends this for titles (`&`/`and`, etc.); keep `Name` itself as is, because SRCH-3's strictness relies on it.
 - Safe for concurrent use (a transformer per call).
 
@@ -66,13 +65,15 @@ Helpers: `Setlist.SongCount()` (all entries across all sets, including tapes and
 |---|---|---|
 | Spacing between calls (process-wide) | **600 ms** (≈ 1.7 per second) | `setlistfm.DefaultInterval` |
 | Retries on `429` | **2** (3 attempts in all) | `DefaultRetries` |
-| Backoff | 1 s, then 2 s; a longer `Retry-After` (seconds) wins, capped at 5 s | `DefaultBackoff`, `maxBackoff` |
+| Backoff | 1 s, then 2 s; a longer `Retry-After` (seconds) wins. A `Retry-After` over 5 s means **give up at once** (no retry that would be refused anyway) | `DefaultBackoff`, `maxBackoff` |
+| Budget for all of one request's setlist.fm calls | **45 s** (`context.WithTimeout` in both handlers), so the user gets ERR-1's 503 before the server's 60 s write timeout | `setlistFMBudget` in `internal/httpapi` |
+| Redirects | never followed (the default client's `CheckRedirect`): Go would forward `x-api-key` to another host. A 3xx becomes `ErrUnavailable` | `New` |
 | Timeout per HTTP call | 10 s | `requestTimeout` |
 
-- The limiter reserves a slot per call under a mutex and sleeps until it, so calls from concurrent requests are spaced too (ADR-005; one Cloud Run instance, ADR-003). Retries go through the limiter as well.
+- The limiter reserves a slot per call under a mutex and sleeps until it, so calls from concurrent requests are spaced too (ADR-005; one Cloud Run instance, ADR-003). Retries go through the limiter as well. A request that's cancelled while waiting (closed tab, Retry clicked) gives its slot back if no later call reserved one after it.
 - **Rate limit (confirmed):** our key allows **max. 2.0 requests/second and max. 1,440/day**, as shown in the key's settings on setlist.fm (confirmed by the owner, 2026-10-31). This matches the standard-key figures in third-party documentation. The 600 ms spacing keeps us just below 2 per second.
 - The daily limit isn't enforced in-process. A show list costs at most 3 calls and a search 1, so 1,440 a day is far beyond a few friends' use. Hitting it would show up as `429`s and then ERR-1.
-- Worst case for one show list: about 30 s if all 3 page calls time out (timeouts aren't retried), or about 10 s if every call is rate-limited (3 pages × 3 s of backoff), both under the server's 60 s write timeout. A preview (step 10) needs only one setlist.fm call.
+- Worst case: slow answers plus retries could add up to more than a minute for a show list, so the 45 s budget cuts it off with a 503. A preview (step 10) needs only one setlist.fm call; steps 10 and 11 should give their setlist.fm and Spotify calls a similar budget under the 60 s write timeout.
 
 ## Endpoints
 
@@ -105,6 +106,16 @@ Full shapes are in `docs/api.md`. Summary:
 
 During the local check, a `.env` with a value on its own line made the app exit with godotenv's parse error, which **quotes the file's contents**, including secrets, on stdout. `cmd/setlisted/main.go` now loads `.env` through `loadDotEnv`: a parse error becomes the generic `reading .env: the file couldn't be parsed; check that every line is NAME=value, …`, while file-system errors (which only name the path) are kept. A missing `.env` is still fine. Cloud Run has no `.env`, so production was never affected. Tested in `cmd/setlisted/main_test.go`.
 
+## Code review
+
+A fresh-context `/code-review` of this branch found 10 points. Fixed: a long `Retry-After` now fails at once (1); a 45 s budget for each request's setlist.fm calls (2); redirects not followed, so the key can't be forwarded (5); cancelled waits give their limiter slot back (6); full case folding, so `ß` = `ss` (7, in part); the unparseable-date fallback documented in `docs/api.md` (8); unused `normalize.Equal` removed (9). Not changed:
+
+- **(3) Return the shows collected so far when a later page fails.** ERR-1 says a setlist.fm error shows the error with Retry. Quietly listing fewer shows would go against that and hide the failure. Retry costs at most 3 calls.
+- **(4) Map a setlist.fm `400` on search to "no results".** No such answer is known; `url.Values` encodes any text safely. Treating a `400` as "none" could also hide a real bug in our requests as "No artists found". To revisit if the live check shows otherwise.
+- **(7, in part) Remove `Mc` and `Me` marks too.** `Mc` marks are vowel signs, part of the letter, so removing them would make different names equal. `Me` marks don't occur in band names.
+- **(9, in part) Reuse the transformer chain.** A search builds about 31 small chains, which takes microseconds next to a setlist.fm call; pooling would add code for nothing.
+- **(10) The `.env` fix belongs elsewhere.** The owner asked for it in this PR; the PR description says so.
+
 ## Verification
 
 Done in this session: `gofmt -l .` (nothing), `go vet ./...`, `go test -race ./...` all pass. Tests cover:
@@ -112,7 +123,8 @@ Done in this session: `gofmt -l .` (nothing), `go vet ./...`, `go test -race ./.
 - `normalize.Name`: case, accents (`Motörhead`, `Blue Öyster Cult`, pre-decomposed input), surrounding and internal whitespace, `ø`; `The Sword` ≠ `sword`.
 - Clear-match classification: one exact match → `clear`; two → `picker`; none → `picker`; more than 10 → 10; empty → `none`.
 - Show list against a fake setlist.fm: zero-entry shows dropped, stops at 20, follows up to 3 pages and no more, fewer than 20, a 404 page, date formatting, song count with tapes, missing tour, no setlists (artist lookup), only empty setlists (no lookup), unknown and malformed IDs.
-- The client: `x-api-key` and `Accept` headers, query parameters, decoding of every field used, 404 handling, a `429` retried then succeeding, giving up after the bound, `Retry-After`, 5xx/403/bad JSON → `ErrUnavailable`, no URL or body in error text, limiter spacing (50 ms interval) and cancellation.
+- The client: `x-api-key` and `Accept` headers, query parameters, decoding of every field used, 404 handling, a `429` retried then succeeding, giving up after the bound, `Retry-After`, giving up at once on a long `Retry-After`, no redirect followed (the key isn't sent on), 5xx/403/bad JSON → `ErrUnavailable`, no URL or body in error text, limiter spacing (50 ms interval), cancellation and giving a cancelled slot back.
+- The 45 s budget (shortened in the test): a setlist.fm slower than the budget gives `503`, not a hang.
 - The endpoints: `401` without a session, `400` for an empty/whitespace/too-long `q` with no upstream call, `503 upstream_unavailable` with the exact body, and no search text in logs.
 
 To do with the owner (setup.md §1, §4, §5). Fill in:

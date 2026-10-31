@@ -1,11 +1,13 @@
 package httpapi
 
 import (
+	"context"
 	"errors"
 	"log/slog"
 	"net/http"
 	"regexp"
 	"strings"
+	"time"
 	"unicode/utf8"
 
 	"github.com/hmarp/setlisted/internal/jsonapi"
@@ -23,6 +25,11 @@ const (
 	// maxShowPages pages of setlists (SHOW-1, ADR-005).
 	maxShows     = 20
 	maxShowPages = 3
+
+	// setlistFMBudget bounds all of one request's setlist.fm calls, so a
+	// slow or rate-limiting setlist.fm ends in ERR-1's 503 well before the
+	// server's 60 s write timeout drops the connection.
+	setlistFMBudget = 45 * time.Second
 )
 
 // Match outcomes of an artist search.
@@ -67,6 +74,7 @@ type artistShowsJSON struct {
 type setlistFMHandlers struct {
 	logger *slog.Logger
 	client *setlistfm.Client
+	budget time.Duration // setlistFMBudget, shorter in tests
 }
 
 // searchArtists serves GET /api/artists?q=… (SRCH-1 to SRCH-5).
@@ -80,7 +88,9 @@ func (h *setlistFMHandlers) searchArtists(w http.ResponseWriter, r *http.Request
 		jsonapi.WriteError(w, jsonapi.InvalidRequest("That band name is too long."))
 		return
 	}
-	artists, err := h.client.SearchArtists(r.Context(), q)
+	ctx, cancel := context.WithTimeout(r.Context(), h.budget)
+	defer cancel()
+	artists, err := h.client.SearchArtists(ctx, q)
 	if err != nil {
 		h.upstreamError(w, "search_artists", err)
 		return
@@ -130,12 +140,15 @@ func (h *setlistFMHandlers) artistShows(w http.ResponseWriter, r *http.Request) 
 		jsonapi.WriteError(w, jsonapi.NotFound())
 		return
 	}
+	ctx, cancel := context.WithTimeout(r.Context(), h.budget)
+	defer cancel()
+
 	var resp artistShowsJSON
 	resp.Artist.ID = mbid
 	resp.Shows = []showJSON{}
 
 	for page := 1; page <= maxShowPages && len(resp.Shows) < maxShows; page++ {
-		p, err := h.client.ArtistSetlists(r.Context(), mbid, page)
+		p, err := h.client.ArtistSetlists(ctx, mbid, page)
 		if err != nil {
 			h.upstreamError(w, "artist_setlists", err)
 			return
@@ -160,7 +173,7 @@ func (h *setlistFMHandlers) artistShows(w http.ResponseWriter, r *http.Request) 
 	// No setlists at all, so no artist name from them: ask for the artist,
 	// which also tells an unknown ID apart from a band with no setlists.
 	if resp.Artist.Name == "" {
-		a, err := h.client.Artist(r.Context(), mbid)
+		a, err := h.client.Artist(ctx, mbid)
 		if errors.Is(err, setlistfm.ErrNotFound) {
 			jsonapi.WriteError(w, jsonapi.NotFound())
 			return

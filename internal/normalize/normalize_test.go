@@ -23,20 +23,3 @@ func TestName(t *testing.T) {
 		}
 	}
 }
-
-func TestEqual(t *testing.T) {
-	tests := []struct {
-		a, b string
-		want bool
-	}{
-		{"motorhead", "Motörhead", true},
-		{" ghost ", "Ghost", true},
-		{"sword", "The Sword", false}, // SRCH-3 is strict
-		{"Ghost", "Ghost B.C.", false},
-	}
-	for _, tt := range tests {
-		if got := Equal(tt.a, tt.b); got != tt.want {
-			t.Errorf("Equal(%q, %q) = %v, want %v", tt.a, tt.b, got, tt.want)
-		}
-	}
-}

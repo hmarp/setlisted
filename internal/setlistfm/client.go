@@ -32,12 +32,14 @@ const (
 	DefaultRetries = 2
 
 	// DefaultBackoff is the wait before the first retry. It doubles for each
-	// later retry. A Retry-After header, if longer, wins, up to maxBackoff.
+	// later retry. A Retry-After header, if longer, wins; a Retry-After over
+	// maxBackoff means give up at once.
 	DefaultBackoff = time.Second
 
 	// requestTimeout bounds each HTTP call, including reading the body.
 	requestTimeout = 10 * time.Second
 
+	// maxBackoff is the longest a request waits to retry a 429.
 	maxBackoff = 5 * time.Second
 
 	// maxBody caps the response size read. A page of 20 setlists is well
@@ -58,7 +60,9 @@ type Config struct {
 	APIKey string
 
 	// Overridable for tests. Zero values use the defaults above.
-	BaseURL    string
+	BaseURL string
+	// HTTPClient replaces the default client, which has a timeout and never
+	// follows redirects.
 	HTTPClient *http.Client
 	Interval   time.Duration
 	Retries    int // a negative value means no retries
@@ -89,7 +93,13 @@ func New(cfg Config) *Client {
 		c.baseURL = DefaultBaseURL
 	}
 	if c.http == nil {
-		c.http = &http.Client{Timeout: requestTimeout}
+		c.http = &http.Client{
+			Timeout: requestTimeout,
+			// Go forwards custom headers such as x-api-key on redirects, even
+			// to another host. The API doesn't redirect, so never follow one:
+			// a 3xx is returned as is and becomes ErrUnavailable.
+			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+		}
 	}
 	interval := cfg.Interval
 	if interval == 0 {
@@ -166,11 +176,11 @@ func (c *Client) get(ctx context.Context, path string, v any) error {
 		if attempt >= c.retries {
 			return fmt.Errorf("%w: still rate-limited after %d retries", ErrUnavailable, c.retries)
 		}
-		wait := c.backoff << attempt
-		if retryAfter > wait {
-			wait = retryAfter
+		if retryAfter > maxBackoff {
+			// Retrying sooner would only be refused again and use up quota.
+			return fmt.Errorf("%w: rate-limited, Retry-After %v", ErrUnavailable, retryAfter)
 		}
-		wait = min(wait, maxBackoff)
+		wait := max(c.backoff<<attempt, retryAfter)
 		if err := sleep(ctx, wait); err != nil {
 			return fmt.Errorf("%w: %v", ErrUnavailable, err)
 		}

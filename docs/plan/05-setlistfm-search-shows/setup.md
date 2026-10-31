@@ -6,14 +6,14 @@ Nothing here changes code. Sections 1–3 can be done before the PR merges, and 
 
 ## 1. The API key and its rate limit
 
-- [ ] Open your [setlist.fm API settings](https://www.setlist.fm/settings/api) (log in to setlist.fm first). If there's no key yet, apply for one there: it's free for non-commercial use.
+- [x] Open your [setlist.fm API settings](https://www.setlist.fm/settings/api) (log in to setlist.fm first). If there's no key yet, apply for one there: it's free for non-commercial use.
 - [x] Note the **rate limit** shown for the key and send Claude the numbers (they aren't secret) so they go into the handoff. Done (2026-10-31): **max. 2.0 requests per second and max. 1,440 per day**. The limiter spaces calls **600 ms** apart (about 1.7 per second).
   - If your key's limit is different, tell Claude: the interval is one constant (`setlistfm.DefaultInterval`).
-- [ ] Copy the **API key**. Never paste it into a commit, an issue, a PR or a chat.
+- [x] Copy the **API key**. Never paste it into a commit, an issue, a PR or a chat.
 
 ## 2. Key into the local `.env`
 
-- [ ] In your local `.env`, set:
+- [x] In your local `.env`, set:
 
 ```dotenv
 SETLISTFM_API_KEY=<API key>
@@ -28,7 +28,7 @@ PROJECT_ID=setlisted-2026
 gcloud config set project "$PROJECT_ID"
 ```
 
-- [ ] Add a new version (hidden prompt, nothing echoed or saved in history):
+- [x] Add a new version (hidden prompt, nothing echoed or saved in history). Done by the owner in the console (2026-10-31):
 
 ```bash
 read -rs -p "setlist.fm API key: " v && printf '%s' "$v" | gcloud secrets versions add setlistfm-api-key --data-file=-; unset v; echo
@@ -63,8 +63,8 @@ On the step 05 branch, with the real key in `.env`:
 go run ./cmd/setlisted
 ```
 
-- [ ] Open <http://127.0.0.1:8080/> and log in with Spotify.
-- [ ] In the same browser, open each of these and check the JSON looks sensible (tell Claude what you see; you don't need to paste it all):
+- [x] Open <http://127.0.0.1:8080/> and log in with Spotify.
+- [x] In the same browser, open each of these and check the JSON looks sensible (tell Claude what you see; you don't need to paste it all): Done: searching works (2026-10-31).
   - <http://127.0.0.1:8080/api/artists?q=gojira>: `"match":"clear"` with one artist. Copy its `id`.
   - <http://127.0.0.1:8080/api/artists?q=ghost>: `"match":"picker"`, up to 10 artists, several called Ghost with different disambiguations.
   - <http://127.0.0.1:8080/api/artists?q=sword>: `"picker"` (The Sword isn't a clear match for `sword`).

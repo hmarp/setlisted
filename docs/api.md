@@ -114,7 +114,7 @@ The band's up to 20 most recent shows that have at least one entry, newest first
 |---|---|
 | `artist.name` | The band's name, for the heading (SHOW-1) and SHOW-5's message. |
 | `shows[].id` | The setlist.fm setlist ID. The preview (step 10) takes it. |
-| `shows[].date` | Already formatted as `DD Mon YYYY` with English month abbreviations (SHOW-3). |
+| `shows[].date` | Already formatted as `DD Mon YYYY` with English month abbreviations (SHOW-3). In the unlikely case setlist.fm sends a date that isn't `dd-MM-yyyy`, its text is passed through unchanged rather than the show being dropped. |
 | `shows[].city`, `shows[].venue` | As setlist.fm has them. |
 | `shows[].tour` | The tour name, or `null` when setlist.fm has none. |
 | `shows[].songCount` | Entries across all sets, including tapes (SHOW-3). Always at least 1. |

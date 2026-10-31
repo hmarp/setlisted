@@ -51,7 +51,7 @@ func NewHandler(logger *slog.Logger, static fs.FS, a *auth.Auth, sfm *setlistfm.
 	// Every other /api/ route requires a session. Register protected routes
 	// on api, with a method, e.g. api.HandleFunc("GET /api/...", h).
 	api := http.NewServeMux()
-	setlists := &setlistFMHandlers{logger: logger, client: sfm}
+	setlists := &setlistFMHandlers{logger: logger, client: sfm, budget: setlistFMBudget}
 	api.HandleFunc("GET /api/artists", setlists.searchArtists)
 	api.HandleFunc("GET /api/artists/{id}/shows", setlists.artistShows)
 	// Any other /api/ path (or method) is a JSON not_found error.
