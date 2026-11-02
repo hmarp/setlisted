@@ -17,7 +17,7 @@ type Candidate struct {
     Artists   []string // all credited artists' names
     Album     string
     AlbumType string   // "album" | "single" | "compilation" (AlbumTypeAlbum, …)
-    ReleaseDate, ReleaseDatePrecision string // "1986-03-03","day" | "1986-03","month" | "1986","year"
+    ReleaseDate, ReleaseDatePrecision string // "1986-03-03","day" | "1986-03","month" | "1986","year"; precision is informational, never read
 }
 
 type Version string
@@ -59,7 +59,7 @@ The brief proposed `Resolve(entry, candidatesFor func(expectedArtist) []Candidat
 **Title (MATCH-4), `Title(s)`:**
 
 1. **Strip version suffixes** from the raw title, repeatedly, from the end:
-   - a suffix is a trailing `(…)` or `[…]` (balanced; nested brackets are fine), or the text after the **last** ` - `, ` – ` or ` — ` (spaces on both sides; `Battery-Live` isn't split);
+   - a suffix is a trailing `(…)` or `[…]` (balanced; nested brackets are fine), or the text after the **last** space–dash–space, where the dash is any of `-`, `‐` (U+2010), `‑` (U+2011), `‒` (U+2012), `–`, `—`, `―` (U+2015) or `−` (U+2212), the `dashes` constant in `title.go` (spaces on both sides; `Battery-Live` and `Song- Remastered` aren't split);
    - an unbalanced closing bracket at the end isn't a suffix, but an earlier dash suffix is still tried (`Fade to Black - Live (Remastered` → `fade to black`);
    - it's stripped **only if** the segment contains a marker (version **or** exclusion marker, below) as whole word(s), after the segment is normalised as in step 2;
    - stripping stops at the first segment without a marker, and never strips a segment that would leave nothing (`(Live)` stays `live`; `Live - Remastered` becomes `live`);
@@ -137,7 +137,15 @@ Nothing left → `ok == false` (MATCH-9). There's no fallback of any kind.
 
 ## Code review
 
-A fresh-context `/code-review` found 6 points. Fixed: a `0000` release date won MATCH-8 ties (now unknown); an unbalanced trailing bracket stopped an earlier dash suffix from being stripped; `live` was written twice in `markers.go` (now one constant). Recorded as known gaps rather than changed, because they follow the brief's and spec's rules: the stripping stops at an unmarked segment, and a marker anywhere in a segment strips it. Not changed: normalising the entry name once per `Choose` call instead of per candidate (at most 10 candidates; not worth the code).
+A first fresh-context `/code-review` found 6 points. Fixed: a `0000` release date won MATCH-8 ties (now unknown); an unbalanced trailing bracket stopped an earlier dash suffix from being stripped; `live` was written twice in `markers.go` (now one constant). Recorded as known gaps rather than changed, because they follow the brief's and spec's rules: the stripping stops at an unmarked segment, and a marker anywhere in a segment strips it. Not changed: normalising the entry name once per `Choose` call instead of per candidate (at most 10 candidates; not worth the code).
+
+A second fresh-context `/code-review` (on a different model) found 7 points. Fixed: only three dash characters were recognised as separators and the set was written twice (now the one `dashes` constant, with the hyphen, non-breaking hyphen, figure dash, horizontal bar and minus sign added); `ReleaseDatePrecision` looked meaningful but is never read (now documented as informational on the field, kept because the brief asks for it and step 08 maps it). Not changed:
+
+- **A marker anywhere in a segment strips it** ("Heroes (Live Forever)"): already a known gap. The brief's rule is "contains a known version marker", which is what makes "Live at …" work; a whole-phrase rule would change the spec's meaning. MATCH-3 still applies, so the worst case is another song by the same band.
+- **An unmarked trailing segment stops the stripping** ("(feat. X)", "(1999)"): the same point as the first review's; known gap; step 09 can add markers.
+- **"edit" and "radio edit" aren't in the spec's list:** the brief adds them, and the spec's list is "such as". "radio edit" is redundant with "edit" but documents the intent.
+- **Full stops and apostrophes deleted** ("3.14" = "314", "A.M. 180" = "AM 180"): only within one artist's tracks; deliberate so that "Don't" = "Dont" and "T.N.T." = "TNT".
+- **Repeated normalisation in `Choose`:** declined again (at most 10 candidates).
 
 ## Known gaps
 

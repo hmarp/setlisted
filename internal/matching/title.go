@@ -22,8 +22,8 @@ func Title(s string) string {
 
 // splitTitle removes trailing version suffixes from a raw title, repeatedly,
 // and returns what's left and the removed suffixes (outermost last), as
-// written. A suffix is a trailing "(…)", "[…]" or " - …" segment ("–" and
-// "—" count as dashes) that contains a version or exclusion marker. A
+// written. A suffix is a trailing "(…)", "[…]" or " - …" segment (any of
+// dashes, with a space on each side) that contains a version or exclusion marker. A
 // segment without a marker ends the stripping, and so does a segment that
 // would leave nothing.
 func splitTitle(s string) (core string, suffixes []string) {
@@ -50,7 +50,8 @@ func trailingSegment(s string) (rest, seg string, ok bool) {
 	// No closing bracket at the end, or an unbalanced one: try a dash.
 	best := -1
 	sepLen := 0
-	for _, sep := range []string{" - ", " – ", " — "} {
+	for _, d := range dashes {
+		sep := " " + string(d) + " "
 		if i := strings.LastIndex(s, sep); i > best {
 			best, sepLen = i, len(sep)
 		}
@@ -96,10 +97,17 @@ func trailingBracket(s string) (rest, seg string, ok, balanced bool) {
 	return "", "", false, false
 }
 
+// dashes are the characters that separate a dash suffix when they have a
+// space on each side ("Song - Live", "Song – Live", "Song − Live"):
+// hyphen-minus, hyphen (U+2010), non-breaking hyphen (U+2011), figure dash
+// (U+2012), en dash, em dash, horizontal bar (U+2015) and minus sign
+// (U+2212). trimSeparators uses the same set.
+const dashes = "-\u2010\u2011\u2012\u2013\u2014\u2015\u2212"
+
 // trimSeparators trims spaces and dangling dashes, e.g. what's left of
 // "Song - (Live)" after removing "(Live)".
 func trimSeparators(s string) string {
-	return strings.TrimRight(strings.TrimSpace(s), " -–—")
+	return strings.TrimRight(strings.TrimSpace(s), " "+dashes)
 }
 
 // isVersionSegment reports whether a title segment contains a version or

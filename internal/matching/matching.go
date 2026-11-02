@@ -42,8 +42,13 @@ type Candidate struct {
 	// AlbumType is "album", "single" or "compilation".
 	AlbumType string
 	// ReleaseDate is the album's release date: "YYYY", "YYYY-MM" or
-	// "YYYY-MM-DD" according to ReleaseDatePrecision.
-	ReleaseDate          string
+	// "YYYY-MM-DD". MATCH-8 reads it by its shape, as the start of that
+	// period.
+	ReleaseDate string
+	// ReleaseDatePrecision is Spotify's "year", "month" or "day". It's
+	// informational only: the rules never read it, because ReleaseDate's
+	// shape already gives the precision, so a missing or conflicting value
+	// changes nothing.
 	ReleaseDatePrecision string
 }
 
