@@ -22,7 +22,7 @@
 | 03 | [Continuous deployment on merge](plan/03-continuous-deployment/brief.md) | 02 | Done |
 | 04 | [Spotify login and session](plan/04-spotify-login/brief.md) | 03 | Done |
 | 05 | [setlist.fm client: artist search and show list API](plan/05-setlistfm-search-shows/brief.md) | 04 | Done |
-| 06 | [Entry classification rules](plan/06-entry-classification/brief.md) | 05 | Not started |
+| 06 | [Entry classification rules](plan/06-entry-classification/brief.md) | 05 | Done |
 | 07 | [Matching rules (pure)](plan/07-matching-rules/brief.md) | 06 | Not started |
 | 08 | [Spotify search client and matching pipeline](plan/08-spotify-search-pipeline/brief.md) | 04, 07 | Not started |
 | 09 | [Test setlist fixtures and matching-quality test](plan/09-matching-quality-tests/brief.md) | 05, 08 | Not started |

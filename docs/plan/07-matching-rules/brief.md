@@ -86,6 +86,8 @@ Pure Go code that, given an entry, an expected artist and a list of Spotify cand
 
    The caller (step 08) supplies the candidates, so the network stays out of this package. If you prefer a different, equally pure, shape, record it in the handoff.
 
+   *From step 06:* the entry is a `setlist.Entry` (`internal/setlist`). Use `Entry.Name` as the entry name and `Entry.ExpectedArtists` as the passes in order (`[band]`, or `[band, original]` for a cover); index 1 is the cover-fallback pass. Only `KindSong` entries are matched. `Entry.Note` must never reach matching (ENT-6).
+
 ## Tests (named by spec ID; table-driven)
 
 - **MATCH-3:**

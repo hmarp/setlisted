@@ -63,6 +63,7 @@ A protected endpoint that, given a setlist ID, returns everything the preview sc
      ```
    - `trackIds` is the ordered list of matched track IDs, with duplicates kept. It's exactly what create (step 11) expects.
    - `canCreate` is `false` when `summary.found == 0` (PREV-7).
+   - *From step 06:* convert with `setlistfm.Setlist.Show()`. The `show` header fields map one to one from `setlist.Header` (`Band`, `Date`, `Venue`, `City`, `Tour`, `URL`), and `summary.matchable` is `Show.Matchable()`. Positions and headings are already computed. `Show.Sets` keeps sets whose entries are all skipped (or that have none): decide whether to drop them from `sets` (recommended, so no heading appears with nothing under it) and document it.
    - Represent a match that is both a cover fallback **and** live the way step 08's handoff describes (e.g. `status: "cover_fallback"` plus `"live": true`), and document it.
    - **Errors:**
      - setlist.fm unknown ID → `404 not_found`;
