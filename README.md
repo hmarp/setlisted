@@ -6,7 +6,7 @@ Built on the [setlist.fm API](https://api.setlist.fm/docs/1.0/index.html) and th
 
 ## Status
 
-In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. [Step 02](docs/plan/02-first-deploy/handoff.md) (first deploy) is done: the skeleton runs on Cloud Run at <https://setlisted-613938414647.europe-west1.run.app>, deployed manually with `scripts/deploy.sh`. [Step 03](docs/plan/03-continuous-deployment/handoff.md) (continuous deployment) is done: every merge to `main` deploys automatically through GitHub Actions. [Step 04](docs/plan/04-spotify-login/handoff.md) (Spotify login) is done: users log in with Spotify into a one-hour, browser-session cookie, and every `/api/` endpoint except health and session status needs a login. [Step 05](docs/plan/05-setlistfm-search-shows/handoff.md) (setlist.fm search and shows) is done: the API can search setlist.fm for a band (`GET /api/artists`) and list its 20 most recent shows with setlists (`GET /api/artists/{id}/shows`). [Step 06](docs/plan/06-entry-classification/handoff.md) (entry classification) is done: internal code (no endpoint yet) turns a setlist into numbered entries classified as songs, medleys or skipped, with the artists to match each against. [Step 07](docs/plan/07-matching-rules/handoff.md) (matching rules) is done: internal code (no endpoint yet) chooses the right Spotify track for an entry from search results, or decides there isn't one, following the spec's matching rules. The placeholder page has bare login and logout controls for testing; there's no search screen or playlist feature yet. Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
+In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. [Step 02](docs/plan/02-first-deploy/handoff.md) (first deploy) is done: the skeleton runs on Cloud Run at <https://setlisted-613938414647.europe-west1.run.app>, deployed manually with `scripts/deploy.sh`. [Step 03](docs/plan/03-continuous-deployment/handoff.md) (continuous deployment) is done: every merge to `main` deploys automatically through GitHub Actions. [Step 04](docs/plan/04-spotify-login/handoff.md) (Spotify login) is done: users log in with Spotify into a one-hour, browser-session cookie, and every `/api/` endpoint except health and session status needs a login. [Step 05](docs/plan/05-setlistfm-search-shows/handoff.md) (setlist.fm search and shows) is done: the API can search setlist.fm for a band (`GET /api/artists`) and list its 20 most recent shows with setlists (`GET /api/artists/{id}/shows`). [Step 06](docs/plan/06-entry-classification/handoff.md) (entry classification) is done: internal code (no endpoint yet) turns a setlist into numbered entries classified as songs, medleys or skipped, with the artists to match each against. [Step 07](docs/plan/07-matching-rules/handoff.md) (matching rules) is done: internal code (no endpoint yet) chooses the right Spotify track for an entry from search results, or decides there isn't one, following the spec's matching rules. [Step 08](docs/plan/08-spotify-search-pipeline/handoff.md) (Spotify search and matching pipeline) is done: internal code (no endpoint yet) searches Spotify for every song of a setlist, four searches at a time, and returns each entry's match or "not found", in setlist order. The placeholder page has bare login and logout controls for testing; there's no search screen or playlist feature yet. Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
 
 ## Running locally
 
@@ -61,6 +61,17 @@ gofmt -l .        # should print nothing
 go vet ./...
 go test ./...
 ```
+
+**Manual check against live Spotify** (never run in CI): a test behind the `spotifylive` build tag searches Spotify with a real token and logs the candidates and matches. In Git Bash, with the real Spotify client ID and secret in `.env`, get an app token and run it:
+
+```bash
+set -a; source .env; set +a
+export SPOTIFY_TEST_TOKEN=$(curl -s -X POST https://accounts.spotify.com/api/token -u "$SPOTIFY_CLIENT_ID:$SPOTIFY_CLIENT_SECRET" -d grant_type=client_credentials | sed -E 's/.*"access_token":"([^"]*)".*/\1/')
+go test -tags spotifylive -run Live -v -count=1 ./internal/spotify/
+unset SPOTIFY_TEST_TOKEN
+```
+
+The market defaults to `GB`; set `SPOTIFY_TEST_MARKET` to change it. The token is never printed.
 
 CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the same three checks on every pull request to `main`, and again on the merged code before each deploy. A PR can't be merged until its `test` check passes.
 
@@ -144,6 +155,7 @@ Project, region, `BASE_URL` and `SPOTIFY_CLIENT_ID` come from [`scripts/deploy-c
 - **UI (MVP):** throwaway static HTML and plain JavaScript, served by the Go backend ([ADR-002](docs/adr/002-throwaway-static-ui.md))
 - **Hosting:** Google Cloud Run ([ADR-003](docs/adr/003-hosting-google-cloud-run.md))
 - **setlist.fm:** one rate-limited client, calls spaced 600 ms apart, no caching ([ADR-005](docs/adr/005-matching-and-api-call-strategy.md))
+- **Spotify search:** one field-filtered search per entry and pass (`limit=10`), up to 4 at once, `Retry-After` honoured, no caching ([ADR-005](docs/adr/005-matching-and-api-call-strategy.md))
 - **Login:** Spotify only, with a stateless encrypted-cookie session ([ADR-004](docs/adr/004-spotify-login-encrypted-cookie-session.md)), lasting for the browser session or one hour ([ADR-009](docs/adr/009-session-cookie-lifetime.md))
 - **Delivery:** every merge to `main` deploys automatically via GitHub Actions ([ADR-008](docs/adr/008-continuous-deployment-on-merge.md))
 
