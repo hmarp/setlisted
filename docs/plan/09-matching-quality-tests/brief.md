@@ -83,6 +83,8 @@ The repository is **public**. **Before committing any recorded Spotify responses
    - fix them in this step **only if small and clearly within the spec**, e.g. a missing version marker that the spec's "such as" list covers;
    - anything that changes the spec's meaning is flagged for a spec change and not done quietly.
 
+   *From step 07:* all version and exclusion markers are in `internal/matching/markers.go`, the one place to add one. Step 07's handoff lists its rule interpretations and the cases to watch in real data: `feat.` suffixes (not stripped, so the title doesn't match), `Rock'n'Roll` vs `Rock 'n' Roll` spacing, letters such as `ø` that aren't folded, live albums without the word "live" in their title, and album titles containing an exclusion word (e.g. Ozzy Osbourne's *Tribute*).
+
    The step is done when the test passes on the **owner-reviewed** expectations.
 
 ## Out of scope

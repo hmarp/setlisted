@@ -45,7 +45,7 @@ A Spotify search client, plus a **pipeline** that takes a classified show (step 
    - base URL configurable for tests;
    - timeouts;
    - **escape or strip double quotes** inside names before building the field filter, and document how;
-   - map the JSON to `matching.Candidate`: `id`, `name`, `artists[].name`, `album.name`, `album.album_type`, `album.release_date`, `album.release_date_precision`;
+   - map the JSON to `matching.Candidate` (fields `ID`, `Title`, `Artists`, `Album`, `AlbumType`, `ReleaseDate`, `ReleaseDatePrecision`): `id`, `name`, `artists[].name` (all of them), `album.name`, `album.album_type`, `album.release_date`, `album.release_date_precision`;
    - also keep what the preview needs to display: track title, artist names, album name;
    - **429:** wait for `Retry-After` (with a sane cap), retry a bounded number of times, then error;
    - **401:** a distinct "unauthorised" error, so handlers can apply the step 04 helper;
@@ -53,6 +53,8 @@ A Spotify search client, plus a **pipeline** that takes a classified show (step 
 2. **Pipeline** (e.g. `internal/preview` or `internal/pipeline`):
    - `MatchShow(ctx, show, searcher, market) ([]EntryResult, error)`, where `show` is a `setlist.Show` from step 06 (`setlistfm.Setlist.Show()`). Walk `show.Sets` → `set.Entries` to keep setlist order and each entry's `set.Heading`. `Entry.Kind` is `skipped`, `medley` or `song`; skipped entries are still in the show (with `Position` 0) and must be dropped here. `Entry.Position` is already the preview's row number;
    - for each entry of kind `song`, call step 07's `Resolve`, with candidates supplied by the searcher for each expected artist in turn. **Only search the original artist if the band pass found nothing.**
+
+     *From step 07:* the signature is `matching.Resolve(entry setlist.Entry, candidatesFor matching.CandidatesFunc) (matching.Result, error)`, with `CandidatesFunc func(expectedArtist string) ([]matching.Candidate, error)`. `Resolve` calls it lazily (the original artist only if the band pass chose nothing) and returns a search error unchanged, so wrap the searcher in a closure carrying `ctx`, the token and the market, and return `(nil, nil)` for no results. `Result` has `Found`, `Track`, `Artist`, `CoverFallback` and `Live`; map `!Found` → `not_found`, `CoverFallback` → `cover_fallback`, else `Live` → `live`, else `found` (both flags can be true). Pass candidates in Spotify's order: ties keep it. `Resolve` runs one entry's passes in sequence; the parallelism is across entries.
    - run at most 4 searches at once, and **keep the results in setlist order** whatever order they complete in;
    - skipped entries are omitted; medleys pass through as "not found (medley)" without searching;
    - each `EntryResult` holds:

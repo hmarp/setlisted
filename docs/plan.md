@@ -23,7 +23,7 @@
 | 04 | [Spotify login and session](plan/04-spotify-login/brief.md) | 03 | Done |
 | 05 | [setlist.fm client: artist search and show list API](plan/05-setlistfm-search-shows/brief.md) | 04 | Done |
 | 06 | [Entry classification rules](plan/06-entry-classification/brief.md) | 05 | Done |
-| 07 | [Matching rules (pure)](plan/07-matching-rules/brief.md) | 06 | Not started |
+| 07 | [Matching rules (pure)](plan/07-matching-rules/brief.md) | 06 | Done |
 | 08 | [Spotify search client and matching pipeline](plan/08-spotify-search-pipeline/brief.md) | 04, 07 | Not started |
 | 09 | [Test setlist fixtures and matching-quality test](plan/09-matching-quality-tests/brief.md) | 05, 08 | Not started |
 | 10 | [Preview API](plan/10-preview-api/brief.md) | 05, 08 | Not started |
