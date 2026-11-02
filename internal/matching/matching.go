@@ -185,7 +185,8 @@ var unknownDate = time.Date(9999, 12, 31, 0, 0, 0, 0, time.UTC)
 // releaseDate parses a candidate's release date as the start of its period:
 // "1984" → 1 Jan 1984, "1984-07" → 1 Jul 1984. The layout follows the
 // string's shape, so a precision that disagrees with the string (or is
-// missing) doesn't matter; a date that doesn't parse is unknownDate.
+// missing) doesn't matter; a date that doesn't parse, or has year 0
+// (Spotify's "0000" placeholder), is unknownDate.
 func releaseDate(c Candidate) time.Time {
 	s := strings.TrimSpace(c.ReleaseDate)
 	layout := ""
@@ -201,7 +202,8 @@ func releaseDate(c Candidate) time.Time {
 		return unknownDate
 	}
 	t, err := time.Parse(layout, s)
-	if err != nil {
+	if err != nil || t.Year() == 0 {
+		// Year 0 is Spotify's placeholder ("0000") for an unknown date.
 		return unknownDate
 	}
 	return t

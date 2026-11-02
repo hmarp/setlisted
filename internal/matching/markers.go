@@ -9,12 +9,13 @@ package matching
 
 // versionMarkers mark a trailing title segment as a version suffix to strip
 // before comparing titles (MATCH-4). "live" also makes a suffix live
-// (MATCH-6). A year followed by "version" (e.g. "2016 Version") is a marker
-// too; see isYearVersion.
+// (MATCH-6); it's liveMarker, defined once below, so the stripping and the
+// live check can't drift apart. A year followed by "version" (e.g. "2016
+// Version") is a marker too; see isYearVersion.
 var versionMarkers = []string{
 	"remaster",
 	"remastered",
-	"live",
+	liveMarker,
 	"single version",
 	"explicit",
 	"mono",

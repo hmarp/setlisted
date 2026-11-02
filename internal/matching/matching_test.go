@@ -144,6 +144,8 @@ func TestMatch_MATCH4_TitleNormalisation(t *testing.T) {
 		{"(Anesthesia) Pulling Teeth", "anesthesia pulling teeth"},
 		// An unbalanced bracket isn't a suffix.
 		{"Battery Live)", "battery live"},
+		// ...but an earlier dash suffix is still stripped.
+		{"Fade to Black - Live (Remastered", "fade to black"},
 		// A dash without spaces isn't a separator.
 		{"Battery-Live", "battery live"},
 		// A year without "version" isn't a marker; a non-year is neither.
@@ -314,6 +316,8 @@ func TestMatch_MATCH8_EarliestRelease(t *testing.T) {
 		{"month precision is the start of the month", []Candidate{at("day", "1986-03-02", PrecisionDay), at("month", "1986-03", PrecisionMonth)}, "month"},
 		{"month before a later day", []Candidate{at("day", "1986-02-28", PrecisionDay), at("month", "1986-03", PrecisionMonth)}, "day"},
 		{"year vs month", []Candidate{at("month", "1986-02", PrecisionMonth), at("year", "1986", PrecisionYear)}, "year"},
+		{"0000 placeholder date loses", []Candidate{at("zero", "0000", PrecisionYear), at("original", "1986-03-03", PrecisionDay)}, "original"},
+		{"0000-01-01 placeholder date loses", []Candidate{at("zero", "0000-01-01", PrecisionDay), at("original", "1986-03-03", PrecisionDay)}, "original"},
 		{"unparseable date loses", []Candidate{at("bad", "unknown", ""), at("good", "2020", PrecisionYear)}, "good"},
 		{"empty date loses", []Candidate{at("empty", "", ""), at("good", "2020", PrecisionYear)}, "good"},
 		{"tie keeps input order", []Candidate{at("first", "1986", PrecisionYear), at("second", "1986-01-01", PrecisionDay)}, "first"},

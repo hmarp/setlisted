@@ -60,6 +60,7 @@ The brief proposed `Resolve(entry, candidatesFor func(expectedArtist) []Candidat
 
 1. **Strip version suffixes** from the raw title, repeatedly, from the end:
    - a suffix is a trailing `(…)` or `[…]` (balanced; nested brackets are fine), or the text after the **last** ` - `, ` – ` or ` — ` (spaces on both sides; `Battery-Live` isn't split);
+   - an unbalanced closing bracket at the end isn't a suffix, but an earlier dash suffix is still tried (`Fade to Black - Live (Remastered` → `fade to black`);
    - it's stripped **only if** the segment contains a marker (version **or** exclusion marker, below) as whole word(s), after the segment is normalised as in step 2;
    - stripping stops at the first segment without a marker, and never strips a segment that would leave nothing (`(Live)` stays `live`; `Live - Remastered` becomes `live`);
    - leftover spaces and dashes are trimmed (`Song - (Live)` → `Song`).
@@ -73,7 +74,7 @@ All compared as whole words or whole runs of words of the normalised segment or 
 
 | List | Markers | Used for |
 |---|---|---|
-| `versionMarkers` | `remaster`, `remastered`, `live`, `single version`, `explicit`, `mono`, `stereo`, `deluxe`, `radio edit`, `edit`, plus **a 4-digit number followed by `version`** (`isYearVersion`) | which trailing segments are stripped (MATCH-4) |
+| `versionMarkers` | `remaster`, `remastered`, `live` (the `liveMarker` constant, shared with the live check), `single version`, `explicit`, `mono`, `stereo`, `deluxe`, `radio edit`, `edit`, plus **a 4-digit number followed by `version`** (`isYearVersion`) | which trailing segments are stripped (MATCH-4) |
 | `excludedMarkers` | `demo`, `demos`, `remix`, `remixes`, `remixed`, `instrumental`, `instrumentals`, `acoustic`, `karaoke`, `tribute` | exclusion (MATCH-5), from a stripped suffix **or the album title**; also stripped as suffixes |
 | `liveMarker` | `live` | live (MATCH-6), from a stripped suffix **or the album title** |
 
@@ -89,7 +90,7 @@ All compared as whole words or whole runs of words of the normalised segment or 
 
 1. studio before live (MATCH-6);
 2. album type: `album` < `single` < `compilation` < anything else or empty (MATCH-7; case-insensitive);
-3. release date, earliest first (MATCH-8). A date is read by its shape (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`) as the start of that period, so `1986` < `1986-01-02` and `1986-03` < `1986-03-02`. The precision field isn't needed for that; a missing or unparseable date sorts **after** every real date;
+3. release date, earliest first (MATCH-8). A date is read by its shape (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`) as the start of that period, so `1986` < `1986-01-02` and `1986-03` < `1986-03-02`. The precision field isn't needed for that; a missing or unparseable date, or year 0 (Spotify's `0000` placeholder), sorts **after** every real date;
 4. otherwise input order (Spotify's relevance order).
 
 Nothing left → `ok == false` (MATCH-9). There's no fallback of any kind.
@@ -125,16 +126,22 @@ Nothing left → `ok == false` (MATCH-9). There's no fallback of any kind.
 `gofmt -l .` (nothing), `go vet ./...`, `go test -race ./...` all pass. `go list -deps ./internal/matching` has no `net` or `net/http`. Tests (`internal/matching/matching_test.go`), named by spec ID:
 
 - `TestMatch_MATCH3_Artist`: band among several artists; other artist same title; `Motorhead`/`Motörhead` both ways; surrounding spaces; `The Sword` vs `Sword` both ways; `Ghost` vs `Ghost B.C.`; no artists; empty expected artist.
-- `TestMatch_MATCH4_Title` and `…_TitleNormalisation`: every example from the brief, each marker, en and em dashes, several suffixes in either order, `Part 1 - The Beginning` with and without a remaster suffix, apostrophes (straight and curly), `!`, hyphens, `T.N.T.`, accents, `feat.`, an all-suffix title, brackets not at the end, unbalanced brackets, a dash without spaces, a year without `version`, `Take 2 Version`.
+- `TestMatch_MATCH4_Title` and `…_TitleNormalisation`: every example from the brief, each marker, en and em dashes, several suffixes in either order, `Part 1 - The Beginning` with and without a remaster suffix, apostrophes (straight and curly), `!`, hyphens, `T.N.T.`, accents, `feat.`, an all-suffix title, brackets not at the end, unbalanced brackets (with a dash suffix before them), a dash without spaces, a year without `version`, `Take 2 Version`.
 - `TestMatch_MATCH5_Excluded`: each marker in a suffix and in an album; excluded-only → not found; excluded loses even to a live compilation track; whole words only (`Demolition`, `Remixing History`, `Tributary`); a core title of `Acoustic Demo` is studio.
 - `TestMatch_MATCH6_…`: studio (even a later compilation) beats live; only live → chosen and flagged; live suffix forms; `Live After Death`, `Live! In Paris` → live; `Alive in Athens` → studio; `Long Live Rock 'n' Roll` → live; `Live Wire` (also remastered) and `Live to Win` → studio.
 - `TestMatch_MATCH7_AlbumType`: album > single > compilation > unknown; case-insensitive type.
-- `TestMatch_MATCH8_EarliestRelease`: earlier wins; re-recording loses to the original and is used alone; year/month/day precisions mixed both ways; bad and empty dates lose; ties keep input order.
+- `TestMatch_MATCH8_EarliestRelease`: earlier wins; re-recording loses to the original and is used alone; year/month/day precisions mixed both ways; bad, empty and `0000` dates lose; ties keep input order.
 - `TestMatch_MATCH9_NoGuesses`: no candidates; other artists only; near titles only; excluded only.
 - `TestMatch_MATCH1_…`, `TestMatch_MATCH2_CoverTwoPasses`: band only for a song (one search, no retry elsewhere); cover found under the band (one search); fallback with `CoverFallback`; band with only a demo → fallback; band live beats original studio; fallback + live; neither → not found.
 - `TestMatch_Resolve_Errors`, `…_OnlySongs`, `TestMatch_ENT6_NoteIgnored`, `TestMatch_EndToEnd_Show` (a step 06 `setlist.Build` show with a tape credited to another artist, a remastered title, a solo and a cover).
 
+## Code review
+
+A fresh-context `/code-review` found 6 points. Fixed: a `0000` release date won MATCH-8 ties (now unknown); an unbalanced trailing bracket stopped an earlier dash suffix from being stripped; `live` was written twice in `markers.go` (now one constant). Recorded as known gaps rather than changed, because they follow the brief's and spec's rules: the stripping stops at an unmarked segment, and a marker anywhere in a segment strips it. Not changed: normalising the entry name once per `Choose` call instead of per candidate (at most 10 candidates; not worth the code).
+
 ## Known gaps
 
 - Not run against real Spotify data; step 09 is the first real check. Things to watch there: `feat.` suffixes, `Rock'n'Roll`-style spacing, letters such as `ø` that `normalize.Name` keeps (step 05), live albums whose titles lack the word "live" (they're treated as studio), and studio albums with "Live" in the title.
+- **Stripping stops at the first trailing segment without a marker** (the brief's rule), so "Battery (Live) [Bonus Track]" keeps both suffixes and doesn't match "Battery". Watch for "Bonus Track" and similar in step 09.
+- **A marker anywhere in a segment strips it**, which is what makes "Live at …" work, but a real subtitle containing "live", "edit", "mono" or "stereo" is stripped too: "Rock and Roll (Live for Today)" would become "rock and roll" and count as live. The same kind of accepted limitation as "Long Live Rock 'n' Roll"; flag it if step 09 shows it.
 - Only the markers in `markers.go` are recognised. Others the spec's "such as" covers can be added there (step 09).

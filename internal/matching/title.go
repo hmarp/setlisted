@@ -44,29 +44,10 @@ func trailingSegment(s string) (rest, seg string, ok bool) {
 	if s == "" {
 		return "", "", false
 	}
-	if close := s[len(s)-1]; close == ')' || close == ']' {
-		open := byte('(')
-		if close == ']' {
-			open = '['
-		}
-		depth := 0
-		for i := len(s) - 1; i >= 0; i-- {
-			switch s[i] {
-			case close:
-				depth++
-			case open:
-				depth--
-			}
-			if depth == 0 {
-				rest = trimSeparators(s[:i])
-				if rest == "" {
-					return "", "", false
-				}
-				return rest, s[i+1 : len(s)-1], true
-			}
-		}
-		return "", "", false // unbalanced
+	if rest, seg, ok, balanced := trailingBracket(s); balanced {
+		return rest, seg, ok
 	}
+	// No closing bracket at the end, or an unbalanced one: try a dash.
 	best := -1
 	sepLen := 0
 	for _, sep := range []string{" - ", " – ", " — "} {
@@ -82,6 +63,37 @@ func trailingSegment(s string) (rest, seg string, ok bool) {
 		return "", "", false
 	}
 	return rest, s[best+sepLen:], true
+}
+
+// trailingBracket splits off a trailing "(…)" or "[…]". balanced is false
+// when s doesn't end in a closing bracket or the bracket has no matching
+// opening one, so the caller can try a dash separator instead.
+func trailingBracket(s string) (rest, seg string, ok, balanced bool) {
+	close := s[len(s)-1]
+	if close != ')' && close != ']' {
+		return "", "", false, false
+	}
+	open := byte('(')
+	if close == ']' {
+		open = '['
+	}
+	depth := 0
+	for i := len(s) - 1; i >= 0; i-- {
+		switch s[i] {
+		case close:
+			depth++
+		case open:
+			depth--
+		}
+		if depth == 0 {
+			rest = trimSeparators(s[:i])
+			if rest == "" {
+				return "", "", false, true
+			}
+			return rest, s[i+1 : len(s)-1], true, true
+		}
+	}
+	return "", "", false, false
 }
 
 // trimSeparators trims spaces and dangling dashes, e.g. what's left of
