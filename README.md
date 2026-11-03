@@ -6,7 +6,7 @@ Built on the [setlist.fm API](https://api.setlist.fm/docs/1.0/index.html) and th
 
 ## Status
 
-In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. [Step 02](docs/plan/02-first-deploy/handoff.md) (first deploy) is done: the skeleton runs on Cloud Run at <https://setlisted-613938414647.europe-west1.run.app>, deployed manually with `scripts/deploy.sh`. [Step 03](docs/plan/03-continuous-deployment/handoff.md) (continuous deployment) is done: every merge to `main` deploys automatically through GitHub Actions. [Step 04](docs/plan/04-spotify-login/handoff.md) (Spotify login) is done: users log in with Spotify into a one-hour, browser-session cookie, and every `/api/` endpoint except health and session status needs a login. [Step 05](docs/plan/05-setlistfm-search-shows/handoff.md) (setlist.fm search and shows) is done: the API can search setlist.fm for a band (`GET /api/artists`) and list its 20 most recent shows with setlists (`GET /api/artists/{id}/shows`). [Step 06](docs/plan/06-entry-classification/handoff.md) (entry classification) is done: internal code (no endpoint yet) turns a setlist into numbered entries classified as songs, medleys or skipped, with the artists to match each against. [Step 07](docs/plan/07-matching-rules/handoff.md) (matching rules) is done: internal code (no endpoint yet) chooses the right Spotify track for an entry from search results, or decides there isn't one, following the spec's matching rules. [Step 08](docs/plan/08-spotify-search-pipeline/handoff.md) (Spotify search and matching pipeline) is done: internal code (no endpoint yet) searches Spotify for every song of a setlist, four searches at a time, and returns each entry's match or "not found", in setlist order. The placeholder page has bare login and logout controls for testing; there's no search screen or playlist feature yet. Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
+In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. [Step 02](docs/plan/02-first-deploy/handoff.md) (first deploy) is done: the skeleton runs on Cloud Run at <https://setlisted-613938414647.europe-west1.run.app>, deployed manually with `scripts/deploy.sh`. [Step 03](docs/plan/03-continuous-deployment/handoff.md) (continuous deployment) is done: every merge to `main` deploys automatically through GitHub Actions. [Step 04](docs/plan/04-spotify-login/handoff.md) (Spotify login) is done: users log in with Spotify into a one-hour, browser-session cookie, and every `/api/` endpoint except health and session status needs a login. [Step 05](docs/plan/05-setlistfm-search-shows/handoff.md) (setlist.fm search and shows) is done: the API can search setlist.fm for a band (`GET /api/artists`) and list its 20 most recent shows with setlists (`GET /api/artists/{id}/shows`). [Step 06](docs/plan/06-entry-classification/handoff.md) (entry classification) is done: internal code (no endpoint yet) turns a setlist into numbered entries classified as songs, medleys or skipped, with the artists to match each against. [Step 07](docs/plan/07-matching-rules/handoff.md) (matching rules) is done: internal code (no endpoint yet) chooses the right Spotify track for an entry from search results, or decides there isn't one, following the spec's matching rules. [Step 08](docs/plan/08-spotify-search-pipeline/handoff.md) (Spotify search and matching pipeline) is done: internal code (no endpoint yet) searches Spotify for every song of a setlist, four searches at a time, and returns each entry's match or "not found", in setlist order. [Step 09](docs/plan/09-matching-quality-tests/handoff.md) (matching-quality tests) is done: six real setlists are recorded as test fixtures, and a test checks the matching against owner-approved expected outcomes in CI (95.2% found, no wrong artists). The placeholder page has bare login and logout controls for testing; there's no search screen or playlist feature yet. Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
 
 ## Running locally
 
@@ -72,6 +72,24 @@ unset SPOTIFY_TEST_TOKEN
 ```
 
 The market defaults to `GB`; set `SPOTIFY_TEST_MARKET` to change it. The token is never printed.
+
+### Matching-quality tests
+
+`TestMatchingQuality` (`internal/quality`) runs the whole matching pipeline offline on real setlists recorded under [`testdata/quality/`](testdata/quality/) ([ADR-006](docs/adr/006-testing-strategy.md), spec §9 criterion 3). It's part of `go test ./...` and runs in CI. It fails if any found track isn't credited to the expected artist, if any entry's status, Live or Tape label or track differs from the owner-reviewed `expected.json`, or if found / matchable is below 90% overall. To see the per-setlist table:
+
+```sh
+go test ./internal/quality -run TestMatchingQuality -v
+```
+
+Each setlist folder holds `setlist.json` (from setlist.fm), `searches.json` (every Spotify search the pipeline makes for it, both passes for covers) and `expected.json` (written by hand). The recorded data is trimmed to the fields the app reads; the decision to commit it is in [step 09's handoff](docs/plan/09-matching-quality-tests/handoff.md).
+
+**Recording or refreshing fixtures** (never in CI; needs the real setlist.fm key and Spotify client ID and secret in `.env`; works in Git Bash):
+
+```bash
+go run -tags live ./cmd/recordfixtures <setlist.fm setlist URL or ID>...
+```
+
+It uses a Spotify app token (no login) and market `GB` (`-market` to change it), writes `setlist.json` and `searches.json` to `testdata/quality/<setlist-id>/`, and never touches `expected.json` or writes keys or tokens. A new setlist needs an `expected.json`; after a refresh, review the test's differences and update the expectations (the owner approves them). `go test ./internal/quality -run TestMatchingQuality -quality.draft=<dir>` writes the pipeline's actual results as draft expectations to start from.
 
 CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the same three checks on every pull request to `main`, and again on the merged code before each deploy. A PR can't be merged until its `test` check passes.
 
