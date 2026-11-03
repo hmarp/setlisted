@@ -132,9 +132,22 @@ func record(ctx context.Context, sfm *setlistfm.Client, sp *spotify.Client, toke
 	show := sl.Show()
 	s := quality.Searches{Market: market, Recorded: time.Now().UTC().Format("2006-01-02")}
 	seen := map[[2]string]bool{}
+	var covers, tapes, medleys, skipped int
 	for _, e := range show.Entries() {
+		switch {
+		case e.Kind == setlist.KindSkipped:
+			skipped++
+		case e.Kind == setlist.KindMedley:
+			medleys++
+		}
+		if e.IsTape {
+			tapes++
+		}
 		if e.Kind != setlist.KindSong {
 			continue
+		}
+		if e.IsCover() {
+			covers++
 		}
 		for _, artist := range e.ExpectedArtists {
 			k := [2]string{e.Name, artist}
@@ -170,8 +183,8 @@ func record(ctx context.Context, sfm *setlistfm.Client, sp *spotify.Client, toke
 	if _, err := os.Stat(filepath.Join(dir, quality.ExpectedFile)); err != nil {
 		note = " (no expected.json yet)"
 	}
-	fmt.Printf("%s  %s, %s, %s: %d matchable entries, %d searches → %s%s\n",
-		show.ID, show.Band, show.Date, show.Venue, show.Matchable(), len(s.Searches), dir, note)
+	fmt.Printf("%s  %s, %s, %s: %d matchable (%d covers, %d tapes), %d medleys, %d skipped; %d searches → %s%s\n",
+		show.ID, show.Band, show.Date, show.Venue, show.Matchable(), covers, tapes, medleys, skipped, len(s.Searches), dir, note)
 	return nil
 }
 
