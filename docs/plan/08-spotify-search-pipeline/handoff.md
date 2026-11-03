@@ -153,14 +153,38 @@ unset SPOTIFY_TEST_TOKEN
 
 It searches "Battery" by Metallica in `GB` (override with `SPOTIFY_TEST_MARKET`) and logs the 10 candidates, then runs `MatchShow` on a small show (a song, a cover found under the band, a cover needing Diamond Head, `"Heroes"` with quotes, a solo and a medley) and logs each row.
 
-**Result:** _pending; to be filled in from the owner's run._
+**Result (owner's machine, 2026-11-03, app token, market `GB`): passed.**
+
+- "Battery" / Metallica returned 10 candidates, all credited to Metallica: the studio track on *Master Of Puppets (Remastered)* first, then a remastered box-set copy, seven live versions and a 1985 rough mix.
+- `MatchShow` on the six-entry show took **696 ms** (5 searches, run up to 4 at a time):
+
+| # | Entry | Status | Chosen track |
+|---|---|---|---|
+| 1 | Battery | `found` | "Battery", *Master Of Puppets (Remastered)* |
+| 2 | Am I Evil? (cover of Diamond Head) | `found` (band's own recording, one search) | "Am I Evil? - Remastered", *Ride The Lightning (Deluxe / Remastered)* |
+| 3 | Helpless (cover of Diamond Head) | `found` (band's own recording, one search) | "Helpless - Remastered", *The $5.98 EP - Garage Days Re-Revisited (Remastered)* |
+| 4 | `"Heroes"` (cover of David Bowie) | `cover_fallback` | `"Heroes" - 2017 Remaster` by David Bowie, *"Heroes" (2017 Remaster)* |
+| – | Drum Solo | dropped (skipped) | – |
+| 5 | Medley: A / B | `not_found_medley` (not searched) | – |
+
+All sensible. The quoted title was searched as `track:"Heroes"` and still found Bowie's `"Heroes"`, and the matcher accepted it, because MATCH-4 normalisation turns the quotes into spaces.
+
+**Not checked live:** a user token with `market=from_token` (step 10 will exercise it on Cloud Run), and Spotify's 429 and 401 responses (covered by the `httptest` tests only).
 
 ## Spotify quirks
 
 - Search results can contain `null` items; they're skipped (as are items with no ID).
 - `market=from_token` only works with a user token. The client-credentials token step 09 uses needs an explicit country.
 - In development mode `limit` is capped at 10 (ADR-005).
-- Others found by the manual check: _see the result above._
+
+Seen in the live check (worth watching in step 09):
+
+- **Remastered and deluxe reissues keep the original release date.** The *Master Of Puppets (Deluxe Box Set / Remastered)* copies are dated `1986-03-03`, so MATCH-8 can't tell them from the original. Live and rough-mix tracks that were added to a box set carry the box set's original date too. Studio-before-live (MATCH-6) still ranks them correctly.
+- **`album_type` is inconsistent for box sets:** some deluxe box sets are `compilation`, others `album` (*ReLoad (Remastered Deluxe Box Set)*, dated 2026).
+- **Placeholder dates:** some albums are dated 1 January with `day` precision (*S&M* `1999-01-01`, *Through The Never* `2013-01-01`), so the precision field can't be trusted to mean an exact day.
+- **Live versions dominate the results for popular songs:** 7 of the 10 "Battery" results were live. The studio track was still first, but this is the case ADR-005's "fetch a second page" remedy is for, if step 09 finds a song whose studio version is pushed out.
+- **Unmarked suffixes:** "Battery - October 1985 / Work In Progress Rough Mix" has no step 07 marker, so its suffix isn't stripped and it isn't a candidate. That's the right outcome here, but only by accident (`rough mix` isn't an exclusion marker).
+- **Spotify's own titles carry quotes:** Bowie's track is literally `"Heroes" - 2017 Remaster`.
 
 ## Notes for later steps
 
@@ -170,6 +194,6 @@ It searches "Battery" by Metallica in `GB` (override with `SPOTIFY_TEST_MARKET`)
 
 ## Known gaps
 
-- **Not yet checked against live Spotify** (see the manual check above).
+- **The live check used an app token and `GB`**, not a user token with `from_token`. Step 10's Cloud Run check covers that.
 - A 429 is retried per search, not per show: 4 parallel searches hit by a rate limit each wait on their own. There's no shared back-off.
 - `Retry-After` as an HTTP date isn't parsed (falls back to the backoff). Spotify sends seconds.
