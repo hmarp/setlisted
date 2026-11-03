@@ -124,6 +124,80 @@ The band's up to 20 most recent shows that have at least one entry, newest first
 
 **Errors:** `404 not_found` for an ID that isn't an MBID or that setlist.fm doesn't know; `503 upstream_unavailable` (`service: "setlist.fm"`).
 
+### `GET /api/shows/{id}/preview`
+
+The preview of one show (PREV-2 to PREV-4, PREV-7): the setlist fetched from setlist.fm, classified, and every song matched on Spotify with the user's token (`market=from_token`). Needs a session. `{id}` is a show `id` from the show list. Matching runs on every call (no caching, ADR-005) and typically takes a few seconds; show "Matching songs…" while waiting (PREV-1).
+
+**Response `200`:**
+
+```json
+{
+  "show": { "id": "63de4613", "band": "Gojira", "date": "14 Mar 2026", "venue": "Haus Auensee", "city": "Leipzig",
+            "tour": "Mea Culpa Tour", "setlistUrl": "https://www.setlist.fm/setlist/gojira/2026/haus-auensee-leipzig-germany-63de4613.html" },
+  "summary": { "found": 7, "matchable": 9 },
+  "canCreate": true,
+  "sets": [
+    { "heading": "", "entries": [
+      { "position": 1, "name": "Intro", "note": null, "tape": true, "status": "found", "live": false, "originalArtist": null,
+        "track": { "id": "4uLU6hMCjMI75M1A2tKUQC", "title": "Intro", "artists": ["Gojira"], "album": "Magma" } },
+      { "position": 2, "name": "Silvera", "note": "extended outro", "tape": false, "status": "live", "live": true, "originalArtist": null,
+        "track": { "id": "…", "title": "Silvera - Live", "artists": ["Gojira"], "album": "Live at Wacken" } },
+      { "position": 3, "name": "Medley: Backbone / Remembrance", "note": null, "tape": false, "status": "not_found_medley", "live": false, "originalArtist": null, "track": null }
+    ]},
+    { "heading": "Encore 1", "entries": [
+      { "position": 4, "name": "Hellion", "note": null, "tape": false, "status": "cover_fallback", "live": true, "originalArtist": "Judas Priest",
+        "track": { "id": "…", "title": "Hellion - Live", "artists": ["Judas Priest"], "album": "Unleashed in the East (Live)" } }
+    ]}
+  ],
+  "trackIds": ["4uLU6hMCjMI75M1A2tKUQC", "…", "…"]
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `show.id` | The setlist.fm setlist ID (the same as `{id}`). Create (step 11) takes it. |
+| `show.band`, `show.venue`, `show.city` | As setlist.fm has them (PREV-2). |
+| `show.date` | `DD Mon YYYY`, as in the show list (or setlist.fm's text if it doesn't parse). |
+| `show.tour` | The tour name, or `null` when there's none. |
+| `show.setlistUrl` | The show's page on setlist.fm, for PREV-2's link. |
+| `summary.found` | Entries with any of the three Found statuses (`found`, `cover_fallback`, `live`). |
+| `summary.matchable` | Entries that aren't skipped and aren't medleys (spec §1). Show "‹found› of ‹matchable› songs found" (PREV-2). |
+| `canCreate` | `false` exactly when `summary.found` is `0`. Then disable "Create playlist" and show "None of these songs were found on Spotify." (PREV-7). |
+| `sets` | In setlist order. The first is the main set, with `heading` `""` (no heading shown). Every later set has a non-empty `heading` to show above it: setlist.fm's set name, else `Encore N`, else `Set N` (PREV-3). A set whose entries are all skipped is left out, so no heading appears with nothing under it. `[]` if the show has nothing to show. |
+| `entries[].position` | The row number, 1…n across the whole show (it doesn't restart per set). Skipped entries (solos, jams, nameless entries) aren't in the response at all and take no number. |
+| `entries[].name` | The entry exactly as on setlist.fm. |
+| `entries[].note` | setlist.fm's note, shown as secondary text, or `null`. |
+| `entries[].tape` | `true` for a tape: add a **"Tape"** label, whatever the status (PREV-4). |
+| `entries[].status` | One of the values below. |
+| `entries[].live` | `true` when the chosen track is a live version: always with `status: "live"`, and possibly with `cover_fallback`. |
+| `entries[].originalArtist` | The covered artist for **every cover** (setlist.fm's `cover`), else `null`. Only show "Cover → …" when `status` is `cover_fallback`: a cover found under the band itself is a plain Found. |
+| `entries[].track` | The matched Spotify track (`id`, `title`, `artists` in Spotify's order, `album`), present exactly when the status is a Found one, else `null`. |
+| `trackIds` | The ordered `track.id`s of every found entry, in setlist order, **duplicates kept** (ENT-7), not-found and medley entries left out. Send it unchanged with `show.id` to create (step 11). `[]` when nothing was found. |
+
+**Status values and labels (PREV-4):**
+
+| `status` | `live` | Row shows |
+|---|---|---|
+| `found` | `false` | Found, plus the track's title, artist(s) and album |
+| `live` | `true` | "Live version", plus the track details |
+| `cover_fallback` | `false` | "Cover → ‹originalArtist›", plus the track details |
+| `cover_fallback` | `true` | "Cover → ‹originalArtist›" **and** "Live version", plus the track details |
+| `not_found` | `false` | Not found |
+| `not_found_medley` | `false` | Not found (medley) |
+
+Add "Tape" to any of them when `tape` is `true`. The preview is read-only (PREV-5): nothing in the response is meant to be edited or reordered.
+
+**Errors:**
+
+| Status | Code | When | UI |
+|---|---|---|---|
+| `404` | `not_found` | `{id}` isn't a setlist ID (letters and digits only), or setlist.fm doesn't know it | — |
+| `503` | `upstream_unavailable`, `service: "setlist.fm"` | setlist.fm failed, timed out or kept rate-limiting | "Couldn't reach setlist.fm. Try again." with Retry, which repeats the preview (ERR-1) |
+| `503` | `upstream_unavailable`, `service: "Spotify"` | a Spotify search failed or kept rate-limiting, or matching didn't finish within the server's budget (50 s for the whole request) | "Couldn't reach Spotify. Try again." with Retry (ERR-1) |
+| `401` | `not_logged_in` | no valid session, or Spotify rejected the user's token (the session cookie is cleared) | the login screen (AUTH-8) |
+
+Any error means no partial preview: Retry fetches and matches the whole show again.
+
 ## Login endpoints
 
 These are browser navigations, not `fetch` calls (except logout).

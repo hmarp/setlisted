@@ -64,6 +64,11 @@ A protected endpoint that creates a **new private playlist** in the user's Spoti
      - setlist.fm unavailable or unknown show, or Spotify failing **before** the playlist exists → `503 upstream_unavailable` (or `404` for an unknown show), with nothing created (ERR-4);
      - adding tracks fails **after** creation → `502` with `code: "partial_create"`, a user-facing message, and `playlist.url` so the UI can link to it (ERR-3). **No rollback, no deletion**;
      - Spotify 401 → `401 not_logged_in`.
+   - *From step 10:*
+     - `showId` is the preview's `show.id`. Validate it with step 10's `setlistIDPattern` (`internal/httpapi/preview.go`: letters and digits, 1–32 characters) so both endpoints agree; a malformed one is `400 invalid_request` here (a body field, not a path), an unknown one `404 not_found` (`setlistfm.ErrNotFound`).
+     - `trackIds` is the preview's list unchanged: Spotify track IDs in setlist order, duplicates kept, not-found and medley entries already left out (PL-5). Re-fetching the show (`sl.Show().Header`) gives `Band`, `Tour` (`""` when none), `City`, `Date` (`DD Mon YYYY`), `Venue` and `URL` for PL-2/PL-3.
+     - The Spotify client is `d.Spotify` in `httpapi.Deps` (one client built in `main`). Register the route on the `api` mux.
+     - Give the whole request one budget under the 60 s write timeout, like the preview's 50 s `previewBudget`, and reuse its client-gone handling (`r.Context().Err() != nil` → log `499` at INFO, no outage WARN). Decide and document what happens if the client goes away after the playlist exists (nothing is rolled back, ERR-3).
 2. **`docs/api.md`:** document the request, response, validation and errors, including `partial_create`.
 
 ## Tests (`httptest`, with fake Spotify and setlist.fm)
