@@ -30,6 +30,13 @@ var versionMarkers = []string{
 // as Steven Wilson's "Lazarus (2015 Recording)".
 var yearVersionWords = []string{"version", "recording"}
 
+// featuredMarkers start a featured-artist credit ("(feat. Dani Filth)",
+// "- ft. X", "[featuring X]"), which is stripped like a version suffix
+// (MATCH-4, added in step 09). Only the segment's first word is checked
+// (full stops are already removed), so a title such as "(Lift Me Up)" or a
+// subtitle that merely contains "ft" isn't affected.
+var featuredMarkers = []string{"feat", "ft", "featuring"}
+
 // excludedMarkers identify a version that must never be chosen (MATCH-5),
 // whether they're in a title suffix or the album title. A title segment that
 // contains one is also stripped as a version suffix, so the rest of the title

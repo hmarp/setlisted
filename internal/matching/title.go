@@ -112,10 +112,16 @@ func trimSeparators(s string) string {
 }
 
 // isVersionSegment reports whether a title segment contains a version or
-// exclusion marker.
+// exclusion marker, or is a featured-artist credit.
 func isVersionSegment(seg string) bool {
 	ws := strings.Fields(words(seg))
-	return containsAny(ws, versionMarkers) || containsAny(ws, excludedMarkers) || isYearVersion(ws)
+	return containsAny(ws, versionMarkers) || containsAny(ws, excludedMarkers) || isYearVersion(ws) || isFeatured(ws)
+}
+
+// isFeatured reports whether ws is a featured-artist credit: its first word
+// is one of featuredMarkers.
+func isFeatured(ws []string) bool {
+	return len(ws) > 0 && slices.Contains(featuredMarkers, ws[0])
 }
 
 // isYearVersion reports whether ws contains a four-digit year followed by

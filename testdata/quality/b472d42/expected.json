@@ -5,8 +5,9 @@
     {
       "position": 1,
       "name": "Face Ripped Off",
-      "status": "not_found",
-      "comment": "JUDGEMENT CALL: Not found because Spotify titles it \"Face Ripped Off (feat. Aaron Heard)\" and \"feat.\" is not a version marker (MATCH-4: any other difference means no candidate). FLAGGED as a rule problem; if the owner amends MATCH-4 to strip feat. credits this becomes found, track 3Wd984FGyUfBaWcylWl1l4 (album \"Homicidal Ecstasy\")."
+      "status": "found",
+      "comment": "\"Face Ripped Off (feat. Aaron Heard)\" by Sanguisugabogg, Aaron Heard on \"Homicidal Ecstasy\". Found thanks to the featured-artist rule added to MATCH-4 in step 09 (owner-approved); the album copy (2023-02-03) beats the earlier single (MATCH-7).",
+      "trackId": "3Wd984FGyUfBaWcylWl1l4"
     },
     {
       "position": 2,

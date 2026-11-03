@@ -119,7 +119,17 @@ func TestMatch_MATCH4_Title(t *testing.T) {
 		{"Hell-Bent", "Hell Bent", true},
 		{"T.N.T.", "TNT", true},
 		{"Für Elise", "Fur Elise", true},
-		{"Battery", "Battery (feat. Someone)", false},
+		// Featured-artist credits are stripped (MATCH-4, step 09).
+		{"Battery", "Battery (feat. Someone)", true},
+		{"wonderful life", "wonderful life (feat. Dani Filth)", true},
+		{"Battery", "Battery - ft. Someone", true},
+		{"Battery", "Battery [Featuring Someone]", true},
+		{"Battery", "Battery (feat. Someone) - Remastered 2016", true},
+		{"Battery", "Battery - Live (feat. Someone)", true},
+		// Only a credit that starts the segment counts.
+		{"Battery", "Battery (Lift Me Up)", false},
+		{"Battery", "Battery (Song ft Someone)", false},
+		{"Battery", "Battery feat. Someone", false},
 		{"", "", false},
 	}
 	for _, tt := range tests {

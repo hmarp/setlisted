@@ -48,8 +48,9 @@
     {
       "position": 7,
       "name": "wonderful life",
-      "status": "not_found",
-      "comment": "JUDGEMENT CALL: Not found because Spotify titles it \"wonderful life (feat. Dani Filth)\" and \"feat.\" is not a version marker. FLAGGED as a rule problem, same as Sanguisugabogg #1; with a feat. rule it becomes found, track 0ceW5TkemJUEmJERavfqQq (album \"amo\")."
+      "status": "found",
+      "comment": "\"wonderful life (feat. Dani Filth)\" by Bring Me The Horizon, Dani Filth on \"amo\". Found thanks to the featured-artist rule added to MATCH-4 in step 09 (owner-approved). JUDGEMENT CALL: \"amo\" has two identical copies (0ceW5TkemJUEmJERavfqQq and 7LtjDITgvKyxHeeA3CfVOb, same date); Spotify's order picks the first, and the album beats the 2018 single (MATCH-7).",
+      "trackId": "0ceW5TkemJUEmJERavfqQq"
     },
     {
       "position": 8,
