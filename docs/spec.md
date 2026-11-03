@@ -94,7 +94,8 @@ Each entry in the chosen show is classified, in this order:
 - **MATCH-4 (title)** The track title equals the entry name after normalising both, which means:
   - ignoring case, accents and punctuation;
   - treating `&` and `and` as the same;
-  - removing **version suffixes**, i.e. trailing parenthesised, bracketed or dash-separated markers such as "Remastered", "2015 Remaster", "Live", "Live at …", "Single Version", "Explicit", "Mono", "Stereo", "Deluxe", "‹year› Version".
+  - removing **version suffixes**, i.e. trailing parenthesised, bracketed or dash-separated markers such as "Remastered", "2015 Remaster", "Live", "Live at …", "Single Version", "Explicit", "Mono", "Stereo", "Deluxe", "‹year› Version";
+  - removing a trailing parenthesised, bracketed or dash-separated **featured-artist credit** ("feat. …", "ft. …", "featuring …"), so "wonderful life (feat. Dani Filth)" matches "wonderful life". MATCH-3 still applies to the track's credited artists.
 
   Any other difference means no candidate (e.g. "One" ≠ "One More Time").
 

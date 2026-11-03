@@ -1,6 +1,7 @@
 package matching
 
 import (
+	"slices"
 	"strings"
 	"unicode"
 
@@ -111,17 +112,23 @@ func trimSeparators(s string) string {
 }
 
 // isVersionSegment reports whether a title segment contains a version or
-// exclusion marker.
+// exclusion marker, or is a featured-artist credit.
 func isVersionSegment(seg string) bool {
 	ws := strings.Fields(words(seg))
-	return containsAny(ws, versionMarkers) || containsAny(ws, excludedMarkers) || isYearVersion(ws)
+	return containsAny(ws, versionMarkers) || containsAny(ws, excludedMarkers) || isYearVersion(ws) || isFeatured(ws)
+}
+
+// isFeatured reports whether ws is a featured-artist credit: its first word
+// is one of featuredMarkers.
+func isFeatured(ws []string) bool {
+	return len(ws) > 0 && slices.Contains(featuredMarkers, ws[0])
 }
 
 // isYearVersion reports whether ws contains a four-digit year followed by
-// "version", e.g. "2016 version".
+// one of yearVersionWords, e.g. "2016 version" or "2015 recording".
 func isYearVersion(ws []string) bool {
 	for i := 0; i+1 < len(ws); i++ {
-		if ws[i+1] == "version" && len(ws[i]) == 4 && strings.IndexFunc(ws[i], func(r rune) bool { return r < '0' || r > '9' }) < 0 {
+		if slices.Contains(yearVersionWords, ws[i+1]) && len(ws[i]) == 4 && strings.IndexFunc(ws[i], func(r rune) bool { return r < '0' || r > '9' }) < 0 {
 			return true
 		}
 	}

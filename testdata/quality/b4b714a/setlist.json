@@ -1,0 +1,103 @@
+{
+  "id": "b4b714a",
+  "eventDate": "29-10-2026",
+  "artist": {
+    "mbid": "3a51b862-0144-40f6-aa17-6aaeefea29d9",
+    "name": "Steven Wilson",
+    "disambiguation": "founder of Porcupine Tree"
+  },
+  "venue": {
+    "name": "Royal Albert Hall",
+    "city": {
+      "name": "London"
+    }
+  },
+  "tour": null,
+  "sets": {
+    "set": [
+      {
+        "name": "Set 1:",
+        "encore": 0,
+        "song": [
+          {
+            "name": "Home Invasion",
+            "tape": false,
+            "cover": null,
+            "info": "First time as show opener"
+          },
+          {
+            "name": "Regret #9",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Requiem for a Village",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "On Chapel Slope",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "A Basket of Bees",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "The Raven That Refused to Sing",
+            "tape": false,
+            "cover": null,
+            "info": "Steven forgets some of the second verse’s lyrics"
+          }
+        ]
+      },
+      {
+        "name": "Set 2: The Overview",
+        "encore": 0,
+        "song": [
+          {
+            "name": "Objects Outlive Us",
+            "tape": false,
+            "cover": null,
+            "info": "arranged for orchestra by Simon Dobson"
+          },
+          {
+            "name": "The Overview",
+            "tape": false,
+            "cover": null,
+            "info": "arranged for orchestra by Simon Dobson"
+          }
+        ]
+      },
+      {
+        "name": "",
+        "encore": 1,
+        "song": [
+          {
+            "name": "Lazarus",
+            "tape": false,
+            "cover": {
+              "mbid": "169c4c28-858e-497b-81a4-8bc15e0026ea",
+              "name": "Porcupine Tree",
+              "disambiguation": ""
+            },
+            "info": "acoustic version; Steven & Adam Holzman only"
+          },
+          {
+            "name": "Staircase",
+            "tape": false,
+            "cover": null,
+            "info": "arranged for strings by Wojciech Lemański; without Craig Blundell"
+          }
+        ]
+      }
+    ]
+  },
+  "url": "https://www.setlist.fm/setlist/steven-wilson/2026/royal-albert-hall-london-england-b4b714a.html"
+}

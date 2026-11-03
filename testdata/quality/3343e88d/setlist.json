@@ -1,0 +1,159 @@
+{
+  "id": "3343e88d",
+  "eventDate": "09-08-2026",
+  "artist": {
+    "mbid": "6b335658-22c8-485d-93de-0bc29a1d0349",
+    "name": "Judas Priest",
+    "disambiguation": ""
+  },
+  "venue": {
+    "name": "Catton Hall and Gardens",
+    "city": {
+      "name": "Walton-on-Trent"
+    }
+  },
+  "tour": {
+    "name": "Faithkeepers"
+  },
+  "sets": {
+    "set": [
+      {
+        "name": "",
+        "encore": 0,
+        "song": [
+          {
+            "name": "War Pigs",
+            "tape": true,
+            "cover": {
+              "mbid": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+              "name": "Black Sabbath",
+              "disambiguation": "English heavy metal band"
+            },
+            "info": ""
+          },
+          {
+            "name": "Faithkeepers Intro",
+            "tape": true,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "You've Got Another Thing Comin'",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Metal Gods",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Breaking the Law",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "The Ripper",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "The Sentinel",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Desert Plains",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Lightning Strike",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Turbo Lover",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Steeler",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Delivering the Goods",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Panic Attack",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Victim of Changes",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Halls of Valhalla",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Painkiller",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          }
+        ]
+      },
+      {
+        "name": "",
+        "encore": 1,
+        "song": [
+          {
+            "name": "The Hellion",
+            "tape": true,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Electric Eye",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Hell Bent for Leather",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Living After Midnight",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          }
+        ]
+      }
+    ]
+  },
+  "url": "https://www.setlist.fm/setlist/judas-priest/2026/catton-hall-and-gardens-walton-on-trent-england-3343e88d.html"
+}

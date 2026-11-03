@@ -1,0 +1,173 @@
+{
+  "market": "GB",
+  "recorded": "2026-11-03",
+  "searches": [
+    {
+      "track": "Face Ripped Off",
+      "artist": "Sanguisugabogg",
+      "query": "track:\"Face Ripped Off\" artist:\"Sanguisugabogg\"",
+      "results": [
+        {
+          "id": "3Wd984FGyUfBaWcylWl1l4",
+          "title": "Face Ripped Off (feat. Aaron Heard)",
+          "artists": [
+            "Sanguisugabogg",
+            "Aaron Heard"
+          ],
+          "album": "Homicidal Ecstasy",
+          "albumType": "album",
+          "releaseDate": "2023-02-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "46XOYatIpp8eWhwOUT6Rl7",
+          "title": "Face Ripped Off (feat. Aaron Heard)",
+          "artists": [
+            "Sanguisugabogg",
+            "Aaron Heard"
+          ],
+          "album": "Face Ripped Off (feat. Aaron Heard)",
+          "albumType": "single",
+          "releaseDate": "2023-01-10",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Feening for Bloodshed",
+      "artist": "Sanguisugabogg",
+      "query": "track:\"Feening for Bloodshed\" artist:\"Sanguisugabogg\"",
+      "results": [
+        {
+          "id": "2ksSrqMHkQwuk4fDqbXAZD",
+          "title": "Feening for Bloodshed",
+          "artists": [
+            "Sanguisugabogg"
+          ],
+          "album": "Homicidal Ecstasy",
+          "albumType": "album",
+          "releaseDate": "2023-02-03",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Hungry for Your Insides",
+      "artist": "Sanguisugabogg",
+      "query": "track:\"Hungry for Your Insides\" artist:\"Sanguisugabogg\"",
+      "results": [
+        {
+          "id": "0u30LwgnFAAP8oePK1IwT9",
+          "title": "Hungry for Your Insides",
+          "artists": [
+            "Sanguisugabogg"
+          ],
+          "album": "Homicidal Ecstasy",
+          "albumType": "album",
+          "releaseDate": "2023-02-03",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "To Build a Mountain",
+      "artist": "Sanguisugabogg",
+      "query": "track:\"To Build a Mountain\" artist:\"Sanguisugabogg\"",
+      "results": []
+    },
+    {
+      "track": "To Build a Mountain",
+      "artist": "Crowbar",
+      "query": "track:\"To Build a Mountain\" artist:\"Crowbar\"",
+      "results": [
+        {
+          "id": "6snBia6cmlUVLeMtSyrguK",
+          "title": "To Build a Mountain",
+          "artists": [
+            "Crowbar"
+          ],
+          "album": "Sonic Excess In Its Purest Form",
+          "albumType": "album",
+          "releaseDate": "2003-02-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4pismoOeqH6ubvVJ7uopKm",
+          "title": "To Build a Mountain",
+          "artists": [
+            "Crowbar"
+          ],
+          "album": "Setlist Classics",
+          "albumType": "album",
+          "releaseDate": "2020-05-22",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "A Lesson in Savagery",
+      "artist": "Sanguisugabogg",
+      "query": "track:\"A Lesson in Savagery\" artist:\"Sanguisugabogg\"",
+      "results": [
+        {
+          "id": "1AohtKaEXMlraRFugRVeYO",
+          "title": "A Lesson in Savagery",
+          "artists": [
+            "Sanguisugabogg"
+          ],
+          "album": "Homicidal Ecstasy",
+          "albumType": "album",
+          "releaseDate": "2023-02-03",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Dragged by a Truck",
+      "artist": "Sanguisugabogg",
+      "query": "track:\"Dragged by a Truck\" artist:\"Sanguisugabogg\"",
+      "results": [
+        {
+          "id": "24FP1sTEhFPc8M6CfbBRSt",
+          "title": "Dragged by a Truck",
+          "artists": [
+            "Sanguisugabogg"
+          ],
+          "album": "Tortured Whole",
+          "albumType": "album",
+          "releaseDate": "2021-03-26",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Dead as Shit",
+      "artist": "Sanguisugabogg",
+      "query": "track:\"Dead as Shit\" artist:\"Sanguisugabogg\"",
+      "results": [
+        {
+          "id": "0L73XCSIpp7oxOQ4GxBOLY",
+          "title": "Dead as Shit",
+          "artists": [
+            "Sanguisugabogg"
+          ],
+          "album": "Tortured Whole",
+          "albumType": "album",
+          "releaseDate": "2021-03-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5hoVWuy8CJUSnMoi0O5VLM",
+          "title": "Dead as Shit",
+          "artists": [
+            "Sanguisugabogg"
+          ],
+          "album": "Dead as Shit",
+          "albumType": "single",
+          "releaseDate": "2021-02-05",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "setlistId": "b472d42",
+  "comment": "Drafted by Claude from the recorded data and the spec rules; every entry checked by hand. Reviewed and approved by the owner on 2026-11-03.",
+  "entries": [
+    {
+      "position": 1,
+      "name": "Face Ripped Off",
+      "status": "found",
+      "comment": "\"Face Ripped Off (feat. Aaron Heard)\" by Sanguisugabogg, Aaron Heard on \"Homicidal Ecstasy\". Found thanks to the featured-artist rule added to MATCH-4 in step 09 (owner-approved); the album copy (2023-02-03) beats the earlier single (MATCH-7).",
+      "trackId": "3Wd984FGyUfBaWcylWl1l4"
+    },
+    {
+      "position": 2,
+      "name": "Feening for Bloodshed",
+      "status": "found",
+      "trackId": "2ksSrqMHkQwuk4fDqbXAZD",
+      "comment": "\"Feening for Bloodshed\" by Sanguisugabogg on \"Homicidal Ecstasy\""
+    },
+    {
+      "position": 3,
+      "name": "Hungry for Your Insides",
+      "status": "found",
+      "trackId": "0u30LwgnFAAP8oePK1IwT9",
+      "comment": "\"Hungry for Your Insides\" by Sanguisugabogg on \"Homicidal Ecstasy\""
+    },
+    {
+      "position": 4,
+      "name": "To Build a Mountain",
+      "status": "cover_fallback",
+      "trackId": "6snBia6cmlUVLeMtSyrguK",
+      "comment": "\"To Build a Mountain\" by Crowbar on \"Sonic Excess In Its Purest Form\". Cover of Crowbar: Sanguisugabogg have no recording of it, so the original artist pass finds Crowbar's studio track (album \"Sonic Excess In Its Purest Form\", 2003) rather than the \"Setlist Classics\" re-release (2020)."
+    },
+    {
+      "position": 5,
+      "name": "A Lesson in Savagery",
+      "status": "found",
+      "trackId": "1AohtKaEXMlraRFugRVeYO",
+      "comment": "\"A Lesson in Savagery\" by Sanguisugabogg on \"Homicidal Ecstasy\""
+    },
+    {
+      "position": 6,
+      "name": "Dragged by a Truck",
+      "status": "found",
+      "trackId": "24FP1sTEhFPc8M6CfbBRSt",
+      "comment": "\"Dragged by a Truck\" by Sanguisugabogg on \"Tortured Whole\""
+    },
+    {
+      "position": 7,
+      "name": "Dead as Shit",
+      "status": "found",
+      "trackId": "0L73XCSIpp7oxOQ4GxBOLY",
+      "comment": "\"Dead as Shit\" by Sanguisugabogg on \"Tortured Whole\""
+    }
+  ]
+}

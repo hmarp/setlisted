@@ -1,0 +1,74 @@
+{
+  "setlistId": "b4b714a",
+  "comment": "Drafted by Claude from the recorded data and the spec rules; every entry checked by hand. Reviewed and approved by the owner on 2026-11-03.",
+  "entries": [
+    {
+      "position": 1,
+      "name": "Home Invasion",
+      "status": "not_found",
+      "comment": "JUDGEMENT CALL: Spotify only has the combined track \"Home Invasion / Regret #9\"; setlist.fm lists the two halves separately. No candidate, so Not found (MATCH-9, no guesses). Accepted limitation, not a rule bug."
+    },
+    {
+      "position": 2,
+      "name": "Regret #9",
+      "status": "not_found",
+      "comment": "JUDGEMENT CALL: Same as #1. \"Regret #9 - Alternate Take\" exists but \"Alternate Take\" is not a marker, which is right: an alternate take should not stand in for the song."
+    },
+    {
+      "position": 3,
+      "name": "Requiem for a Village",
+      "status": "found",
+      "trackId": "2lYuQU66csSNVGnaGcEZne",
+      "comment": "\"Requiem for a Village\" by Steven Wilson on \"Requiem for a Village\". New 2026 song released only as singles; the earliest single (2026-09-11) wins (MATCH-7/8)."
+    },
+    {
+      "position": 4,
+      "name": "On Chapel Slope",
+      "status": "found",
+      "trackId": "21txvwAqhszJq4tgP6rNww",
+      "comment": "\"On Chapel Slope\" by Steven Wilson on \"On Chapel Slope\""
+    },
+    {
+      "position": 5,
+      "name": "A Basket of Bees",
+      "status": "found",
+      "trackId": "4QpFW9jjqh9jgvg29NVFKO",
+      "comment": "\"A Basket of Bees\" by Steven Wilson on \"A Basket of Bees\""
+    },
+    {
+      "position": 6,
+      "name": "The Raven That Refused to Sing",
+      "status": "found",
+      "trackId": "69WzNkdbqaJEK6XanOkB4P",
+      "comment": "\"The Raven That Refused to Sing\" by Steven Wilson on \"The Raven That Refused to Sing (and Other Stories)\""
+    },
+    {
+      "position": 7,
+      "name": "Objects Outlive Us",
+      "status": "found",
+      "trackId": "1hiuFbjNa7Q0x41EHUfC80",
+      "comment": "\"Objects Outlive Us\" by Steven Wilson on \"The Overview\""
+    },
+    {
+      "position": 8,
+      "name": "The Overview",
+      "status": "found",
+      "trackId": "0JUhXRWBJT4gyaXCmWJWMQ",
+      "comment": "\"The Overview\" by Steven Wilson on \"The Overview\""
+    },
+    {
+      "position": 9,
+      "name": "Lazarus",
+      "status": "found",
+      "trackId": "1TUdpDRzVEp3SGAnmoZzJD",
+      "comment": "\"Lazarus (2015 Recording)\" by Steven Wilson on \"Transience\". JUDGEMENT CALL: Cover of Porcupine Tree (Steven Wilson's own band). The band pass finds Steven Wilson's studio re-recording \"Lazarus (2015 Recording)\" on \"Transience\" and prefers it to his live version (MATCH-6), so it is Found and Porcupine Tree is never searched for. This relies on the step 09 marker fix (\"‹year› Recording\" added next to \"‹year› Version\"); before it, the live version was chosen. The setlist note says it was played acoustic, which is ignored (ENT-6)."
+    },
+    {
+      "position": 10,
+      "name": "Staircase",
+      "status": "found",
+      "trackId": "4jrdkG6FErqZgWbc6KeSI4",
+      "comment": "\"Staircase\" by Steven Wilson on \"The Harmony Codex\""
+    }
+  ]
+}

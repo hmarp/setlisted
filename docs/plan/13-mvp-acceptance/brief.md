@@ -36,7 +36,10 @@ The session prepares the record sheet, runs the technical checks, and fixes smal
 ## What to do
 
 1. **Create `docs/plan/13-mvp-acceptance/results.md`**, a table with one row per criterion: status (pass / fail / pending), the evidence, the date and notes.
-2. **Criterion 3:** confirm the step 09 quality test passes on `main` in CI, and copy its results table into the record.
+2. **Criterion 3:** confirm the step 09 quality test (`TestMatchingQuality`) passes on `main` in CI, and copy its results table into the record (`go test ./internal/quality -run TestMatchingQuality -v` prints it).
+   - *From step 09:* the owner chose a test set of **6 setlists, not ~10** (covers, tapes and one medley included); record that in the notes. Step 09's result was **79 / 83 = 95.2%**, zero wrong-artist matches, all labels as expected (owner-approved expectations, 2026-11-03).
+   - If the fixtures are re-recorded before then (`cmd/recordfixtures`, see step 09's handoff), the expectations need the owner's review again.
+   - Step 09's post-MVP candidates go in this step's list: splitting medleys (intent Out #4), matching consecutive setlist entries to one combined Spotify track ("Home Invasion" + "Regret #9"), and skipping interludes such as "Kirk and Rob Doodle".
 3. **Criteria 4 and 5:**
    - run `docs/manual-test-checklist.md` on the owner's phone and laptop against Cloud Run;
    - for access control, also check that a logged-out request to every `/api/*` route except health and session returns `401` (e.g. with `curl`).

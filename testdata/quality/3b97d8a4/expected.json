@@ -1,0 +1,118 @@
+{
+  "setlistId": "3b97d8a4",
+  "comment": "Drafted by Claude from the recorded data and the spec rules; every entry checked by hand. Reviewed and approved by the owner on 2026-11-03.",
+  "entries": [
+    {
+      "position": 1,
+      "name": "I Apologise If You Feel Something",
+      "status": "found",
+      "tape": true,
+      "trackId": "4mrjzz6ETpW3wosJUYmKoL",
+      "comment": "\"i apologise if you feel something\" by Bring Me The Horizon on \"amo\". Intro tape, the band's own (not attributed to another artist), found on \"amo\" (released after this show). Two identical copies; Spotify's order decides."
+    },
+    {
+      "position": 2,
+      "name": "MANTRA",
+      "status": "found",
+      "trackId": "060RNnzoMay3wKJek1faPc",
+      "comment": "\"MANTRA\" by Bring Me The Horizon on \"amo\""
+    },
+    {
+      "position": 3,
+      "name": "The House of Wolves",
+      "status": "found",
+      "trackId": "7hntkdvG3jWdFKm7pGCCzd",
+      "comment": "\"The House of Wolves\" by Bring Me The Horizon on \"Sempiternal (Expanded Edition)\""
+    },
+    {
+      "position": 4,
+      "name": "Avalanche",
+      "status": "found",
+      "trackId": "4EyPadLFhtWojU7mkT5hqT",
+      "comment": "\"Avalanche\" by Bring Me The Horizon on \"That's The Spirit\""
+    },
+    {
+      "position": 5,
+      "name": "Go to Hell, for Heaven's Sake",
+      "status": "found",
+      "trackId": "0Koh9yED8UuaXvg9p5lQdB",
+      "comment": "\"Go to Hell, for Heaven's Sake\" by Bring Me The Horizon on \"Sempiternal (Expanded Edition)\""
+    },
+    {
+      "position": 6,
+      "name": "Sleepwalking",
+      "status": "found",
+      "trackId": "0gchQwxmBWj5no8NJ8b2yH",
+      "comment": "\"Sleepwalking\" by Bring Me The Horizon on \"Sempiternal (Expanded Edition)\""
+    },
+    {
+      "position": 7,
+      "name": "wonderful life",
+      "status": "found",
+      "comment": "\"wonderful life (feat. Dani Filth)\" by Bring Me The Horizon, Dani Filth on \"amo\". Found thanks to the featured-artist rule added to MATCH-4 in step 09 (owner-approved). JUDGEMENT CALL: \"amo\" has two identical copies (0ceW5TkemJUEmJERavfqQq and 7LtjDITgvKyxHeeA3CfVOb, same date); Spotify's order picks the first, and the album beats the 2018 single (MATCH-7).",
+      "trackId": "0ceW5TkemJUEmJERavfqQq"
+    },
+    {
+      "position": 8,
+      "name": "Shadow Moses",
+      "status": "found",
+      "trackId": "68osIGtVjM7QWVe6pazLHj",
+      "comment": "\"Shadow Moses\" by Bring Me The Horizon on \"Sempiternal (Expanded Edition)\""
+    },
+    {
+      "position": 9,
+      "name": "Happy Song",
+      "status": "found",
+      "trackId": "1yYE8EyuIV0rrvQ1bA2Fyf",
+      "comment": "\"Happy Song\" by Bring Me The Horizon on \"That's The Spirit\""
+    },
+    {
+      "position": 10,
+      "name": "The Comedown / (I Used to Make Out With) Medusa / Diamonds Aren't Forever / Re: They Have No Reflections",
+      "status": "not_found_medley",
+      "comment": "setlist.fm writes the old-songs medley as four titles joined by \" / \" (note \"Old Songs Medley\"), so ENT-3 classifies it as a medley: Not found (medley), not searched, not matchable."
+    },
+    {
+      "position": 11,
+      "name": "Can You Feel My Heart",
+      "status": "found",
+      "trackId": "0WSa1sucoNRcEeULlZVQXj",
+      "comment": "\"Can You Feel My Heart\" by Bring Me The Horizon on \"Sempiternal (Expanded Edition)\""
+    },
+    {
+      "position": 12,
+      "name": "Follow You",
+      "status": "found",
+      "trackId": "6lFUdRItQEsEuD7dSINL47",
+      "comment": "\"Follow You\" by Bring Me The Horizon on \"That's The Spirit\""
+    },
+    {
+      "position": 13,
+      "name": "Antivist",
+      "status": "found",
+      "trackId": "1fUacP7XP697l6ry01oO4d",
+      "comment": "\"Antivist\" by Bring Me The Horizon on \"Sempiternal (Expanded Edition)\""
+    },
+    {
+      "position": 14,
+      "name": "Drown",
+      "status": "found",
+      "trackId": "6o39Ln9118FKTMbM4BvcEy",
+      "comment": "\"Drown\" by Bring Me The Horizon on \"That's The Spirit\". The setlist note says \"Acoustic\", but notes never affect matching (ENT-6), so the studio track is chosen."
+    },
+    {
+      "position": 15,
+      "name": "Doomed",
+      "status": "found",
+      "trackId": "3lPn81PFyKvXiyHhlkwkQ4",
+      "comment": "\"Doomed\" by Bring Me The Horizon on \"That's The Spirit\""
+    },
+    {
+      "position": 16,
+      "name": "Throne",
+      "status": "found",
+      "trackId": "0M3adYbGtyRHACP86dey1H",
+      "comment": "\"Throne\" by Bring Me The Horizon on \"That's The Spirit\""
+    }
+  ]
+}

@@ -1,0 +1,1626 @@
+{
+  "market": "GB",
+  "recorded": "2026-11-03",
+  "searches": [
+    {
+      "track": "It's a Long Way to the Top (If You Wanna Rock 'n' Roll)",
+      "artist": "Metallica",
+      "query": "track:\"It's a Long Way to the Top (If You Wanna Rock 'n' Roll)\" artist:\"Metallica\"",
+      "results": []
+    },
+    {
+      "track": "It's a Long Way to the Top (If You Wanna Rock 'n' Roll)",
+      "artist": "AC/DC",
+      "query": "track:\"It's a Long Way to the Top (If You Wanna Rock 'n' Roll)\" artist:\"AC/DC\"",
+      "results": [
+        {
+          "id": "7nemcVsXVFZF01iqpIIo2Y",
+          "title": "It's a Long Way to the Top (If You Wanna Rock 'N' Roll)",
+          "artists": [
+            "AC/DC"
+          ],
+          "album": "High Voltage",
+          "albumType": "album",
+          "releaseDate": "1976-05-14",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3EQjW604d5Cfbn8FnZmqyF",
+          "title": "It's a Long Way to the Top (If You Wanna Rock 'n' Roll)",
+          "artists": [
+            "AC/DC"
+          ],
+          "album": "Bonfire",
+          "albumType": "compilation",
+          "releaseDate": "1997",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "6TMGLNVvtY66JVBcZhTA7r",
+          "title": "It's a Long Way to the Top - If You Wanna Rock'n Roll",
+          "artists": [
+            "The JACK - Tribute to AC/DC"
+          ],
+          "album": "Live",
+          "albumType": "album",
+          "releaseDate": "2019",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "5goXCA6RRtmGupK3WplrJE",
+          "title": "It'S A Long Way To The Top (If You Wanna Rock 'N' Roll)",
+          "artists": [
+            "AC/DC Tribute Band"
+          ],
+          "album": "The Best Of AC/DC",
+          "albumType": "compilation",
+          "releaseDate": "2010-07-20",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2k2MsxsV81gEYKQwRO4Bjx",
+          "title": "It's A Long Way To The Top (if You Wanna Rock 'n' Roll)",
+          "artists": [
+            "AC/DC Backing Force"
+          ],
+          "album": "The Best Of AC/DC - Karaoke",
+          "albumType": "compilation",
+          "releaseDate": "2010-07-20",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4jD93WpDpa7BjRlfG46hxl",
+          "title": "It's a Long Way to the Top (If You Wanna Rock 'N' Roll) - Original Australian Release",
+          "artists": [
+            "AC/DC"
+          ],
+          "album": "Backtracks",
+          "albumType": "compilation",
+          "releaseDate": "2009-11-10",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "The Ecstasy of Gold",
+      "artist": "Metallica",
+      "query": "track:\"The Ecstasy of Gold\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "3RlKO1La6qRZp4qWVpZCPp",
+          "title": "The Ecstasy Of Gold - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "S&M",
+          "albumType": "album",
+          "releaseDate": "1999-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4qAakbD2wRBjnKxlU8EywU",
+          "title": "The Ecstasy Of Gold - Live",
+          "artists": [
+            "Metallica",
+            "San Francisco Symphony"
+          ],
+          "album": "S&M2",
+          "albumType": "album",
+          "releaseDate": "2020-08-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0jXvMYQQ0x9uhFJbKs8u4w",
+          "title": "The Ecstasy of Gold",
+          "artists": [
+            "Ennio Morricone",
+            "Metallica"
+          ],
+          "album": "We All Love Ennio Morricone",
+          "albumType": "compilation",
+          "releaseDate": "2007-02-27",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0IrWYlu7USDPsE9LK2Ir05",
+          "title": "The Ecstasy of Gold - Live at Arco Arena, Sacramento, CA / January 11th, 1992",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "030OTB3hWY3SMN3rT8fqAm",
+          "title": "The Ecstasy of Gold",
+          "artists": [
+            "Ennio Morricone",
+            "Metallica"
+          ],
+          "album": "We All Love Ennio Morricone",
+          "albumType": "compilation",
+          "releaseDate": "2007-02-20",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5QqrxhbJwP8lxjCDsgKY5g",
+          "title": "The Ecstasy of Gold - Live at Maimarktgelände, Mannheim, Germany / May 22nd, 1993",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2wrVYKAzETnJ7TbJPaZzD2",
+          "title": "The Ecstasy of Gold - Live at Tushino Airfield, Moscow, Russia / September 28th, 1991",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "71phbUO2xfBXFDRCEP5ZBn",
+          "title": "The Ecstasy of Gold - Live",
+          "artists": [
+            "SaD - Symphony and Metallica"
+          ],
+          "album": "Symphony and Metallica (Live at Vicenza City Hall Theatre)",
+          "albumType": "album",
+          "releaseDate": "2020-12-25",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "The Ecstasy of Gold",
+      "artist": "Ennio Morricone",
+      "query": "track:\"The Ecstasy of Gold\" artist:\"Ennio Morricone\"",
+      "results": [
+        {
+          "id": "6PrKZUXJPmBiobMN44yR8Y",
+          "title": "The Ecstasy Of Gold - 2004 Remaster",
+          "artists": [
+            "Ennio Morricone"
+          ],
+          "album": "The Good, The Bad And The Ugly [Original Motion Picture Soundtrack / (Remastered & Expanded)]",
+          "albumType": "album",
+          "releaseDate": "1967",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "6m4HWTYMRSJkaUuvXTaNmE",
+          "title": "The Ecstasy of Gold - L'Estasi Dell'oro",
+          "artists": [
+            "Ennio Morricone",
+            "Edda Dell'Orso"
+          ],
+          "album": "The Good, The Bad and The Ugly (Original Motion Picture Soundtrack) [Remastered Edition]",
+          "albumType": "album",
+          "releaseDate": "1966",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "3uzDcSwbuCwh2JxPieMuK1",
+          "title": "The Ecstasy of Gold - L’estasi dell’oro (Bandini Remix) - 2021 Remastered Version",
+          "artists": [
+            "Ennio Morricone",
+            "Bandini"
+          ],
+          "album": "Ennio Morricone Remixes (2021 Remastered Version)",
+          "albumType": "album",
+          "releaseDate": "2021-11-12",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3d1ZZs7GvwSN43muHqgPh1",
+          "title": "The Ecstasy of Gold (From \"The Good, The Bad and the Ugly\") - Live",
+          "artists": [
+            "Ennio Morricone",
+            "Danish National Symphony Orchestra",
+            "Sarah Hicks"
+          ],
+          "album": "The Morricone Duel: The Most Dangerous Concert Ever (Live)",
+          "albumType": "album",
+          "releaseDate": "2018-11-23",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "303JvHz63HhOrIdVP9GCZb",
+          "title": "The Ecstasy of Gold (From \"The Good, the Bad and the Ugly\")",
+          "artists": [
+            "Ennio Morricone",
+            "Edda Dell'Orso"
+          ],
+          "album": "The Best of Ennio Morricone",
+          "albumType": "compilation",
+          "releaseDate": "2016",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "0jXvMYQQ0x9uhFJbKs8u4w",
+          "title": "The Ecstasy of Gold",
+          "artists": [
+            "Ennio Morricone",
+            "Metallica"
+          ],
+          "album": "We All Love Ennio Morricone",
+          "albumType": "compilation",
+          "releaseDate": "2007-02-27",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6Cg2DwlVvb4xxrSEE35k37",
+          "title": "The Ecstasy Of Gold",
+          "artists": [
+            "Ennio Morricone"
+          ],
+          "album": "Metallica Through The Never (Music From The Motion Picture)",
+          "albumType": "album",
+          "releaseDate": "2013-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1qRW3L2WfoTEIN7b2M0zFd",
+          "title": "The Ecstasy Of Gold (from \"The Good, the Bad and the Ugly\")",
+          "artists": [
+            "Ennio Morricone",
+            "HAUSER",
+            "Czech Studio Orchestra",
+            "Robert Ziegler"
+          ],
+          "album": "HAUSER Plays Morricone",
+          "albumType": "album",
+          "releaseDate": "2020-10-27",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "43L0ziOELzfQTKDixj779n",
+          "title": "The Ecstasy of Gold (From \"The Good, the Bad and the Ugly\")",
+          "artists": [
+            "Ennio Morricone",
+            "Edda Dell'Orso"
+          ],
+          "album": "Once Upon a Time in the West - Ennio Morricone Music Collection (The Complete Edition)",
+          "albumType": "album",
+          "releaseDate": "2016",
+          "releaseDatePrecision": "year"
+        }
+      ]
+    },
+    {
+      "track": "Blackened",
+      "artist": "Metallica",
+      "query": "track:\"Blackened\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "1odk70HBNbdk4wU0Ja9JR7",
+          "title": "Blackened",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered)",
+          "albumType": "album",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3WC0gsMu6HYTolvlsCEFKF",
+          "title": "Blackened - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "48N7qgvT1floGm3pPkzRtH",
+          "title": "Blackened 2020",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Blackened 2020",
+          "albumType": "single",
+          "releaseDate": "2020-05-15",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4gyvYlBKCIMa0Zt98xGaMO",
+          "title": "Blackened - Live / Seattle '89",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4zffH8NN4hnZ27zNxY3A2D",
+          "title": "Blackened - Work In Progress Rough Mix",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6OkR1wFLtUppjhtQoKCA3A",
+          "title": "Blackened - 1987 / From James' Riff Tapes",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6caDlNuQxWedCm0XoAYtB1",
+          "title": "Blackened - 1987 / From James' Riff Tapes 2",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6k0oeVSnCtvDp5nZLeo6WO",
+          "title": "Blackened - October 1987 / Writing In Progress",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6aDA4VMc6kF9mOgjbhSYRB",
+          "title": "Blackened - November 1987 Demo",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4Cf8Mi2focz73qChnuZuDk",
+          "title": "Blackened - Live At Long Beach Arena, Long Beach, CA / December 7th, 1988",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Fuel",
+      "artist": "Metallica",
+      "query": "track:\"Fuel\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "6FUwPb4mGlUDbx42uspXaZ",
+          "title": "Fuel",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Reload",
+          "albumType": "album",
+          "releaseDate": "1997-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2IkGqhPPdEhyzsDKGMDfCE",
+          "title": "Fuel - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6z8LLgG81xuNzqJO5XjWPP",
+          "title": "Fuel - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "S&M",
+          "albumType": "album",
+          "releaseDate": "1999-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3Xz8DQL0hUGTQiSNEUBdVR",
+          "title": "Fuel",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Reload",
+          "albumType": "album",
+          "releaseDate": "1997-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0msDFRusep31oGvYA4WOal",
+          "title": "Fuel - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica Through The Never (Music From The Motion Picture)",
+          "albumType": "album",
+          "releaseDate": "2013-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "29B3rXKxHs1843rVW4pvPL",
+          "title": "Fuel - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2LigPcnIbhXYmeqvt2zIc6",
+          "title": "Fuel - \"Fuel for Fire\" October '95 Rough Mix",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0EgTvJWWJToalSU8JGFwK2",
+          "title": "Fuel - Live at Reading Festival, Reading, England / August 24th 1997",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6riNbqOogS5tUKPDQmgWNS",
+          "title": "Fuel - Live at Ministry of Sound, London, England / November 13th 1997",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Leper Messiah",
+      "artist": "Metallica",
+      "query": "track:\"Leper Messiah\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "6XN00D9ejjEt1cW1sY44Gu",
+          "title": "Leper Messiah",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Master Of Puppets (Remastered)",
+          "albumType": "album",
+          "releaseDate": "1986-03-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "68Xw6fcuDcxfirHRXE7veQ",
+          "title": "Leper Messiah - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Master Of Puppets (Deluxe Box Set / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1986-03-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "42TNtAEG1xM0bLTVGMl6gb",
+          "title": "Leper Messiah - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Some Kind Of Monster",
+          "albumType": "album",
+          "releaseDate": "2004-07-13",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4MWODsjazdui3hj4KnDquz",
+          "title": "Leper Messiah - 1985 / From James' Riff Tapes 2",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Master Of Puppets (Deluxe Box Set / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1986-03-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4AW9cMt80lOJp2u3MB05mJ",
+          "title": "Leper Messiah - 1985 / From James' Riff Tapes",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Master Of Puppets (Deluxe Box Set / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1986-03-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2ay9kUDdCP3d0SpcYtyLh5",
+          "title": "Leper Messiah - December 1985 / Work In Progress Rough Mix",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Master Of Puppets (Deluxe Box Set / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1986-03-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7H0kkFk3cDjb3Z8EhtGi3E",
+          "title": "Leper Messiah - Late August 1985 Demo",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Master Of Puppets (Deluxe Box Set / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1986-03-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3q4LLtm4N2j1hNmYVqBIX8",
+          "title": "Leper Messiah - Late August 1985 Demo 2",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Master Of Puppets (Deluxe Box Set / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1986-03-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1aL7k0rmfswFjkcXat9I3O",
+          "title": "Leper Messiah - Live At Long Beach Arena, Long Beach, CA / December 7th, 1988",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "44wvQrH85lgywdGHyO6FkT",
+          "title": "Leper Messiah - Live At The Troubadour, West Hollywood, CA / May 24th, 1988",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Devil's Dance",
+      "artist": "Metallica",
+      "query": "track:\"Devil's Dance\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "3IHyDrQOASm7R0WBamMJO8",
+          "title": "Devil's Dance",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Reload",
+          "albumType": "album",
+          "releaseDate": "1997-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3I4tEaOcF0wtl6179DqbZb",
+          "title": "Devil's Dance - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "S&M",
+          "albumType": "album",
+          "releaseDate": "1999-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6lUYgT74mFuLfztnKK07F3",
+          "title": "Devil's Dance - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2ph6YBHNETLy5v3qmnM2yg",
+          "title": "Devil Dance - \"Devil's Dance\" Riff",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1b2cke2Hyz9hV4yGBoPSgj",
+          "title": "Devil's Dance - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6B70EaARPoYHqmQh7nZQ6L",
+          "title": "Devil Dance - \"Devil's Dance\" Demo",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0CEIH2Ty0fN0FXTSBe4XnW",
+          "title": "Devil Dance - \"Devil's Dance\" September '97 Rough Mix",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "403Bdlm5luUT6dwoOrX8p5",
+          "title": "Devil's Dance - Live at Donington Park, Castle Donington, England / 26th August 1995",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Load (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "1996-06-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4foQ0i38vgWPCI6hJo9KIT",
+          "title": "Devil's Dance",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Reload",
+          "albumType": "album",
+          "releaseDate": "1997-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "05R06h0PvjBZjTBEQtqYhm",
+          "title": "Devil's Dance - Live at Astoria 2, London, England / 23rd August 1995",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Load (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "1996-06-04",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "72 Seasons",
+      "artist": "Metallica",
+      "query": "track:\"72 Seasons\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "3uSATa7xWXVJrMhJJSnGGk",
+          "title": "72 Seasons",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "72 Seasons",
+          "albumType": "album",
+          "releaseDate": "2023-04-14",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "45BbECVzn2iQ7iwZMiSnRF",
+          "title": "72 Seasons",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "72 Seasons",
+          "albumType": "single",
+          "releaseDate": "2023-03-30",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Of Wolf and Man",
+      "artist": "Metallica",
+      "query": "track:\"Of Wolf and Man\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "3bxHy4sUXEWjI9kXG1DH5K",
+          "title": "Of Wolf and Man - Remastered 2021",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered 2021)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4IK4lJsJxlvQAVqd36gyRu",
+          "title": "Of Wolf and Man - Remastered 2021",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3wHjbDGFrHN17FWg4owTkc",
+          "title": "Of Wolf And Man - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "S&M",
+          "albumType": "album",
+          "releaseDate": "1999-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "41koVRByCGWNHfyygAu4R6",
+          "title": "Of Wolf And Man - Live In Mexico City",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Live Sh*t: Binge & Purge (Live In Mexico City)",
+          "albumType": "album",
+          "releaseDate": "1993-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4dS0jtZwmeUMPSKbEjnemx",
+          "title": "Of Wolf and Man - Live at Ministry of Sound, London, England / November 13th 1997",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3anaVWp17Iw89ro2Jretys",
+          "title": "Of Wolf and Man - June 2nd, 1991 Rough Mix",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0a4zdx994ujsFuK6WUOJEK",
+          "title": "Of Wolf and Man - August 31st, 1990, Demo",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3vyMHu6zA4lvt3I5w6TWeH",
+          "title": "Of Wolf and Man - From Kirk's Riff Tapes",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0r14asIXRZXQ6Txv6RAnI4",
+          "title": "Of Wolf and Man - July 12th, 1990, Writing in Progress",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1ImOGusaS7BP8GNMZ5TJIz",
+          "title": "Of Wolf and Man - August 22nd, 1990, Writing in Progress",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "The Day That Never Comes",
+      "artist": "Metallica",
+      "query": "track:\"The Day That Never Comes\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "13Uvqll8OQDjw3wDweIK9y",
+          "title": "The Day That Never Comes",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Death Magnetic",
+          "albumType": "album",
+          "releaseDate": "2008-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5icLTeOSXTvkLIi08P2k4g",
+          "title": "The Day That Never Comes - Live",
+          "artists": [
+            "Metallica",
+            "San Francisco Symphony"
+          ],
+          "album": "S&M2",
+          "albumType": "album",
+          "releaseDate": "2020-08-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "The Outlaw Torn",
+      "artist": "Metallica",
+      "query": "track:\"The Outlaw Torn\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "41kijhecbr4EUrU8zwm2Qb",
+          "title": "The Outlaw Torn - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Load (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "1996-06-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1nwQ9wWcGjAQt4u65AKkbk",
+          "title": "The Outlaw Torn - Live",
+          "artists": [
+            "Metallica",
+            "San Francisco Symphony"
+          ],
+          "album": "S&M2",
+          "albumType": "album",
+          "releaseDate": "2020-08-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3tijYaJMcQ3CFGBzE8t8QZ",
+          "title": "The Outlaw Torn - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Load (Remastered)",
+          "albumType": "album",
+          "releaseDate": "1996-06-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2LaasK81SoRCtlUs3gPNO9",
+          "title": "The Outlaw Torn - No More Manufacturing Limits!",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Load (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "1996-06-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6H3mqzVXWrA2jZ724BLEWd",
+          "title": "Outlaw - \"The Outlaw Torn\" Outlaw of Torn Vocal Tag Alternate Mix",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Load (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "1996-06-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3yKWgKwfyOpjcD8Prn8KVL",
+          "title": "Outlaw - \"The Outlaw Torn\" Riff",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Load (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "1996-06-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3FjbfXdT66p3NLyrpkpEq8",
+          "title": "Outlaw - \"The Outlaw Torn\" Demo",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Load (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "1996-06-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0CJl6MPzFoFdehoCDobiaw",
+          "title": "Outlaw - \"The Outlaw Torn\" Take 12",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Load (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "1996-06-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5Iv4NGqDs5ihPau4YKyC7t",
+          "title": "The Outlaw Torn - Live",
+          "artists": [
+            "SaD - Symphony and Metallica"
+          ],
+          "album": "Symphony and Metallica (Live at Vicenza City Hall Theatre)",
+          "albumType": "album",
+          "releaseDate": "2020-12-25",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Kirk and Rob Doodle",
+      "artist": "Metallica",
+      "query": "track:\"Kirk and Rob Doodle\" artist:\"Metallica\"",
+      "results": []
+    },
+    {
+      "track": "The Unforgiven",
+      "artist": "Metallica",
+      "query": "track:\"The Unforgiven\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "6nswV1Lz3OZkaiCJfmVUOa",
+          "title": "The Unforgiven II",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Reload",
+          "albumType": "album",
+          "releaseDate": "1997-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0qbV4e18lWrTTxlswVoLbI",
+          "title": "The Unforgiven III",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Death Magnetic",
+          "albumType": "album",
+          "releaseDate": "2008-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5lqyqPU3JkpCbUbLmTVQPW",
+          "title": "The Unforgiven - Remastered 2021",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered 2021)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6pAIZfkNBQh4RAiOliPo4t",
+          "title": "The Unforgiven - Remastered 2021",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0jnu94Ebr93i7icVnjUD2h",
+          "title": "The Unforgiven II - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "ReLoad (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2026-06-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0zKAEqyCG1nudg3bFRrZvt",
+          "title": "The Unforgiven III - Live",
+          "artists": [
+            "Metallica",
+            "San Francisco Symphony"
+          ],
+          "album": "S&M2",
+          "albumType": "album",
+          "releaseDate": "2020-08-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3uCu6F2HwWRUjlUxMzsIsT",
+          "title": "The Unforgiven - Live In Mexico City",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Live Sh*t: Binge & Purge (Live In Mexico City)",
+          "albumType": "album",
+          "releaseDate": "1993-01-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "The Call of Ktulu",
+      "artist": "Metallica",
+      "query": "track:\"The Call of Ktulu\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "53aVMHWjpz7gB2wGtAv3lD",
+          "title": "The Call Of Ktulu - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Ride The Lightning (Remastered)",
+          "albumType": "album",
+          "releaseDate": "1984-07-27",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4qPgSwPUGigsmx6gUV2dnU",
+          "title": "The Call Of Ktulu - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Ride The Lightning (Deluxe / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1984-07-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7vxLun2SVGuJII6DkbyMso",
+          "title": "The Call Of Ktulu - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "S&M",
+          "albumType": "album",
+          "releaseDate": "1999-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2bvRtBoXOc1eeMQ9xQRuif",
+          "title": "The Call Of Ktulu - Live",
+          "artists": [
+            "Metallica",
+            "San Francisco Symphony"
+          ],
+          "album": "S&M2",
+          "albumType": "album",
+          "releaseDate": "2020-08-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1daTcgWS1loQ7mRwcBD9M4",
+          "title": "The Call Of Ktulu - Live At The Lyceum Theatre, London, UK / December 20th, 1984",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Ride The Lightning (Deluxe / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1984-07-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5Az6ZDKI73SYZmwrnE1D7Z",
+          "title": "When Hell Freezes Over (The Call Of Ktulu) - Live At The Keystone, Palo Alto, CA / October 31st, 1983",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Kill 'Em All (Deluxe / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1983-07-24",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1QnmVoBfYRBUI57rdrOeqF",
+          "title": "The Call of Ktulu - Live",
+          "artists": [
+            "SaD - Symphony and Metallica"
+          ],
+          "album": "Symphony and Metallica (Live at Vicenza City Hall Theatre)",
+          "albumType": "album",
+          "releaseDate": "2020-12-25",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Hardwired",
+      "artist": "Metallica",
+      "query": "track:\"Hardwired\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "0QV3swr7L8MZr72lL2izV1",
+          "title": "Hardwired",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Hardwired…To Self-Destruct (Deluxe)",
+          "albumType": "album",
+          "releaseDate": "2016-11-18",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "10qHfyQqzsbBDwob8nk8Ol",
+          "title": "Hardwired",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Hardwired…To Self-Destruct",
+          "albumType": "album",
+          "releaseDate": "2016-11-18",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "59pAzK4CoDd9KMSPxBhHp0",
+          "title": "Hardwired - Live at U.S. Bank Stadium, Minneapolis, MN - August 20th, 2016",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Hardwired…To Self-Destruct (Deluxe)",
+          "albumType": "album",
+          "releaseDate": "2016-11-18",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4fzJ15Rfg8Gj7x65wQcKlW",
+          "title": "Hardwired - Live At The Masonic, San Francisco, CA - November 3rd, 2018",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Helping Hands…Live & Acoustic At The Masonic",
+          "albumType": "album",
+          "releaseDate": "2019-02-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Whiskey in the Jar",
+      "artist": "Metallica",
+      "query": "track:\"Whiskey in the Jar\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "2R6UrJ8uWbSIiHWmvRQvN8",
+          "title": "Whiskey In The Jar",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Garage Inc.",
+          "albumType": "compilation",
+          "releaseDate": "1998-01-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Whiskey in the Jar",
+      "artist": "[traditional]",
+      "query": "track:\"Whiskey in the Jar\" artist:\"[traditional]\"",
+      "results": [
+        {
+          "id": "3TxnX0n538B0Q08hkTwOsj",
+          "title": "Whiskey In The Jar",
+          "artists": [
+            "Traditional",
+            "Thin Lizzy"
+          ],
+          "album": "Whiskey In The Jar",
+          "albumType": "compilation",
+          "releaseDate": "1996-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4DzV2IwClfvNTWXQr9SaEB",
+          "title": "Whiskey in the Jar",
+          "artists": [
+            "Traditional",
+            "The Dubliners"
+          ],
+          "album": "IRISH DRINKING SONGS",
+          "albumType": "album",
+          "releaseDate": "1993-04-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7eyQspC9lGf5sLskvfGmDj",
+          "title": "Irish Folk: When Irish Eyes Are Smiling / Whiskey in the Jar / Wild Rover",
+          "artists": [
+            "Christoph Walter",
+            "Traditional",
+            "Heeresmusikkorps Ulm"
+          ],
+          "album": "Rhythm & Moods",
+          "albumType": "album",
+          "releaseDate": "2014-04-23",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "For Whom the Bell Tolls",
+      "artist": "Metallica",
+      "query": "track:\"For Whom the Bell Tolls\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "2dXsILW8gzkosqleHAvl0v",
+          "title": "For Whom The Bell Tolls - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Ride The Lightning (Remastered)",
+          "albumType": "album",
+          "releaseDate": "1984-07-27",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3LpHzQU2CZzZJGdUWV79SI",
+          "title": "For Whom The Bell Tolls - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Ride The Lightning (Deluxe / Remastered)",
+          "albumType": "compilation",
+          "releaseDate": "1984-07-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1nv1h4otcCbnLObguxTeOJ",
+          "title": "For Whom The Bell Tolls - Live In Mexico City",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Live Sh*t: Binge & Purge (Live In Mexico City)",
+          "albumType": "album",
+          "releaseDate": "1993-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0kNrZfKZMvqxK36pUeB4wX",
+          "title": "For Whom The Bell Tolls - Live",
+          "artists": [
+            "Metallica",
+            "San Francisco Symphony"
+          ],
+          "album": "S&M2",
+          "albumType": "album",
+          "releaseDate": "2020-08-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0bp3MablDhBWiBZbIcp3AY",
+          "title": "For Whom The Bell Tolls - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica Through The Never (Music From The Motion Picture)",
+          "albumType": "album",
+          "releaseDate": "2013-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3AbQXNHWdYqqnMWtjOtgot",
+          "title": "For Whom the Bell Tolls - Live / Seattle '89",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1JOkHtzr0DBLFKpccLO5Yq",
+          "title": "For Whom The Bell Tolls - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "S&M",
+          "albumType": "album",
+          "releaseDate": "1999-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6QHP1q0NHVurG65w1u88yk",
+          "title": "For Whom The Bell Tolls - Live at Rasputin Music, Berkeley, CA - April 16th, 2016",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Hardwired…To Self-Destruct (Deluxe)",
+          "albumType": "album",
+          "releaseDate": "2016-11-18",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "18t7ie4VHP7g5enIi7Ww5S",
+          "title": "For Whom the Bell Tolls - Live at Tushino Airfield, Moscow, Russia / September 28th, 1991",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "One",
+      "artist": "Metallica",
+      "query": "track:\"One\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "02xhLoVqpGmOqvolgrwM8w",
+          "title": "One",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered)",
+          "albumType": "album",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "790jZbOfjDsMjeWpxQ0H9T",
+          "title": "One - Remastered",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4clhhu8D8h2Flcrj48dZ8H",
+          "title": "One - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica Through The Never (Music From The Motion Picture)",
+          "albumType": "album",
+          "releaseDate": "2013-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6yJTC0lZf2ilQUuU9JWFr0",
+          "title": "One - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "S&M",
+          "albumType": "album",
+          "releaseDate": "1999-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "47TGimMl4JMcnLaDFEyd6h",
+          "title": "One - Radio Edit",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4qJwMDAnaJQT4cFHAD8S76",
+          "title": "One - Live / Seattle '89",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "…And Justice for All (Remastered Deluxe Box Set)",
+          "albumType": "compilation",
+          "releaseDate": "1988-08-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5cpoALsvCDLvrpuuVZb6gH",
+          "title": "One - Live",
+          "artists": [
+            "Metallica",
+            "San Francisco Symphony"
+          ],
+          "album": "S&M2",
+          "albumType": "album",
+          "releaseDate": "2020-08-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Enter Sandman",
+      "artist": "Metallica",
+      "query": "track:\"Enter Sandman\" artist:\"Metallica\"",
+      "results": [
+        {
+          "id": "3DwQ7AH3xGD9h65ezslm6q",
+          "title": "Enter Sandman - Remastered 2021",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2T5q7qhJVN4m2hMSIAsOlC",
+          "title": "Enter Sandman - Remastered 2021",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered 2021)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0og9mxaVpqYdU0W528Nrr6",
+          "title": "Enter Sandman - Live In Mexico City",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Live Sh*t: Binge & Purge (Live In Mexico City)",
+          "albumType": "album",
+          "releaseDate": "1993-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7gYlDaUF6BKNpgACrKxUdK",
+          "title": "Enter Sandman - Radio Edit",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1M3430JMAfv3bofyh4nyVO",
+          "title": "Enter Sandman - May 13th, 1991 Rough Mix",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0sqNMGqq6PJK2YTYUciYwN",
+          "title": "Enter Sandman - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "S&M",
+          "albumType": "album",
+          "releaseDate": "1999-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4yiY6Yn3tAS65clsUBoxf9",
+          "title": "Enter Sandman - Live",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica Through The Never (Music From The Motion Picture)",
+          "albumType": "album",
+          "releaseDate": "2013-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0NeVu54s5HRIItVXwhMdke",
+          "title": "Enter Sandman - Live at Tushino Airfield, Moscow, Russia / September 28th, 1991",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "221S3dSykrb6hCdEvC71oz",
+          "title": "Enter Sandman - Live at Wembley Stadium, London, England / April 20th, 1992",
+          "artists": [
+            "Metallica"
+          ],
+          "album": "Metallica (Remastered Deluxe Box Set)",
+          "albumType": "album",
+          "releaseDate": "2021-09-10",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    }
+  ]
+}

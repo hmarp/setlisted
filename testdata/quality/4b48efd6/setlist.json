@@ -1,0 +1,149 @@
+{
+  "id": "4b48efd6",
+  "eventDate": "31-10-2026",
+  "artist": {
+    "mbid": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+    "name": "Metallica",
+    "disambiguation": ""
+  },
+  "venue": {
+    "name": "Sphere at The Venetian Resort",
+    "city": {
+      "name": "Las Vegas"
+    }
+  },
+  "tour": {
+    "name": "Life Burns Faster"
+  },
+  "sets": {
+    "set": [
+      {
+        "name": "",
+        "encore": 0,
+        "song": [
+          {
+            "name": "It's a Long Way to the Top (If You Wanna Rock 'n' Roll)",
+            "tape": true,
+            "cover": {
+              "mbid": "66c662b6-6e2f-4930-8610-912e24c63ed1",
+              "name": "AC/DC",
+              "disambiguation": "Australian hard rock band"
+            },
+            "info": ""
+          },
+          {
+            "name": "The Ecstasy of Gold",
+            "tape": true,
+            "cover": {
+              "mbid": "a16e47f5-aa54-47fe-87e4-bb8af91a9fdd",
+              "name": "Ennio Morricone",
+              "disambiguation": "Italian classical and score composer"
+            },
+            "info": ""
+          },
+          {
+            "name": "Blackened",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Fuel",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Leper Messiah",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Devil's Dance",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "72 Seasons",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Of Wolf and Man",
+            "tape": false,
+            "cover": null,
+            "info": "residency debut"
+          },
+          {
+            "name": "The Day That Never Comes",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "The Outlaw Torn",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Kirk and Rob Doodle",
+            "tape": false,
+            "cover": null,
+            "info": "\"The Addams Family\" and \"I Disappear\""
+          },
+          {
+            "name": "The Unforgiven",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "The Call of Ktulu",
+            "tape": false,
+            "cover": null,
+            "info": "dedicated to Cliff Burton"
+          },
+          {
+            "name": "Hardwired",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Whiskey in the Jar",
+            "tape": false,
+            "cover": {
+              "mbid": "9be7f096-97ec-4615-8957-8d40b5dcbc41",
+              "name": "[traditional]",
+              "disambiguation": "special purpose artist"
+            },
+            "info": ""
+          },
+          {
+            "name": "For Whom the Bell Tolls",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "One",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Enter Sandman",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          }
+        ]
+      }
+    ]
+  },
+  "url": "https://www.setlist.fm/setlist/metallica/2026/sphere-at-the-venetian-resort-las-vegas-nv-4b48efd6.html"
+}

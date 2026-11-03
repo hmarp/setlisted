@@ -1,0 +1,107 @@
+{
+  "id": "3b4e249c",
+  "eventDate": "24-10-2026",
+  "artist": {
+    "mbid": "bdacc37b-8633-4bf8-9dd5-4662ee651aec",
+    "name": "Slayer",
+    "disambiguation": "US thrash metal band"
+  },
+  "venue": {
+    "name": "Texas Motor Speedway",
+    "city": {
+      "name": "Fort Worth"
+    }
+  },
+  "tour": {
+    "name": "Reign in Blood: 40th Anniversary"
+  },
+  "sets": {
+    "set": [
+      {
+        "name": "",
+        "encore": 0,
+        "song": [
+          {
+            "name": "South of Heaven",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Hate Worldwide",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Jihad",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "War Ensemble",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Mandatory Suicide",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Born of Fire",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Dead Skin Mask",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Hell Awaits",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Angel of Death",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Altar of Sacrifice",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Jesus Saves",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Postmortem",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Raining Blood",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          }
+        ]
+      }
+    ]
+  },
+  "url": "https://www.setlist.fm/setlist/slayer/2026/texas-motor-speedway-fort-worth-tx-3b4e249c.html"
+}

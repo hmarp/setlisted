@@ -1,0 +1,133 @@
+{
+  "setlistId": "4b48efd6",
+  "comment": "Drafted by Claude from the recorded data and the spec rules; every entry checked by hand. Reviewed and approved by the owner on 2026-11-03.",
+  "entries": [
+    {
+      "position": 1,
+      "name": "It's a Long Way to the Top (If You Wanna Rock 'n' Roll)",
+      "status": "cover_fallback",
+      "tape": true,
+      "trackId": "7nemcVsXVFZF01iqpIIo2Y",
+      "comment": "\"It's a Long Way to the Top (If You Wanna Rock 'N' Roll)\" by AC/DC on \"High Voltage\". Walk-on tape credited to AC/DC: Metallica have no recording, so the original artist pass finds AC/DC's studio track on \"High Voltage\". \"Rock 'n' Roll\" vs Spotify's \"Rock 'N' Roll\" normalises equal."
+    },
+    {
+      "position": 2,
+      "name": "The Ecstasy of Gold",
+      "status": "found",
+      "tape": true,
+      "trackId": "030OTB3hWY3SMN3rT8fqAm",
+      "comment": "\"The Ecstasy of Gold\" by Ennio Morricone, Metallica on \"We All Love Ennio Morricone\". JUDGEMENT CALL: Tape credited to Ennio Morricone. The band pass finds Metallica's own studio recording of it (credited \"Ennio Morricone, Metallica\" on the tribute compilation \"We All Love Ennio Morricone\"), so per MATCH-2 it is Found (not a cover fallback) and the original Morricone recording is never searched for. Two copies exist; the earlier release date (2007-02-20) wins. The tape actually played is Morricone's original; the owner may prefer that, but that would need a spec change."
+    },
+    {
+      "position": 3,
+      "name": "Blackened",
+      "status": "found",
+      "trackId": "1odk70HBNbdk4wU0Ja9JR7",
+      "comment": "\"Blackened\" by Metallica on \"…And Justice for All (Remastered)\""
+    },
+    {
+      "position": 4,
+      "name": "Fuel",
+      "status": "found",
+      "trackId": "6FUwPb4mGlUDbx42uspXaZ",
+      "comment": "\"Fuel\" by Metallica on \"Reload\""
+    },
+    {
+      "position": 5,
+      "name": "Leper Messiah",
+      "status": "found",
+      "trackId": "6XN00D9ejjEt1cW1sY44Gu",
+      "comment": "\"Leper Messiah\" by Metallica on \"Master Of Puppets (Remastered)\""
+    },
+    {
+      "position": 6,
+      "name": "Devil's Dance",
+      "status": "found",
+      "trackId": "3IHyDrQOASm7R0WBamMJO8",
+      "comment": "\"Devil's Dance\" by Metallica on \"Reload\""
+    },
+    {
+      "position": 7,
+      "name": "72 Seasons",
+      "status": "found",
+      "trackId": "3uSATa7xWXVJrMhJJSnGGk",
+      "comment": "\"72 Seasons\" by Metallica on \"72 Seasons\""
+    },
+    {
+      "position": 8,
+      "name": "Of Wolf and Man",
+      "status": "found",
+      "trackId": "3bxHy4sUXEWjI9kXG1DH5K",
+      "comment": "\"Of Wolf and Man - Remastered 2021\" by Metallica on \"Metallica (Remastered 2021)\""
+    },
+    {
+      "position": 9,
+      "name": "The Day That Never Comes",
+      "status": "found",
+      "trackId": "13Uvqll8OQDjw3wDweIK9y",
+      "comment": "\"The Day That Never Comes\" by Metallica on \"Death Magnetic\""
+    },
+    {
+      "position": 10,
+      "name": "The Outlaw Torn",
+      "status": "found",
+      "trackId": "41kijhecbr4EUrU8zwm2Qb",
+      "comment": "\"The Outlaw Torn - Remastered\" by Metallica on \"Load (Remastered Deluxe Box Set)\". \"Load (Remastered Deluxe Box Set)\" and \"Load (Remastered)\" are both albums dated 1996-06-04; Spotify's order picks the box set copy (MATCH-8 tie). Same recording."
+    },
+    {
+      "position": 11,
+      "name": "Kirk and Rob Doodle",
+      "status": "not_found",
+      "comment": "JUDGEMENT CALL: An improvised guitar/bass interlude (\"doodle\"), not a song. ENT-1 only skips solo, jam and improvisation, so it is a matchable entry and Not found, which counts against the score. FLAGGED: adding \"doodle\" to ENT-1 would need a spec change."
+    },
+    {
+      "position": 12,
+      "name": "The Unforgiven",
+      "status": "found",
+      "trackId": "5lqyqPU3JkpCbUbLmTVQPW",
+      "comment": "\"The Unforgiven - Remastered 2021\" by Metallica on \"Metallica (Remastered 2021)\""
+    },
+    {
+      "position": 13,
+      "name": "The Call of Ktulu",
+      "status": "found",
+      "trackId": "53aVMHWjpz7gB2wGtAv3lD",
+      "comment": "\"The Call Of Ktulu - Remastered\" by Metallica on \"Ride The Lightning (Remastered)\""
+    },
+    {
+      "position": 14,
+      "name": "Hardwired",
+      "status": "found",
+      "trackId": "0QV3swr7L8MZr72lL2izV1",
+      "comment": "\"Hardwired\" by Metallica on \"Hardwired…To Self-Destruct (Deluxe)\""
+    },
+    {
+      "position": 15,
+      "name": "Whiskey in the Jar",
+      "status": "found",
+      "trackId": "2R6UrJ8uWbSIiHWmvRQvN8",
+      "comment": "\"Whiskey In The Jar\" by Metallica on \"Garage Inc.\". Cover of \"[traditional]\" (setlist.fm's placeholder): Metallica's own recording on \"Garage Inc.\" is found in the band pass, so the second pass never runs."
+    },
+    {
+      "position": 16,
+      "name": "For Whom the Bell Tolls",
+      "status": "found",
+      "trackId": "2dXsILW8gzkosqleHAvl0v",
+      "comment": "\"For Whom The Bell Tolls - Remastered\" by Metallica on \"Ride The Lightning (Remastered)\""
+    },
+    {
+      "position": 17,
+      "name": "One",
+      "status": "found",
+      "trackId": "02xhLoVqpGmOqvolgrwM8w",
+      "comment": "\"One\" by Metallica on \"…And Justice for All (Remastered)\""
+    },
+    {
+      "position": 18,
+      "name": "Enter Sandman",
+      "status": "found",
+      "trackId": "3DwQ7AH3xGD9h65ezslm6q",
+      "comment": "\"Enter Sandman - Remastered 2021\" by Metallica on \"Metallica (Remastered Deluxe Box Set)\". Two \"Remastered 2021\" copies with the same date and type; Spotify's order picks the box set copy (MATCH-8 tie). Same recording."
+    }
+  ]
+}
