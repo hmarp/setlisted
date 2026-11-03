@@ -1,0 +1,811 @@
+{
+  "market": "GB",
+  "recorded": "2026-11-03",
+  "searches": [
+    {
+      "track": "I Apologise If You Feel Something",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"I Apologise If You Feel Something\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "4mrjzz6ETpW3wosJUYmKoL",
+          "title": "i apologise if you feel something",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "amo",
+          "albumType": "album",
+          "releaseDate": "2019-01-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4x1P2LspTup69HxHoiOj2a",
+          "title": "i apologise if you feel something",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "amo",
+          "albumType": "album",
+          "releaseDate": "2019-01-25",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "MANTRA",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"MANTRA\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "060RNnzoMay3wKJek1faPc",
+          "title": "MANTRA",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "amo",
+          "albumType": "album",
+          "releaseDate": "2019-01-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "63y9LI8moSbcOr2YcGY7Un",
+          "title": "MANTRA",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "amo",
+          "albumType": "album",
+          "releaseDate": "2019-01-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7dRj3sTBYkNbEx5kdNHriv",
+          "title": "MANTRA",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "MANTRA",
+          "albumType": "single",
+          "releaseDate": "2018-08-21",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0sSBLe5G6AOGf1ewCsu4Bo",
+          "title": "MANTRA - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "albumType": "album",
+          "releaseDate": "2026-04-10",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "The House of Wolves",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"The House of Wolves\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "7hntkdvG3jWdFKm7pGCCzd",
+          "title": "The House of Wolves",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Sempiternal (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "2013-04-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Avalanche",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Avalanche\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "4EyPadLFhtWojU7mkT5hqT",
+          "title": "Avalanche",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2XHXaJzuVzhoV3btGsfB1X",
+          "title": "Avalanche",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "21e5M6dfmPOmFLLPrkjUZ6",
+          "title": "Avalanche - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3MxKZsr5goZHkfSSBS3e5g",
+          "title": "avalanche_.drft",
+          "artists": [
+            "Bring Me The Horizon",
+            "lophiile"
+          ],
+          "album": "Lo-files",
+          "albumType": "album",
+          "releaseDate": "2025-07-11",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Go to Hell, for Heaven's Sake",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Go to Hell, for Heaven's Sake\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "0Koh9yED8UuaXvg9p5lQdB",
+          "title": "Go to Hell, for Heaven's Sake",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Sempiternal (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "2013-04-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "69ovKtfOrt7zRkiOSSzGBO",
+          "title": "Go to Hell, for Heaven's Sake - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Sleepwalking",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Sleepwalking\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "0gchQwxmBWj5no8NJ8b2yH",
+          "title": "Sleepwalking",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Sempiternal (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "2013-04-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "15gIR5Qd7ngiBAyIWxYOg0",
+          "title": "Sleepwalking",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Sleepwalking",
+          "albumType": "single",
+          "releaseDate": "2013-03-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3sWWkZy3V3uqcPsYZdXntj",
+          "title": "Sleepwalking - Instrumental",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Sleepwalking",
+          "albumType": "single",
+          "releaseDate": "2013-03-04",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3SsnknDqxLDOBhMimcwIPP",
+          "title": "Sleepwalking - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "albumType": "album",
+          "releaseDate": "2026-04-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3UfassQ27R4HgpBRwJIQkr",
+          "title": "sL33pwalking.idl",
+          "artists": [
+            "Bring Me The Horizon",
+            "lophiile"
+          ],
+          "album": "Lo-files",
+          "albumType": "album",
+          "releaseDate": "2025-07-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5OomSPKKwQqazfzzDZ7pa4",
+          "title": "Sleepwalking - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "wonderful life",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"wonderful life\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "0ceW5TkemJUEmJERavfqQq",
+          "title": "wonderful life (feat. Dani Filth)",
+          "artists": [
+            "Bring Me The Horizon",
+            "Dani Filth"
+          ],
+          "album": "amo",
+          "albumType": "album",
+          "releaseDate": "2019-01-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1kq5dLuzkRLgemasnkUg9G",
+          "title": "wonderful life (feat. Dani Filth)",
+          "artists": [
+            "Bring Me The Horizon",
+            "Dani Filth"
+          ],
+          "album": "wonderful life (feat. Dani Filth)",
+          "albumType": "single",
+          "releaseDate": "2018-10-21",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7LtjDITgvKyxHeeA3CfVOb",
+          "title": "wonderful life (feat. Dani Filth)",
+          "artists": [
+            "Bring Me The Horizon",
+            "Dani Filth"
+          ],
+          "album": "amo",
+          "albumType": "album",
+          "releaseDate": "2019-01-25",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Shadow Moses",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Shadow Moses\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "68osIGtVjM7QWVe6pazLHj",
+          "title": "Shadow Moses",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Sempiternal (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "2013-04-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4mEutkx8Qhkl3iQlSOgJZb",
+          "title": "Shadow Moses - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "albumType": "album",
+          "releaseDate": "2026-04-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1mdSf2B1wLuUl3XQQEtc00",
+          "title": "shadowm0ses.frq",
+          "artists": [
+            "Bring Me The Horizon",
+            "Mondo Loops"
+          ],
+          "album": "Lo-files",
+          "albumType": "album",
+          "releaseDate": "2025-07-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6FZFdnkWL4y3ALbU2gsOa7",
+          "title": "Shadow Moses - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Happy Song",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Happy Song\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "1yYE8EyuIV0rrvQ1bA2Fyf",
+          "title": "Happy Song",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0zZYvNpoF1jFkRfUcXpNFl",
+          "title": "Happy Song",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4jASA6yE1A3BkD3TVF1NDk",
+          "title": "Happy Song - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "albumType": "album",
+          "releaseDate": "2026-04-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3acx1ihmDb8c9EnMF8k6HJ",
+          "title": "Happier",
+          "artists": [
+            "YUNGBLUD",
+            "Oli Sykes",
+            "Bring Me The Horizon"
+          ],
+          "album": "Alt Metal",
+          "albumType": "compilation",
+          "releaseDate": "2026-05-22",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0ChMOU9Q1J0kQVCiFYIBQR",
+          "title": "Happy Song - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Can You Feel My Heart",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Can You Feel My Heart\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "0WSa1sucoNRcEeULlZVQXj",
+          "title": "Can You Feel My Heart",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Sempiternal (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "2013-04-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0bMOyiuk22fAKiwNoYsRYN",
+          "title": "Can You Feel My Heart - Remix",
+          "artists": [
+            "Bring Me The Horizon",
+            "Jeris Johnson"
+          ],
+          "album": "Can You Feel My Heart (Remix)",
+          "albumType": "single",
+          "releaseDate": "2021-03-05",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "16pVm6CEelmu8uUlXEyq0s",
+          "title": "Can You Feel My Heart",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Can You Feel My Heart",
+          "albumType": "single",
+          "releaseDate": "2013-10-13",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "28DcCxLamMqusGsWxXpwDf",
+          "title": "Can You Feel My Heart - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4oulNVAcHE3WWxyy8kYvcz",
+          "title": "canyoufeelmy<3.tmpx",
+          "artists": [
+            "Bring Me The Horizon",
+            "Casiio",
+            "No Spirit"
+          ],
+          "album": "Lo-files",
+          "albumType": "album",
+          "releaseDate": "2025-07-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0FcAGgd9KT5jClICT5aFMm",
+          "title": "Can You Feel My Heart - Shikari Sound System Remix",
+          "artists": [
+            "Bring Me The Horizon",
+            "Shikari Sound System"
+          ],
+          "album": "Can You Feel My Heart",
+          "albumType": "single",
+          "releaseDate": "2013-10-13",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3WyzwGdVcofoJElGfcRaQu",
+          "title": "Can You Feel My Heart - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "albumType": "album",
+          "releaseDate": "2026-04-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6McV55gkCmVY9zX9Mucg3R",
+          "title": "Can You Feel My Heart - Jakwob Remix",
+          "artists": [
+            "Bring Me The Horizon",
+            "Jakwob"
+          ],
+          "album": "Can You Feel My Heart",
+          "albumType": "single",
+          "releaseDate": "2013-10-13",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5ZEzf0pGEhj18hc2toKzc7",
+          "title": "Can You Feel My Heart",
+          "artists": [
+            "Bring Me The Horizon",
+            "London Music Works",
+            "Nick Squires"
+          ],
+          "album": "Imitation Games Vol.2",
+          "albumType": "album",
+          "releaseDate": "2023-12-15",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Follow You",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Follow You\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "6lFUdRItQEsEuD7dSINL47",
+          "title": "Follow You",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5EXdCRKd7mf5BRk1cgz2L2",
+          "title": "Follow You",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2DqvEzx7VzxoDuBkJPTzED",
+          "title": "Follow You - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "albumType": "album",
+          "releaseDate": "2026-04-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1nlN3WIoV8GuIU1V1DdaFb",
+          "title": "Follow You - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Antivist",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Antivist\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "1fUacP7XP697l6ry01oO4d",
+          "title": "Antivist",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Sempiternal (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "2013-04-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "63VdGAHgsNW0uDrXzo7spb",
+          "title": "Antivist - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Drown",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Drown\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "6o39Ln9118FKTMbM4BvcEy",
+          "title": "Drown",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4ZG1SFGFdcfxIWfFQiwS3N",
+          "title": "Drown",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6xKn6gUCNc3xgddddz8GPJ",
+          "title": "Drown - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "albumType": "album",
+          "releaseDate": "2026-04-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4XnSAIxLmqmJXX8uTEcatS",
+          "title": "Drown - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2TB3yZgVmXKZvmPWcCUr2H",
+          "title": "Drown - Live from Maida Vale",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Drown (Live from Maida Vale)",
+          "albumType": "single",
+          "releaseDate": "2015-12-26",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Doomed",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Doomed\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "3lPn81PFyKvXiyHhlkwkQ4",
+          "title": "Doomed",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2PuAlFHSZn28FkH8hzsfcV",
+          "title": "Doomed - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Doomed [L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)]",
+          "albumType": "single",
+          "releaseDate": "2026-03-30",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2ZgzBI3YAAF6bIxUTeGKML",
+          "title": "Doomed - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "albumType": "album",
+          "releaseDate": "2026-04-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7B7Y4MeauEhndbHaqUZdCG",
+          "title": "Doomed",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5IBDi9cISbefMMtAB8syp3",
+          "title": "Doomed - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6veSof7cuSd7lh43upiltK",
+          "title": "DOOMED.errX",
+          "artists": [
+            "Bring Me The Horizon",
+            "Drxnk"
+          ],
+          "album": "Lo-files",
+          "albumType": "album",
+          "releaseDate": "2025-07-11",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Throne",
+      "artist": "Bring Me the Horizon",
+      "query": "track:\"Throne\" artist:\"Bring Me the Horizon\"",
+      "results": [
+        {
+          "id": "0M3adYbGtyRHACP86dey1H",
+          "title": "Throne",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0TLM2RUQxaQpwdaRtl16i6",
+          "title": "Throne",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "That's The Spirit",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0V0FF0FFM2GklFNPegkCiB",
+          "title": "Throne - L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "L.I.V.E. In São Paulo (Live Immersive Virtual Experiment)",
+          "albumType": "album",
+          "releaseDate": "2026-04-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "61Y6tZT9hnupcSktOnDVqN",
+          "title": "Throne.GOD",
+          "artists": [
+            "Bring Me The Horizon",
+            "Casiio",
+            "No Spirit"
+          ],
+          "album": "Lo-files",
+          "albumType": "album",
+          "releaseDate": "2025-07-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1Hxe4J8HuTxDTOR0wwu0co",
+          "title": "Throne - Live at the Royal Albert Hall",
+          "artists": [
+            "Bring Me The Horizon"
+          ],
+          "album": "Live at the Royal Albert Hall",
+          "albumType": "album",
+          "releaseDate": "2020-10-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    }
+  ]
+}

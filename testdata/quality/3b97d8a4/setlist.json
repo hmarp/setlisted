@@ -1,0 +1,131 @@
+{
+  "id": "3b97d8a4",
+  "eventDate": "20-11-2018",
+  "artist": {
+    "mbid": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+    "name": "Bring Me the Horizon",
+    "disambiguation": ""
+  },
+  "venue": {
+    "name": "AFAS Live",
+    "city": {
+      "name": "Amsterdam"
+    }
+  },
+  "tour": {
+    "name": "First Love World Tour"
+  },
+  "sets": {
+    "set": [
+      {
+        "name": "",
+        "encore": 0,
+        "song": [
+          {
+            "name": "I Apologise If You Feel Something",
+            "tape": true,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "MANTRA",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "The House of Wolves",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Avalanche",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Go to Hell, for Heaven's Sake",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Sleepwalking",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "wonderful life",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Shadow Moses",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Happy Song",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "The Comedown / (I Used to Make Out With) Medusa / Diamonds Aren't Forever / Re: They Have No Reflections",
+            "tape": false,
+            "cover": null,
+            "info": "Old Songs Medley, tour debut"
+          },
+          {
+            "name": "Can You Feel My Heart",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Follow You",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Antivist",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Drown",
+            "tape": false,
+            "cover": null,
+            "info": "Acoustic"
+          }
+        ]
+      },
+      {
+        "name": "",
+        "encore": 1,
+        "song": [
+          {
+            "name": "Doomed",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Throne",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          }
+        ]
+      }
+    ]
+  },
+  "url": "https://www.setlist.fm/setlist/bring-me-the-horizon/2018/afas-live-amsterdam-netherlands-3b97d8a4.html"
+}

@@ -1,0 +1,1309 @@
+{
+  "market": "GB",
+  "recorded": "2026-11-03",
+  "searches": [
+    {
+      "track": "War Pigs",
+      "artist": "Judas Priest",
+      "query": "track:\"War Pigs\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "14M0JWFCnsKNGSvzDn0j6q",
+          "title": "War Pigs - Charity Version",
+          "artists": [
+            "Judas Priest",
+            "Ozzy Osbourne"
+          ],
+          "album": "War Pigs (Charity Version)",
+          "albumType": "single",
+          "releaseDate": "2025-09-26",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "War Pigs",
+      "artist": "Black Sabbath",
+      "query": "track:\"War Pigs\" artist:\"Black Sabbath\"",
+      "results": [
+        {
+          "id": "6TYQRlRci6AkVrN9a5C7ne",
+          "title": "War Pigs - 2009 Remaster",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "Paranoid",
+          "albumType": "album",
+          "releaseDate": "1970-09-18",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6MiMM2QRQyiarnqgJMVYDl",
+          "title": "War Pigs",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "The Ultimate Collection",
+          "albumType": "compilation",
+          "releaseDate": "2016-10-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1Ysf7GVEAIRcUpO7aQbm80",
+          "title": "War Pigs / Luke's Wall (2012 Remaster)",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "Paranoid",
+          "albumType": "album",
+          "releaseDate": "1970-09-18",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6tRHtqNabJIQVXbyY9AnMU",
+          "title": "War Pigs - Live",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "The End (Live)",
+          "albumType": "album",
+          "releaseDate": "2017-11-17",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6Cis09ZqcvOkbGAsgotxGJ",
+          "title": "War Pigs - Live, 1970",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "Casino de Montreux, Switzerland - 31st August 1970 (Live)",
+          "albumType": "album",
+          "releaseDate": "1970",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "3pWkSRYd0BEgR45Txs1xzL",
+          "title": "War Pigs - Live",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "Live At Last",
+          "albumType": "album",
+          "releaseDate": "1980-07-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6MoGEgPvSFwPx2eQvpNDH5",
+          "title": "War Pigs - Live at the NEC, Birmingham, UK - December 1997",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "Reunion (25th Anniversary Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "2023-10-13",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1dcoLxTLudBZYJkoLgT0hP",
+          "title": "War Pigs - Live at the NEC, Birmingham, UK - December 1997",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "Reunion",
+          "albumType": "album",
+          "releaseDate": "1998-10-05",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5P1JsYRR3kx9esvG67kOzH",
+          "title": "War Pigs - 2009 Remaster",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "We Sold Our Soul for Rock 'N' Roll",
+          "albumType": "compilation",
+          "releaseDate": "1975-12-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4Ri4sj5nqGPCsgkgKjDvkR",
+          "title": "War Pigs - 2009 Remaster",
+          "artists": [
+            "Black Sabbath"
+          ],
+          "album": "Greatest Hits",
+          "albumType": "compilation",
+          "releaseDate": "2009-06-09",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Faithkeepers Intro",
+      "artist": "Judas Priest",
+      "query": "track:\"Faithkeepers Intro\" artist:\"Judas Priest\"",
+      "results": []
+    },
+    {
+      "track": "You've Got Another Thing Comin'",
+      "artist": "Judas Priest",
+      "query": "track:\"You've Got Another Thing Comin'\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "4f3RDq9nYPBeR1yMSgnmBm",
+          "title": "You've Got Another Thing Comin'",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Screaming For Vengeance (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "1982",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "55cd3NlqktNjhAZcPvaUvk",
+          "title": "You've Got Another Thing Comin'",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Screaming For Vengeance",
+          "albumType": "album",
+          "releaseDate": "1982",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "7hBh1mbkUmE6CBAtvBogk9",
+          "title": "You've Got Another Thing Comin' - Live from the San Antonio Civic Center",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Screaming For Vengeance (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "1982",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "2MYSqSFUqioD25Kf2KbUvn",
+          "title": "You've Got Another Thing Coming",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6OJe9R7hAc6OVEbJZknk4t",
+          "title": "You've Got Another Thing Coming - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Priest...Live!",
+          "albumType": "album",
+          "releaseDate": "1987-07-07",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Metal Gods",
+      "artist": "Judas Priest",
+      "query": "track:\"Metal Gods\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "0VFfZVCFNe1I2IIChVBR5m",
+          "title": "Metal Gods",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel",
+          "albumType": "album",
+          "releaseDate": "1980",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "5ewxZl0jLaMc4KWKpMAx02",
+          "title": "Metal Gods - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Priest...Live!",
+          "albumType": "album",
+          "releaseDate": "1987-07-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "44eECLkKmM5nO6Q3Yh878h",
+          "title": "Metal Gods",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel - 30th Anniversary",
+          "albumType": "compilation",
+          "releaseDate": "2010-05-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1ET9B8GT7Px38QlzKNPCCF",
+          "title": "Metal Gods - Live from Wacken Festival, 2015",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Battle Cry",
+          "albumType": "album",
+          "releaseDate": "2016-03-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4Zg6OOlAKIXhU0Z6Z4cFSP",
+          "title": "Metal Gods - Live at the Seminole Hard Rock Arena",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel - 30th Anniversary",
+          "albumType": "compilation",
+          "releaseDate": "2010-05-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2Hsd5zHTha7BYM8xSgRZjg",
+          "title": "Metal Gods",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Metal Works '73-'93",
+          "albumType": "compilation",
+          "releaseDate": "1993-04-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Breaking the Law",
+      "artist": "Judas Priest",
+      "query": "track:\"Breaking the Law\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "2RaA6kIcvomt77qlIgGhCT",
+          "title": "Breaking the Law",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel",
+          "albumType": "album",
+          "releaseDate": "1980",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "1CDGbh28i7eDQiSfOFmdIS",
+          "title": "Breaking the Law - Live from Wacken Festival, 2015",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Battle Cry",
+          "albumType": "album",
+          "releaseDate": "2016-03-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3aZYO05wWMbpWbdNGdKGHj",
+          "title": "Breaking the Law",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2gWmMg2PfK2b1vPJfCAhIV",
+          "title": "Breaking the Law - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Priest...Live!",
+          "albumType": "album",
+          "releaseDate": "1987-07-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3dix9ONSeCaR05vk8K2kEQ",
+          "title": "Breaking the Law",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel - 30th Anniversary",
+          "albumType": "compilation",
+          "releaseDate": "2010-05-10",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "The Ripper",
+      "artist": "Judas Priest",
+      "query": "track:\"The Ripper\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "2yopMqEC6dKePLpRTUbzJN",
+          "title": "The Ripper",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Sad Wings of Destiny",
+          "albumType": "album",
+          "releaseDate": "1976-11-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1jJrPzuzUaX8cBKRRv2Oz4",
+          "title": "The Ripper - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Unleashed In The East",
+          "albumType": "album",
+          "releaseDate": "1979-05-06",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7CztDcijusayZhscUqNR6k",
+          "title": "The Ripper - 2026 Remixed & Remastered",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Sad Wings of Destiny (50th Anniversary Remixed & Remastered)",
+          "albumType": "album",
+          "releaseDate": "2026-10-02",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5VAqXXddO93P7Pp6TUdbOm",
+          "title": "The Ripper - Original 1976 Masters",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Sad Wings of Destiny (Original 1976 Masters)",
+          "albumType": "album",
+          "releaseDate": "2026-10-02",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3I8yqhY2abh9DBtZwdjTrs",
+          "title": "The Ripper - Live at the Seminole Hard Rock Arena",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel - 30th Anniversary",
+          "albumType": "compilation",
+          "releaseDate": "2010-05-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2rFUZ4MWVgp7AoXkr26iNl",
+          "title": "The Ripper - Live at Irvine Meadows Amphitheatre, Irvine, 1991",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Reflections - 50 Heavy Metal Years of Music",
+          "albumType": "album",
+          "releaseDate": "2021-10-15",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0Gh1EuXllgR2JZ9HhISsFN",
+          "title": "The Ripper",
+          "artists": [
+            "Hell Bent For Covers-Tribute To Judas Priest"
+          ],
+          "album": "The Ripper",
+          "albumType": "single",
+          "releaseDate": "2026-10-11",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "The Sentinel",
+      "artist": "Judas Priest",
+      "query": "track:\"The Sentinel\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "6noDJ06v7z8bCsBitjxFG2",
+          "title": "The Sentinel",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Defenders Of The Faith",
+          "albumType": "album",
+          "releaseDate": "1984",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "6XUldYdlNYUHMF0zwv8SEr",
+          "title": "The Sentinel - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Priest...Live!",
+          "albumType": "album",
+          "releaseDate": "1987-07-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5LQtRX3q1XUIfORMpDZT8a",
+          "title": "The Sentinel",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7riTER54Xy8xAila5pBfZM",
+          "title": "The Sentinel - Remastered",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Defenders of the Faith (30th Anniversary Edition) [Remastered]",
+          "albumType": "album",
+          "releaseDate": "1984",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "132p1WtAPeyxV3OJDdrjSu",
+          "title": "The Sentinel - Recorded at Kemper Arena in Kansas City",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Turbo 30 (Remastered 30th Anniversary Deluxe Edition)",
+          "albumType": "album",
+          "releaseDate": "2017-02-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "278L7WB5GRiMLo7fO7SE4W",
+          "title": "The Sentinel - Live at Long Beach Arena, 1984 [Remastered]",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Defenders of the Faith (30th Anniversary Edition) [Remastered]",
+          "albumType": "album",
+          "releaseDate": "1984",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "4wZAE75M667fWEO2iFu5cs",
+          "title": "The Sentinel",
+          "artists": [
+            "Judas Priest Experience",
+            "Ken Stewart"
+          ],
+          "album": "The Sentinel",
+          "albumType": "single",
+          "releaseDate": "2026-05-14",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Desert Plains",
+      "artist": "Judas Priest",
+      "query": "track:\"Desert Plains\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "1zMXCwfwiIGPZA4kq7ideV",
+          "title": "Desert Plains",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Point Of Entry",
+          "albumType": "album",
+          "releaseDate": "1981",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "2X4c402atfUamqiSv1cch5",
+          "title": "Desert Plains - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Point Of Entry",
+          "albumType": "album",
+          "releaseDate": "1981",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "161opai0DqgVBXjxDwwEGU",
+          "title": "Desert Plains",
+          "artists": [
+            "Hell Bent For Covers-Tribute To Judas Priest"
+          ],
+          "album": "Desert Plains",
+          "albumType": "single",
+          "releaseDate": "2026-10-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3cWFTOqJjZxa8DHVrC7yQs",
+          "title": "Desert Plains",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Metal Works '73-'93",
+          "albumType": "compilation",
+          "releaseDate": "1993-04-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6zlQ5z0DjO4bwq04SX909b",
+          "title": "Desert Plains - Live at Long Beach Arena, 1984 [Remastered]",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Defenders of the Faith (30th Anniversary Edition) [Remastered]",
+          "albumType": "album",
+          "releaseDate": "1984",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "56ZdJcG8iHXziOZByC8bxz",
+          "title": "Desert Plains - Recorded at Kemper Arena in Kansas City",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Turbo 30 (Remastered 30th Anniversary Deluxe Edition)",
+          "albumType": "album",
+          "releaseDate": "2017-02-03",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Lightning Strike",
+      "artist": "Judas Priest",
+      "query": "track:\"Lightning Strike\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "6qopop1Rc9r1RjEIBQhc8d",
+          "title": "Lightning Strike",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Firepower",
+          "albumType": "album",
+          "releaseDate": "2018-03-09",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3rcXpH8LZzquQTYoSu6jhC",
+          "title": "Lightning Strike",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Turbo Lover",
+      "artist": "Judas Priest",
+      "query": "track:\"Turbo Lover\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "1i5yWGXgtFABa0czv2pbZH",
+          "title": "Turbo Lover - Remastered",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Turbo 30",
+          "albumType": "album",
+          "releaseDate": "1986-04-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4QC1Kd4dctVuVA5I6HFuoj",
+          "title": "Turbo Lover - Remastered",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Turbo 30 (Remastered 30th Anniversary Deluxe Edition)",
+          "albumType": "album",
+          "releaseDate": "2017-02-03",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6AxkN6IWU2FAKQY4N9OOGf",
+          "title": "Turbo Lover - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Priest...Live!",
+          "albumType": "album",
+          "releaseDate": "1987-07-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "48xUob8JQ9kqIDGlZr1EaS",
+          "title": "Turbo Lover",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5aP6CaGC7lpvzVBTSuRWj5",
+          "title": "Turbo Lover",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Metal Works '73-'93",
+          "albumType": "compilation",
+          "releaseDate": "1993-04-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Steeler",
+      "artist": "Judas Priest",
+      "query": "track:\"Steeler\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "62ckogL6wRdFuiPWV8c1U3",
+          "title": "Steeler",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel",
+          "albumType": "album",
+          "releaseDate": "1980",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "1UxYUaSLSjN33pckQC3mSx",
+          "title": "Steeler",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel - 30th Anniversary",
+          "albumType": "compilation",
+          "releaseDate": "2010-05-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7xgXH06guFktn8NFe4FtN3",
+          "title": "Steeler - Live at the Seminole Hard Rock Arena",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel - 30th Anniversary",
+          "albumType": "compilation",
+          "releaseDate": "2010-05-10",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Delivering the Goods",
+      "artist": "Judas Priest",
+      "query": "track:\"Delivering the Goods\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "2ygCZPsdNy7xp0UHIYzXPq",
+          "title": "Delivering the Goods",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Killing Machine",
+          "albumType": "album",
+          "releaseDate": "1979",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "0CaffJlaK2ZFmWh4ICgJIB",
+          "title": "Delivering the Goods - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Unleashed In The East",
+          "albumType": "album",
+          "releaseDate": "1979-05-06",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2WjJqt8alKtN9MlwiNKjJ3",
+          "title": "Delivering the Goods",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Metal Works '73-'93",
+          "albumType": "compilation",
+          "releaseDate": "1993-04-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Panic Attack",
+      "artist": "Judas Priest",
+      "query": "track:\"Panic Attack\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "2CAR6gkbtAZECBiuzssea8",
+          "title": "Panic Attack",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Invincible Shield (Deluxe Edition)",
+          "albumType": "album",
+          "releaseDate": "2024-03-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1yEz9RflAoVrjAbCLnEI35",
+          "title": "Panic Attack",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Panic Attack",
+          "albumType": "single",
+          "releaseDate": "2023-10-13",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0MN5kRYyTmvx856HgfmBn6",
+          "title": "Panic Attack",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0x29150vrhPNUdDlXLEqbe",
+          "title": "Panic Attack",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Trial By Fire",
+          "albumType": "single",
+          "releaseDate": "2023-11-17",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4rqKWlcBs15b80g5jJmxXN",
+          "title": "Panic Attack",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Serpent and the King",
+          "albumType": "single",
+          "releaseDate": "2024-02-22",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3eGPcwQguaT3ILUR0NEVsp",
+          "title": "Panic Attack",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Crown of Horns",
+          "albumType": "single",
+          "releaseDate": "2024-01-19",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Victim of Changes",
+      "artist": "Judas Priest",
+      "query": "track:\"Victim of Changes\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "47TDklBWuYmP1CNQyTIioz",
+          "title": "Victim of Changes",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Sad Wings of Destiny",
+          "albumType": "album",
+          "releaseDate": "1976-11-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6nRpof5gPgogrU87jsJnhq",
+          "title": "Victim of Changes - Original 1976 Masters",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Sad Wings of Destiny (Original 1976 Masters)",
+          "albumType": "album",
+          "releaseDate": "2026-10-02",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6z0Hr1uWtn3MXoVqSp83e3",
+          "title": "Victim Of Changes - 2026 Remixed & Remastered",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Sad Wings of Destiny (50th Anniversary Remixed & Remastered)",
+          "albumType": "album",
+          "releaseDate": "2026-10-02",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "13RhKhfIq1mKOIX73D9DXA",
+          "title": "Victim of Changes - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Unleashed In The East",
+          "albumType": "album",
+          "releaseDate": "1979-05-06",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5sbnkx75lFhuLm491ezaSw",
+          "title": "Victim of Changes",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Metal Works '73-'93",
+          "albumType": "compilation",
+          "releaseDate": "1993-04-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0kuGzp7bQQ2gDvKLwQvn5U",
+          "title": "Victim of Changes - Live from Wacken Festival, 2015",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Battle Cry",
+          "albumType": "album",
+          "releaseDate": "2016-03-25",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Halls of Valhalla",
+      "artist": "Judas Priest",
+      "query": "track:\"Halls of Valhalla\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "4zX2bEgFHUIZV8rR3qsLor",
+          "title": "Halls of Valhalla",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Redeemer of Souls (Deluxe)",
+          "albumType": "album",
+          "releaseDate": "2014-07-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4C9XN0FopDjuIg34gaIGTU",
+          "title": "Halls of Valhalla",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4ngNgDjziuaoZ5tla8GzVn",
+          "title": "Halls of Valhalla - Live from Wacken Festival, 2015",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Battle Cry",
+          "albumType": "album",
+          "releaseDate": "2016-03-25",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Painkiller",
+      "artist": "Judas Priest",
+      "query": "track:\"Painkiller\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "0L7zm6afBEtrNKo6C6Gj08",
+          "title": "Painkiller",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Painkiller",
+          "albumType": "album",
+          "releaseDate": "1990-09-26",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4MNCIOyUZhTfUXbPJCKiOZ",
+          "title": "Painkiller",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "55tsnTSsNnOmYJ8mjXev8B",
+          "title": "Painkiller - Live from Wacken Festival, 2015",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Battle Cry",
+          "albumType": "album",
+          "releaseDate": "2016-03-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6U9uktdi1y5KZb1IjC19nT",
+          "title": "Painkiller - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "A Touch of Evil - Live",
+          "albumType": "album",
+          "releaseDate": "2009-07-14",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "02Vtpax091GN9EXR1Thtgu",
+          "title": "Painkiller",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Metal Works '73-'93",
+          "albumType": "compilation",
+          "releaseDate": "1993-04-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3W0uK28i8rQbNtSWTsk0Cr",
+          "title": "Painkiller",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Single Cuts",
+          "albumType": "compilation",
+          "releaseDate": "2011-08-22",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "03DcJfjdkfGUUu0l9jJkxD",
+          "title": "Painkiller (Live)",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Live At Wacken 2015 - 26 Years Louder Than Hell",
+          "albumType": "compilation",
+          "releaseDate": "2017-07-07",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "The Hellion",
+      "artist": "Judas Priest",
+      "query": "track:\"The Hellion\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "7LLQxMvAYOpoC2PKe3VQn5",
+          "title": "The Hellion",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Screaming For Vengeance (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "1982",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "0rNlVZUc3L9o9q5YgbOiH3",
+          "title": "The Hellion",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Screaming For Vengeance",
+          "albumType": "album",
+          "releaseDate": "1982",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "4BJV6SvqJGm5rwPtdt0mSv",
+          "title": "The Hellion / Electric Eye",
+          "artists": [
+            "Judas Priestess"
+          ],
+          "album": "The Hellion / Electric Eye",
+          "albumType": "single",
+          "releaseDate": "2013-03-13",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1KSUnu8jssDZ309IYGbO9S",
+          "title": "The Hellion - Live from Wacken Festival, 2015",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Battle Cry",
+          "albumType": "album",
+          "releaseDate": "2016-03-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "70HuQgSfFBh8ug6jCq6pVc",
+          "title": "The Hellion / Electric Eye - Live at The Summit, Houston, 1986",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Reflections - 50 Heavy Metal Years of Music",
+          "albumType": "album",
+          "releaseDate": "2021-10-15",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "07qlvNu8tRHkM1271AZESv",
+          "title": "The Hellion",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Metal Works '73-'93",
+          "albumType": "compilation",
+          "releaseDate": "1993-04-28",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Electric Eye",
+      "artist": "Judas Priest",
+      "query": "track:\"Electric Eye\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "3w9zHVKI28aUPZTxq8oDC6",
+          "title": "Electric Eye",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Screaming For Vengeance (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "1982",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "3kubJ2b1Rad7NXZtnZAZmO",
+          "title": "Electric Eye",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Screaming For Vengeance",
+          "albumType": "album",
+          "releaseDate": "1982",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "2qsGZEyh1u5tOyiX9WYaIW",
+          "title": "Electric Eye - Live from the San Antonio Civic Center",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Screaming For Vengeance (Expanded Edition)",
+          "albumType": "album",
+          "releaseDate": "1982",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "1O83BZWJgrbBmUm2ifK2Ym",
+          "title": "Electric Eye",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3eE0Q9UNEIk7Pbl4HFWUCD",
+          "title": "Electric Eye - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Priest...Live!",
+          "albumType": "album",
+          "releaseDate": "1987-07-07",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Hell Bent for Leather",
+      "artist": "Judas Priest",
+      "query": "track:\"Hell Bent for Leather\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "0SEd8AUWG3j4YFsFEVmGjW",
+          "title": "Hell Bent for Leather",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Killing Machine",
+          "albumType": "album",
+          "releaseDate": "1979",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "6JCbt2vtiWQYy0biqha1Wl",
+          "title": "Hell Bent for Leather",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1zMvp6NJIUhI8JJoroeYxj",
+          "title": "Hell Bent for Leather - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Unleashed In The East",
+          "albumType": "album",
+          "releaseDate": "1979-05-06",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3tFcgwkzST8tQAdGQn4WUe",
+          "title": "Hell Bent for Leather - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Priest...Live!",
+          "albumType": "album",
+          "releaseDate": "1987-07-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4jNqRlApKEuSnYKNDkQygq",
+          "title": "Hell Bent for Leather - Live from Wacken Festival, 2015",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Battle Cry",
+          "albumType": "album",
+          "releaseDate": "2016-03-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3SfQsnBVAeOBC8JM8cr9VS",
+          "title": "Hell Bent for Leather",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Metal Works '73-'93",
+          "albumType": "compilation",
+          "releaseDate": "1993-04-28",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2gCI6OTsQEjBzNDxaBMJWU",
+          "title": "Hell Bent for Leather - Recorded at Kemper Arena in Kansas City",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Turbo 30 (Remastered 30th Anniversary Deluxe Edition)",
+          "albumType": "album",
+          "releaseDate": "2017-02-03",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Living After Midnight",
+      "artist": "Judas Priest",
+      "query": "track:\"Living After Midnight\" artist:\"Judas Priest\"",
+      "results": [
+        {
+          "id": "0IXpUl1fn2QZcBavfuq0H4",
+          "title": "Living After Midnight",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "British Steel",
+          "albumType": "album",
+          "releaseDate": "1980",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "7LifJa1Ymo6gbe9hSyPefs",
+          "title": "Living After Midnight",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best Of The 80's",
+          "albumType": "compilation",
+          "releaseDate": "2007-12-10",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7hrBT1Tll2HUNoKWN6GFo9",
+          "title": "Living After Midnight",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "The Best of Judas Priest",
+          "albumType": "compilation",
+          "releaseDate": "2026-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7JmegHLVnCcuwCUKH51z5A",
+          "title": "Living After Midnight",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "80s 100 Hits",
+          "albumType": "compilation",
+          "releaseDate": "2010-03-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "20KmYoKrM56scXNYK8bpw2",
+          "title": "Living After Midnight - Live",
+          "artists": [
+            "Judas Priest"
+          ],
+          "album": "Priest...Live!",
+          "albumType": "album",
+          "releaseDate": "1987-07-07",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    }
+  ]
+}

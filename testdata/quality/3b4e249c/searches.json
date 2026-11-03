@@ -1,0 +1,1142 @@
+{
+  "market": "GB",
+  "recorded": "2026-11-03",
+  "searches": [
+    {
+      "track": "South of Heaven",
+      "artist": "Slayer",
+      "query": "track:\"South of Heaven\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "3U9gogDStAfWxSm91PJuxb",
+          "title": "South Of Heaven",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "South Of Heaven",
+          "albumType": "album",
+          "releaseDate": "1988-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6ZMAaxSt2u33x4uYJupDdu",
+          "title": "South Of Heaven - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7aDkVudPfrCKGNNhgsTPUL",
+          "title": "South of Heaven - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1taVAjhngSnoWbpgOK1XSH",
+          "title": "South Of Heaven",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6mxq45MDH7UM32Be8zAEt2",
+          "title": "South Of Heaven",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0czaheHbzC6mNwSyVo5C2m",
+          "title": "South Of Heaven - Live 1995",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Razor's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2025-06-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0qMBm3CrIzmmHkdVRrPQLa",
+          "title": "South of Heaven - Live 1994",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "A Season In Hell (Live 1994)",
+          "albumType": "album",
+          "releaseDate": "2023-11-27",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7JmJYqyZy3CHp0adOtYSAf",
+          "title": "South Of Heaven - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Damnation's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2022-02-23",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5rSUzJJQTPd2t1kf0JByPg",
+          "title": "South Of Heaven - Live In Anaheim, CA / 2002",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2QsBWYgGwg41la0tDLN3fC",
+          "title": "South Of Heaven - Early Version / Jeff Hanneman's Home Recording",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Hate Worldwide",
+      "artist": "Slayer",
+      "query": "track:\"Hate Worldwide\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "37n9zBD7h4IKimhkOfoFwf",
+          "title": "Hate Worldwide",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "World Painted Blood",
+          "albumType": "album",
+          "releaseDate": "2009-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2CrgOA8fEQodE1xETBMP6h",
+          "title": "Hate Worldwide - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Jihad",
+      "artist": "Slayer",
+      "query": "track:\"Jihad\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "5Oe7wHPL4hdEXeF4AOayCi",
+          "title": "Jihad",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Christ Illusion",
+          "albumType": "album",
+          "releaseDate": "2006-01-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "War Ensemble",
+      "artist": "Slayer",
+      "query": "track:\"War Ensemble\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "1E0yt5XSdjE9NOu897RilW",
+          "title": "War Ensemble",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Seasons In The Abyss",
+          "albumType": "album",
+          "releaseDate": "1990-10-09",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4OHksZr4XgtHmm2w1I5EqS",
+          "title": "War Ensemble - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6KvCJpW1GU523xaHIk5C9I",
+          "title": "War Ensemble - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5pg5n4wR0fzo9vn1rfquWa",
+          "title": "War Ensemble - Live 1995",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Razor's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2025-06-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1Ydw9zcQPM7MpTDZXTkOh8",
+          "title": "War Ensemble",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4e5SjuleuyBetouGgD4SYT",
+          "title": "War Ensemble",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2wAxFrdrsQGnxE6SScwuXW",
+          "title": "War Ensemble - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Damnation's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2022-02-23",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7fgoM9PGlFWfw1XgZKWfL2",
+          "title": "War Ensemble - Live In Anaheim, CA / 2002",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6YKRHT3PtbUHia35kWlb8f",
+          "title": "War Ensemble - Live 3 Sep '94, Argentina",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "1994 Monsters Of Rock, Argentina (Live, Sep 3rd 1994, Argentina)",
+          "albumType": "album",
+          "releaseDate": "1994",
+          "releaseDatePrecision": "year"
+        }
+      ]
+    },
+    {
+      "track": "Mandatory Suicide",
+      "artist": "Slayer",
+      "query": "track:\"Mandatory Suicide\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "2KPcujYDaukvtfRR0Zmu0O",
+          "title": "Mandatory Suicide",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "South Of Heaven",
+          "albumType": "album",
+          "releaseDate": "1988-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6vs0lRFifySgqfPW8NcFDq",
+          "title": "Mandatory Suicide - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0E0QlN8213s8mBal9L9PyJ",
+          "title": "Mandatory Suicide - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0uJHBf3EjbAG141Hi0w5g7",
+          "title": "Mandatory Suicide",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0hB4xtNOaxOWJWzC2kVfRt",
+          "title": "Mandatory Suicide - Live 1995",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Razor's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2025-06-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2jMfRii90AAEsQ7Q45cXIz",
+          "title": "Mandatory Suicide - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Damnation's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2022-02-23",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "28eFGo8TgYgGWFzgFJcRZu",
+          "title": "Mandatory Suicide - Live 3 Sep '94, Argentina",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "1994 Monsters Of Rock, Argentina (Live, Sep 3rd 1994, Argentina)",
+          "albumType": "album",
+          "releaseDate": "1994",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "3KFkVOQstbEIxSEgGbIhTO",
+          "title": "Mandatory Suicide",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6RH7ueJvgnWjPbl5hoh3Nb",
+          "title": "Mandatory Suicide - Live In Anaheim, CA / 2002",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "13ZIF1vywZVefc5OtKZcnB",
+          "title": "Mandatory Suicide - Live / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Born of Fire",
+      "artist": "Slayer",
+      "query": "track:\"Born of Fire\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "6UQIYxDuejNz8HP2sjOVGU",
+          "title": "Born Of Fire",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Seasons In The Abyss",
+          "albumType": "album",
+          "releaseDate": "1990-10-09",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0gTdLwo7F5TFSofmo4BGCo",
+          "title": "Born Of Fire - Live At The Orange Pavilion / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4YzhHmP7MVkO1n49x9eAEU",
+          "title": "Born of Fire - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7BKgPStc6POIxcybbdKG1m",
+          "title": "Born Of Fire",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2yWegEnhzf2rjdjG0Hx5qp",
+          "title": "Born Of Fire",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Dead Skin Mask",
+      "artist": "Slayer",
+      "query": "track:\"Dead Skin Mask\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "0t1lDXmMWBzF6mfnQ6KwqZ",
+          "title": "Dead Skin Mask",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Seasons In The Abyss",
+          "albumType": "album",
+          "releaseDate": "1990-10-09",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4a64mQeNstv7ReWeYOBcJT",
+          "title": "Dead Skin Mask - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0QtVBnebpGUSJkn3xCmEic",
+          "title": "Dead Skin Mask - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "27N4CU7fycFw59V38dd3Wn",
+          "title": "Dead Skin Mask",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1hBStvuLKgQoTLV9NqeDga",
+          "title": "Dead Skin Mask",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1pHSPTOgPEtyc02fBRmf1M",
+          "title": "Dead Skin Mask - Live 1995",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Razor's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2025-06-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "22iHUv5Sj9GUZAufxaZrLD",
+          "title": "Dead Skin Mask - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Damnation's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2022-02-23",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3LmmbHBjJhc1BUJ0OCsRMP",
+          "title": "Dead Skin Mask - Live 1994",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "A Season In Hell (Live 1994)",
+          "albumType": "album",
+          "releaseDate": "2023-11-27",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5XYHXE1u2kHuOYYrF9YcY9",
+          "title": "Dead Skin Mask - Live 3 Sep '94, Argentina",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "1994 Monsters Of Rock, Argentina (Live, Sep 3rd 1994, Argentina)",
+          "albumType": "album",
+          "releaseDate": "1994",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "3GzcBwXGHFyCpsWYOMxGuQ",
+          "title": "Dead Skin Mask - Live In Anaheim, CA / 2002",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Hell Awaits",
+      "artist": "Slayer",
+      "query": "track:\"Hell Awaits\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "3UKGPk85EhjqJSqePrSYeR",
+          "title": "Hell Awaits",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Hell Awaits",
+          "albumType": "album",
+          "releaseDate": "1985-06-19",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7DQgHgMsUdBd2D9mnmINOt",
+          "title": "Hell Awaits - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5m65FsstdgiyrrFauvJVMR",
+          "title": "Hell Awaits (40th Anniversary Edition)",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Hell Awaits (40th Anniversary Edition)",
+          "albumType": "album",
+          "releaseDate": "1985-04-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0TZY8BuWlRwGzpCO2zPKQo",
+          "title": "Hell Awaits - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4U4TNUlugCImV2tNewO0vb",
+          "title": "Hell Awaits (Live from Bochum 1985)",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Hell Awaits (40th Anniversary Edition)",
+          "albumType": "album",
+          "releaseDate": "1985-04-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2FZZDgwHOhXWwDNFM5i7jK",
+          "title": "Hell Awaits - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1eGR5NAhXjf7hrfDDn1qiU",
+          "title": "Hell Awaits - Live 3 Sep '94, Argentina",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "1994 Monsters Of Rock, Argentina (Live, Sep 3rd 1994, Argentina)",
+          "albumType": "album",
+          "releaseDate": "1994",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "3uRZ5oWxlr1WHiNqUbVXfP",
+          "title": "Hell Awaits - Live 1995",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Razor's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2025-06-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "18Z2GioDAZKVaZXSVqA3yu",
+          "title": "Hell Awaits/Antichrist - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Vicious Vampires Vol1 The Ultimate Fantasy Playlist",
+          "albumType": "compilation",
+          "releaseDate": "2021-07-16",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4H4GNxnPgREWO9bIVhSzl6",
+          "title": "Hell Awaits - Live In Anaheim, CA / 2002",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Angel of Death",
+      "artist": "Slayer",
+      "query": "track:\"Angel of Death\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "5ohfpKB5tt275f4Y4lQ9F7",
+          "title": "Angel Of Death",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood (Expanded)",
+          "albumType": "album",
+          "releaseDate": "1986-10-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7v0wFD2nyanfTldSNnHOCX",
+          "title": "Angel Of Death",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0918ZWj5snESt4I12hPDVh",
+          "title": "Angel Of Death - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1hdJRC9gS4wPzUZvfL1TZ0",
+          "title": "Angel of Death - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0q6iBEexzDAqLsBvPr7xVA",
+          "title": "Angel Of Death",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Jackass The Movie (The Official Soundtrack)",
+          "albumType": "compilation",
+          "releaseDate": "2002-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6xWDIVe1JadkdtxRICWp3p",
+          "title": "Angel Of Death",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4V2lkXCxNBIsrluA9MLqIM",
+          "title": "Angel Of Death",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "68lVwp4EjxT1qnVTGcRnJ9",
+          "title": "Angel Of Death - Live 1986",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Crowded Tombs (Live)",
+          "albumType": "album",
+          "releaseDate": "2024-05-21",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4TOUjhFY0C8NuDAwUDVwLJ",
+          "title": "Angel Of Death - Live 1995",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Razor's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2025-06-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1TAn2eJCyWOuoev8mnIcfo",
+          "title": "Angel Of Death - Live In Anaheim, CA / 2002",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Altar of Sacrifice",
+      "artist": "Slayer",
+      "query": "track:\"Altar of Sacrifice\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "4LvQil7PXdldIl2jwrMCcV",
+          "title": "Altar Of Sacrifice",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood (Expanded)",
+          "albumType": "album",
+          "releaseDate": "1986-10-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1IJTjbeQ31SlzEKDPIGNG4",
+          "title": "Altar Of Sacrifice",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6TYFZsmKV3LXPZVqlTmYCR",
+          "title": "Altar Of Sacrifice - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "03fMOeWUPW0hOkFb1LP8pF",
+          "title": "Altar Of Sacrifice - Live 1986",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Crowded Tombs (Live)",
+          "albumType": "album",
+          "releaseDate": "2024-05-21",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Jesus Saves",
+      "artist": "Slayer",
+      "query": "track:\"Jesus Saves\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "47YR9X6SpcI4jYA2DOOhZm",
+          "title": "Jesus Saves",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood (Expanded)",
+          "albumType": "album",
+          "releaseDate": "1986-10-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3a06nj0PAFel1e0gqVJQND",
+          "title": "Jesus Saves",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3KeF3KZpAAwLU7xUH7QdLN",
+          "title": "Jesus Saves - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "3yWkIQet30bOtxOqGSNhEE",
+          "title": "Jesus Saves - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Damnation's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2022-02-23",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4egyST6PJ6JbMmQBIEvk0N",
+          "title": "Jesus Saves - Live 1986",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Crowded Tombs (Live)",
+          "albumType": "album",
+          "releaseDate": "2024-05-21",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0MhU1Db65IGhaCPjtGV4ab",
+          "title": "Jesus Saves - Live 3 Sep '94, Argentina",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "1994 Monsters Of Rock, Argentina (Live, Sep 3rd 1994, Argentina)",
+          "albumType": "album",
+          "releaseDate": "1994",
+          "releaseDatePrecision": "year"
+        },
+        {
+          "id": "48VmluAcYG2Q5p9O2AY7OD",
+          "title": "JESUS SAVES",
+          "artists": [
+            "Demon Slayer"
+          ],
+          "album": "JESUS SAVES",
+          "albumType": "single",
+          "releaseDate": "2026-06-08",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Postmortem",
+      "artist": "Slayer",
+      "query": "track:\"Postmortem\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "28ILqSCrIeWvU52pyZfsxx",
+          "title": "Postmortem",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood (Expanded)",
+          "albumType": "album",
+          "releaseDate": "1986-10-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5zQUMSKia90dSTLk0If1k5",
+          "title": "Postmortem",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "7EYUaGlYXYxQ5yixxaW2Vy",
+          "title": "Postmortem - Live At Wembley Arena / 1990",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4UOkJ3OmjiZyKMVyI90SGH",
+          "title": "Postmortem - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "1FsT1AElgmyd3qXMfqpdYk",
+          "title": "Postmortem",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0rltlimeEHy696UlF7hXfh",
+          "title": "Postmortem",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "30l5S26Wh2RFnmAtiWvVcC",
+          "title": "Postmortem - Live In Anaheim, CA / 2002",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5zc1FXtcc3EHgsQbNDM3sI",
+          "title": "Postmortem - Live 1986",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Crowded Tombs (Live)",
+          "albumType": "album",
+          "releaseDate": "2024-05-21",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    },
+    {
+      "track": "Raining Blood",
+      "artist": "Slayer",
+      "query": "track:\"Raining Blood\" artist:\"Slayer\"",
+      "results": [
+        {
+          "id": "4fiOTntQKr24p07FvQDHZE",
+          "title": "Raining Blood",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood (Expanded)",
+          "albumType": "album",
+          "releaseDate": "1986-10-07",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6IbvZskf2GX2VSMd9Q93WL",
+          "title": "Raining Blood",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Reign In Blood",
+          "albumType": "album",
+          "releaseDate": "2015-09-11",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "0dlQyNj8oNM1cLi2W2Ccn4",
+          "title": "Raining Blood - Live At The Lakeland Coliseum / 1991",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Live: Decade Of Aggression",
+          "albumType": "album",
+          "releaseDate": "1991-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5a6oeWpdstLAXhQurSmbCi",
+          "title": "Raining Blood - Live",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "The Repentless Killogy (Live at the Forum in Inglewood, CA)",
+          "albumType": "album",
+          "releaseDate": "2019-11-08",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "2vmVPz2OHL16cdRwJO8a4A",
+          "title": "Raining Blood - Live 1995",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Razor's Edge (Live)",
+          "albumType": "album",
+          "releaseDate": "2025-06-25",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4qssDjJudTC8jUtE5Ef0US",
+          "title": "Raining Blood",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "5eF4Kv3HcYJyAtgTmHVzH9",
+          "title": "Raining Blood",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "6l7AJK52E0sBh1vtFiAoPB",
+          "title": "Raining Blood - Live In Anaheim, CA / 2002",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Soundtrack To The Apocalypse (Deluxe Version)",
+          "albumType": "compilation",
+          "releaseDate": "2003-01-01",
+          "releaseDatePrecision": "day"
+        },
+        {
+          "id": "4v0RHGoaFhcfEyJ2cY67kQ",
+          "title": "Raining Blood - Live 1986",
+          "artists": [
+            "Slayer"
+          ],
+          "album": "Crowded Tombs (Live)",
+          "albumType": "album",
+          "releaseDate": "2024-05-21",
+          "releaseDatePrecision": "day"
+        }
+      ]
+    }
+  ]
+}

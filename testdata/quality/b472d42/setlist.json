@@ -1,0 +1,73 @@
+{
+  "id": "b472d42",
+  "eventDate": "31-05-2025",
+  "artist": {
+    "mbid": "fae4dcff-5687-4ed2-a3f3-df6bd0506432",
+    "name": "Sanguisugabogg",
+    "disambiguation": "death metal from Columbus, Ohio, United States"
+  },
+  "venue": {
+    "name": "Russell Industrial Center",
+    "city": {
+      "name": "Detroit"
+    }
+  },
+  "tour": null,
+  "sets": {
+    "set": [
+      {
+        "name": "",
+        "encore": 0,
+        "song": [
+          {
+            "name": "Face Ripped Off",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Feening for Bloodshed",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Hungry for Your Insides",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "To Build a Mountain",
+            "tape": false,
+            "cover": {
+              "mbid": "04fc15f9-2555-4699-9215-2ee6c84a2346",
+              "name": "Crowbar",
+              "disambiguation": "US heavy metal band"
+            },
+            "info": ""
+          },
+          {
+            "name": "A Lesson in Savagery",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Dragged by a Truck",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          },
+          {
+            "name": "Dead as Shit",
+            "tape": false,
+            "cover": null,
+            "info": ""
+          }
+        ]
+      }
+    ]
+  },
+  "url": "https://www.setlist.fm/setlist/sanguisugabogg/2025/russell-industrial-center-detroit-mi-b472d42.html"
+}
