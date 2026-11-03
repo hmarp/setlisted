@@ -12,6 +12,7 @@ import (
 
 	"github.com/hmarp/setlisted/internal/matching"
 	"github.com/hmarp/setlisted/internal/setlist"
+	"github.com/hmarp/setlisted/internal/spotify"
 )
 
 const band = "Metallica"
@@ -410,5 +411,61 @@ func TestSearcherFunc(t *testing.T) {
 	got, err := MatchShow(context.Background(), show(setlist.SourceSet{Entries: songs("Battery")}), s, "GB")
 	if err != nil || got[0].Status != StatusFound {
 		t.Errorf("got %+v, %v", got, err)
+	}
+}
+
+// AUTH-8: a 401 wins over another search error, whichever comes first, so
+// an expired token always leads back to login.
+func TestMatchShow_AUTH8_UnauthorizedWins(t *testing.T) {
+	unavailable := fmt.Errorf("%w: status 502", spotify.ErrUnavailable)
+	for _, unauthorisedFirst := range []bool{false, true} {
+		t.Run(fmt.Sprintf("unauthorisedFirst=%v", unauthorisedFirst), func(t *testing.T) {
+			f := &fake{}
+			f.hook = func(ctx context.Context, q query) error {
+				// Both searches start before either fails.
+				deadline := time.Now().Add(time.Second)
+				for f.inflight.Load() < 2 && time.Now().Before(deadline) {
+					time.Sleep(time.Millisecond)
+				}
+				first, second := unavailable, error(spotify.ErrUnauthorized)
+				if unauthorisedFirst {
+					first, second = second, first
+				}
+				if q.track == "A" {
+					return first
+				}
+				// The second answer arrives after the first failure has
+				// cancelled the match.
+				<-ctx.Done()
+				return second
+			}
+			_, err := MatchShowLimit(context.Background(), show(setlist.SourceSet{Entries: songs("A", "B")}), f, "GB", 2)
+			if !errors.Is(err, spotify.ErrUnauthorized) {
+				t.Errorf("err = %v, want spotify.ErrUnauthorized", err)
+			}
+		})
+	}
+}
+
+// A caller that goes away mid-search gets the context's error, not the
+// searcher's wrapped "unavailable", so step 10 doesn't log a Spotify failure.
+func TestMatchShowParentCancelledMidSearch(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	f := &fake{}
+	f.hook = func(c context.Context, q query) error {
+		<-c.Done()
+		return fmt.Errorf("%w: request failed: %w", spotify.ErrUnavailable, c.Err())
+	}
+	go func() {
+		deadline := time.Now().Add(time.Second)
+		for f.inflight.Load() < 2 && time.Now().Before(deadline) {
+			time.Sleep(time.Millisecond)
+		}
+		cancel()
+	}()
+	_, err := MatchShow(ctx, show(setlist.SourceSet{Entries: songs("A", "B")}), f, "GB")
+	if !errors.Is(err, context.Canceled) || errors.Is(err, spotify.ErrUnavailable) {
+		t.Errorf("err = %v, want context.Canceled alone", err)
 	}
 }

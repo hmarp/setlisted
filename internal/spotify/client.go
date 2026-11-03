@@ -42,8 +42,8 @@ const (
 	DefaultRetries = 3
 
 	// DefaultBackoff is the wait before the first retry when a 429 has no
-	// usable Retry-After. It doubles for each later retry. A Retry-After
-	// header, if given, is used as is.
+	// usable Retry-After. It doubles for each later retry, up to the
+	// MaxRetryAfter limit. A Retry-After header, if given, is used as is.
 	DefaultBackoff = time.Second
 
 	// DefaultMaxRetryAfter is the longest Retry-After the client waits for.
@@ -265,7 +265,7 @@ func (c *Client) get(ctx context.Context, token, path string, v any) error {
 		}
 		wait := retryAfter
 		if wait <= 0 {
-			wait = c.backoff << attempt
+			wait = backoff(c.backoff, c.maxRetryAfter, attempt)
 		}
 		if err := c.sleep(ctx, wait); err != nil {
 			return fmt.Errorf("%w: %w", ErrUnavailable, err)
@@ -312,7 +312,22 @@ func (c *Client) do(ctx context.Context, token, path string, v any) (time.Durati
 	if err := json.NewDecoder(io.LimitReader(resp.Body, maxBody)).Decode(v); err != nil {
 		return 0, fmt.Errorf("%w: decoding response", ErrUnavailable)
 	}
+	// Read to EOF so the connection can be reused for the next search.
+	io.Copy(io.Discard, io.LimitReader(resp.Body, maxBody))
 	return 0, nil
+}
+
+// backoff is base doubled attempt times, never more than limit (and so
+// never overflowing, however many retries are configured).
+func backoff(base, limit time.Duration, attempt int) time.Duration {
+	d := base
+	for range attempt {
+		if d >= limit {
+			break
+		}
+		d *= 2
+	}
+	return min(d, limit)
 }
 
 // retryAfter parses a Retry-After header given in seconds. Anything else

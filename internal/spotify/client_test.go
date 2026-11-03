@@ -3,6 +3,7 @@ package spotify
 import (
 	"context"
 	"errors"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -284,5 +285,77 @@ func TestSearchTracksContextCancelled(t *testing.T) {
 	_, err := testClient(srv, 0, nil).SearchTracks(ctx, testToken, "Battery", "Metallica", "GB")
 	if !errors.Is(err, context.Canceled) {
 		t.Errorf("err = %v, want context.Canceled", err)
+	}
+}
+
+// The fallback backoff (no Retry-After) doubles but never passes
+// MaxRetryAfter, and doesn't overflow with many retries.
+func TestSearchTracksBackoffCapped(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		cfg     Config
+		calls   int
+		maxWait time.Duration
+		first   []time.Duration
+	}{
+		{"defaults", Config{}, DefaultRetries + 1, DefaultMaxRetryAfter,
+			[]time.Duration{time.Second, 2 * time.Second, 4 * time.Second}},
+		{"large backoff", Config{Backoff: 8 * time.Second}, DefaultRetries + 1, DefaultMaxRetryAfter,
+			[]time.Duration{8 * time.Second, 10 * time.Second, 10 * time.Second}},
+		{"many retries", Config{Retries: 70}, 71, DefaultMaxRetryAfter,
+			[]time.Duration{time.Second, 2 * time.Second, 4 * time.Second, 8 * time.Second, 10 * time.Second}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			var calls atomic.Int32
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				calls.Add(1)
+				w.WriteHeader(http.StatusTooManyRequests)
+			}))
+			defer srv.Close()
+			tc.cfg.BaseURL = srv.URL
+			c := New(tc.cfg)
+			var waits []time.Duration
+			c.sleep = func(ctx context.Context, d time.Duration) error { waits = append(waits, d); return nil }
+
+			_, err := c.SearchTracks(context.Background(), testToken, "Battery", "Metallica", "GB")
+			if !errors.Is(err, ErrUnavailable) || int(calls.Load()) != tc.calls {
+				t.Fatalf("err = %v, calls = %d; want ErrUnavailable after %d calls", err, calls.Load(), tc.calls)
+			}
+			if !reflect.DeepEqual(waits[:len(tc.first)], tc.first) {
+				t.Errorf("first waits = %v, want %v", waits[:len(tc.first)], tc.first)
+			}
+			for _, w := range waits {
+				if w <= 0 || w > tc.maxWait {
+					t.Errorf("wait %v outside (0, %v]", w, tc.maxWait)
+				}
+			}
+		})
+	}
+}
+
+// The body is read to EOF after decoding, so sequential searches reuse one
+// connection.
+func TestSearchTracksReusesConnection(t *testing.T) {
+	var conns atomic.Int32
+	srv := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Trailing whitespace beyond what the JSON decoder buffers, so the
+		// body isn't at EOF when decoding ends.
+		w.Write([]byte(twoTracks + strings.Repeat(" ", 64<<10)))
+	}))
+	srv.Config.ConnState = func(_ net.Conn, s http.ConnState) {
+		if s == http.StateNew {
+			conns.Add(1)
+		}
+	}
+	srv.Start()
+	defer srv.Close()
+	c := testClient(srv, 0, nil)
+	for range 3 {
+		if _, err := c.SearchTracks(context.Background(), testToken, "Battery", "Metallica", "GB"); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if n := conns.Load(); n != 1 {
+		t.Errorf("connections = %d, want 1", n)
 	}
 }

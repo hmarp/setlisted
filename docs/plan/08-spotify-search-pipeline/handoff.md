@@ -48,7 +48,7 @@ Spotify's search syntax has no escape for a double quote inside a quoted field v
 |---|---|
 | Retries after a 429 | 3 (so at most 4 requests per search) |
 | Wait | `Retry-After` in seconds, as given |
-| No or unparseable `Retry-After` (or `0`) | 1 s, doubling per retry (1 s, 2 s, 4 s) |
+| No or unparseable `Retry-After` (or `0`) | 1 s, doubling per retry (1 s, 2 s, 4 s), never more than 10 s (`MaxRetryAfter`), whatever `Backoff` and `Retries` are configured to |
 | `Retry-After` over 10 s | give up at once with `ErrUnavailable` |
 | Per-request timeout | 10 s, including the body |
 | Response cap | 4 MB |
@@ -131,12 +131,17 @@ type EntryResult struct {
 - **Concurrency:** `limit` workers (default 4, capped at the number of songs) each resolve one entry at a time; an entry's two passes run in sequence. So at most 4 searches are in flight (tested by counting in the fake; the test also checks 4 are actually used).
 - **Order:** each worker writes to its entry's slot, so the result order is the setlist order whatever the completion order (tested with earlier entries finishing last).
 - **Duplicates (ENT-7):** each occurrence is searched and kept in its own row (no de-duplication or caching, ADR-005).
-- **Errors:** the first search error cancels the context passed to the other searches, no new entries are started, and `MatchShow` returns that error unchanged and **no results** (tested: the other in-flight searches see cancellation, nothing more is searched). Handlers map it with `errors.Is(err, spotify.ErrUnauthorized)` / `ErrUnavailable`. A cancelled parent context returns the context's error.
+- **Errors:** the first search error cancels the context passed to the other searches, no new entries are started, and `MatchShow` returns an error unchanged and **no results** (tested: the other in-flight searches see cancellation, nothing more is searched). Which error:
+  1. if the caller's context was cancelled or timed out, **the context's error** (`context.Cause`), even though the searches report it wrapped in `spotify.ErrUnavailable`. A user who closes the tab isn't logged as a Spotify outage;
+  2. otherwise **`spotify.ErrUnauthorized` if any search returned it**, even if another search failed first (e.g. a 502 and a 401 at about the same time). An expired token always leads back to login (AUTH-8), rather than to a Retry that keeps failing;
+  3. otherwise the first search error.
+
+  Handlers map it with `errors.Is(err, spotify.ErrUnauthorized)` / `ErrUnavailable`. For rule 2, `internal/pipeline` imports `internal/spotify` (for the sentinel only). A fixture searcher in step 09 that never returns it is unaffected.
 
 ## Tests (by spec ID where one fits)
 
-- **Client** (`internal/spotify/client_test.go`, `httptest`): request header and exact query; JSON mapping including a `null` item and all artists; explicit market and `WithToken`; market required; `Query` quote cases; quotes in the request; empty name not searched; `Retry-After` honoured then success (waits recorded, not slept); repeated 429 → `ErrUnavailable` after 4 calls; `Retry-After` too long → give up at once; `TestSearchTracks_AUTH8_Unauthorized`; `TestSearchTracks_ERR1_Unavailable` (500, 403, redirect, bad JSON); `TestSearchTracks_ERR5_NoDetailsInErrors`; context cancelled.
-- **Pipeline** (`internal/pipeline/pipeline_test.go`, fake searcher): every status and field in one show, including tape + cover fallback and live cover fallback; `…_ENT1_ENT4_SkippedAndMedleysNotSearched`; setlist order with out-of-order completion; concurrency bound (peak exactly 4, two searches per cover); limit 1; `…_MATCH2_CoverSearches` (one search vs two); `…_MATCH9_NotFound`; `…_ENT7_Duplicates`; `…_ERR1_SearchErrorCancels`; parent cancelled; `SearcherFunc`.
+- **Client** (`internal/spotify/client_test.go`, `httptest`): request header and exact query; JSON mapping including a `null` item and all artists; explicit market and `WithToken`; market required; `Query` quote cases; quotes in the request; empty name not searched; `Retry-After` honoured then success (waits recorded, not slept); repeated 429 → `ErrUnavailable` after 4 calls; `Retry-After` too long → give up at once; `TestSearchTracks_AUTH8_Unauthorized`; `TestSearchTracks_ERR1_Unavailable` (500, 403, redirect, bad JSON); `TestSearchTracks_ERR5_NoDetailsInErrors`; context cancelled; the fallback backoff capped at `MaxRetryAfter` (defaults, a large `Backoff`, 70 retries without overflow); the body read to EOF so sequential searches reuse one connection.
+- **Pipeline** (`internal/pipeline/pipeline_test.go`, fake searcher): every status and field in one show, including tape + cover fallback and live cover fallback; `…_ENT1_ENT4_SkippedAndMedleysNotSearched`; setlist order with out-of-order completion; concurrency bound (peak exactly 4, two searches per cover); limit 1; `…_MATCH2_CoverSearches` (one search vs two); `…_MATCH9_NotFound`; `…_ENT7_Duplicates`; `…_ERR1_SearchErrorCancels`; `…_AUTH8_UnauthorizedWins` (401 kept whether it comes first or second); parent cancelled before and during the searches; `SearcherFunc`.
 
 `gofmt -l .` (nothing), `go vet ./...` and `go test -race ./...` pass. `go vet -tags spotifylive ./internal/spotify/` passes too.
 
@@ -185,6 +190,21 @@ Seen in the live check (worth watching in step 09):
 - **Live versions dominate the results for popular songs:** 7 of the 10 "Battery" results were live. The studio track was still first, but this is the case ADR-005's "fetch a second page" remedy is for, if step 09 finds a song whose studio version is pushed out.
 - **Unmarked suffixes:** "Battery - October 1985 / Work In Progress Rough Mix" has no step 07 marker, so its suffix isn't stripped and it isn't a candidate. That's the right outcome here, but only by accident (`rough mix` isn't an exclusion marker).
 - **Spotify's own titles carry quotes:** Bowie's track is literally `"Heroes" - 2017 Remaster`.
+
+## Code review
+
+A fresh-context `/code-review` found 7 points. Fixed, each with a test that fails on the old code:
+
+1. A 401 could be hidden by another search's error that arrived first, so the user would see "Couldn't reach Spotify" instead of being sent to login (AUTH-8). `ErrUnauthorized` now wins.
+2. A caller's cancellation during a search was returned as `ErrUnavailable` (a false Spotify outage in step 10's logs). The context's error is now returned.
+3. The no-`Retry-After` backoff wasn't capped and could overflow with a large `Retries`. It's now capped at `MaxRetryAfter`.
+4. The response body wasn't read to EOF after decoding, so connections weren't always reused. It's now drained.
+
+Not changed:
+
+5. **No back-off shared between the parallel searches**: ADR-005 and the brief ask only that each search honour `Retry-After`, and the live check saw no 429s. Kept as a known gap; add a shared "not before" time on the `Client` if step 09 or 10 hits rate limits.
+6. **Retry code duplicated from `internal/setlistfm`**: sharing it means refactoring step 05's merged code, outside this step. The difference in waits is deliberate (Spotify's `Retry-After` is used as given; setlist.fm's is a minimum). Step 11, which adds the playlist calls, is the natural point to extract a shared helper.
+7. **Hand-built work queue in `MatchShowLimit`** (instead of a channel): style only; the bound and the cancellation are tested under `-race`.
 
 ## Notes for later steps
 

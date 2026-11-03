@@ -6,10 +6,12 @@ package pipeline
 
 import (
 	"context"
+	"errors"
 	"sync"
 
 	"github.com/hmarp/setlisted/internal/matching"
 	"github.com/hmarp/setlisted/internal/setlist"
+	"github.com/hmarp/setlisted/internal/spotify"
 )
 
 // DefaultConcurrency is the most searches run at once for one show
@@ -88,9 +90,17 @@ func MatchShow(ctx context.Context, show setlist.Show, s Searcher, market string
 //
 // At most limit searches run at once (limit < 1 means 1): each of limit
 // workers resolves one entry at a time, and an entry's passes run in
-// sequence. If any search fails, the outstanding ones are cancelled and the
-// first error is returned unchanged (errors.Is works), with no results: the
-// user retries the whole preview (ERR-1).
+// sequence. If any search fails, the outstanding ones are cancelled and an
+// error is returned unchanged (errors.Is works), with no results: the user
+// retries the whole preview (ERR-1). Which error:
+//
+//   - if ctx itself was cancelled or timed out, ctx's error (context.Cause),
+//     even if the searches reported it wrapped in another error, so a
+//     client that went away isn't reported as a Spotify failure;
+//   - otherwise spotify.ErrUnauthorized if any search returned it, even after
+//     another search failed first, so an expired token always leads back to
+//     login (AUTH-8);
+//   - otherwise the first search error.
 func MatchShowLimit(ctx context.Context, show setlist.Show, s Searcher, market string, limit int) ([]EntryResult, error) {
 	var results []EntryResult
 	var songs []int // indexes into results of entries to resolve
@@ -124,6 +134,7 @@ func MatchShowLimit(ctx context.Context, show setlist.Show, s Searcher, market s
 		return results, nil
 	}
 
+	parent := ctx
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
@@ -146,9 +157,12 @@ func MatchShowLimit(ctx context.Context, show setlist.Show, s Searcher, market s
 	fail := func(err error) {
 		mu.Lock()
 		defer mu.Unlock()
-		if firstErr == nil {
+		switch {
+		case firstErr == nil:
 			firstErr = err
 			cancel()
+		case errors.Is(err, spotify.ErrUnauthorized) && !errors.Is(firstErr, spotify.ErrUnauthorized):
+			firstErr = err
 		}
 	}
 
@@ -176,6 +190,9 @@ func MatchShowLimit(ctx context.Context, show setlist.Show, s Searcher, market s
 	wg.Wait()
 
 	if firstErr != nil {
+		if parent.Err() != nil {
+			return nil, context.Cause(parent)
+		}
 		return nil, firstErr
 	}
 	return results, nil
