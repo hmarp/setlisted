@@ -124,7 +124,7 @@ func repeat(n, count int) []int {
 func get(t *testing.T, sfm *setlistfm.Client, logger *slog.Logger, path string) (int, map[string]any) {
 	t.Helper()
 	a := testAuth(t)
-	h := NewHandler(logger, fstest.MapFS{}, a, sfm)
+	h := NewHandler(testDeps(logger, fstest.MapFS{}, a, sfm))
 	req := httptest.NewRequest("GET", path, nil)
 	req.AddCookie(loggedIn(t, a))
 	rec := httptest.NewRecorder()

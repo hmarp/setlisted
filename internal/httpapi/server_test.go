@@ -2,6 +2,7 @@ package httpapi
 
 import (
 	"bytes"
+	"io/fs"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
@@ -12,6 +13,7 @@ import (
 
 	"github.com/hmarp/setlisted/internal/auth"
 	"github.com/hmarp/setlisted/internal/setlistfm"
+	"github.com/hmarp/setlisted/internal/spotify"
 	"github.com/hmarp/setlisted/web"
 )
 
@@ -39,6 +41,16 @@ func noSetlistFM() *setlistfm.Client {
 	return setlistfm.New(setlistfm.Config{APIKey: "key", BaseURL: "http://setlistfm.invalid"})
 }
 
+// noSpotify returns a Spotify client for tests that don't call it.
+func noSpotify() *spotify.Client {
+	return spotify.New(spotify.Config{BaseURL: "http://spotify.invalid"})
+}
+
+// testDeps returns Deps with no usable Spotify.
+func testDeps(logger *slog.Logger, static fs.FS, a *auth.Auth, sfm *setlistfm.Client) Deps {
+	return Deps{Logger: logger, Static: static, Auth: a, SetlistFM: sfm, Spotify: noSpotify()}
+}
+
 // loggedIn returns a valid session cookie for a.
 func loggedIn(t *testing.T, a *auth.Auth) *http.Cookie {
 	t.Helper()
@@ -51,7 +63,7 @@ func loggedIn(t *testing.T, a *auth.Auth) *http.Cookie {
 
 func TestRoutes(t *testing.T) {
 	a := testAuth(t)
-	h := NewHandler(discardLogger(), web.Static(), a, noSetlistFM())
+	h := NewHandler(testDeps(discardLogger(), web.Static(), a, noSetlistFM()))
 	session := loggedIn(t, a)
 	notFound := `{"error":{"code":"not_found","message":"Not found."}}` + "\n"
 	notLoggedIn := `{"error":{"code":"not_logged_in","message":"You're not logged in. Log in with Spotify."}}` + "\n"
@@ -112,7 +124,7 @@ func TestRoutes(t *testing.T) {
 
 func TestAuthRoutes(t *testing.T) {
 	a := testAuth(t)
-	h := NewHandler(discardLogger(), web.Static(), a, noSetlistFM())
+	h := NewHandler(testDeps(discardLogger(), web.Static(), a, noSetlistFM()))
 
 	rec := httptest.NewRecorder()
 	h.ServeHTTP(rec, httptest.NewRequest("GET", "/auth/login", nil))
@@ -138,7 +150,7 @@ func TestAuthRoutes(t *testing.T) {
 
 func TestPlaceholderPageLinksToSetlistFM(t *testing.T) {
 	rec := httptest.NewRecorder()
-	NewHandler(discardLogger(), web.Static(), testAuth(t), noSetlistFM()).ServeHTTP(rec, httptest.NewRequest("GET", "/", nil))
+	NewHandler(testDeps(discardLogger(), web.Static(), testAuth(t), noSetlistFM())).ServeHTTP(rec, httptest.NewRequest("GET", "/", nil))
 	if !strings.Contains(rec.Body.String(), `href="https://www.setlist.fm"`) {
 		t.Errorf("placeholder page has no setlist.fm link")
 	}
@@ -224,7 +236,7 @@ func TestLoggedStatus(t *testing.T) {
 func TestLogRequestsOmitsQueryString(t *testing.T) {
 	var logs bytes.Buffer
 	logger := slog.New(slog.NewJSONHandler(&logs, nil))
-	h := NewHandler(logger, fstest.MapFS{}, testAuth(t), noSetlistFM())
+	h := NewHandler(testDeps(logger, fstest.MapFS{}, testAuth(t), noSetlistFM()))
 
 	rec := httptest.NewRecorder()
 	h.ServeHTTP(rec, httptest.NewRequest("GET", "/api/health?q=secret+band", nil))
