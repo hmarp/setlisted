@@ -1,6 +1,7 @@
 package matching
 
 import (
+	"slices"
 	"strings"
 	"unicode"
 
@@ -118,10 +119,10 @@ func isVersionSegment(seg string) bool {
 }
 
 // isYearVersion reports whether ws contains a four-digit year followed by
-// "version", e.g. "2016 version".
+// one of yearVersionWords, e.g. "2016 version" or "2015 recording".
 func isYearVersion(ws []string) bool {
 	for i := 0; i+1 < len(ws); i++ {
-		if ws[i+1] == "version" && len(ws[i]) == 4 && strings.IndexFunc(ws[i], func(r rune) bool { return r < '0' || r > '9' }) < 0 {
+		if slices.Contains(yearVersionWords, ws[i+1]) && len(ws[i]) == 4 && strings.IndexFunc(ws[i], func(r rune) bool { return r < '0' || r > '9' }) < 0 {
 			return true
 		}
 	}

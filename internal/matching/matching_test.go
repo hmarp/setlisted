@@ -158,6 +158,10 @@ func TestMatch_MATCH4_TitleNormalisation(t *testing.T) {
 		// A year without "version" isn't a marker; a non-year is neither.
 		{"Song (2016)", "song 2016"},
 		{"Song (Take 2 Version)", "song take 2 version"},
+		// "‹year› Recording" is a version too (step 09: a real re-recording).
+		{"Lazarus (2015 Recording)", "lazarus"},
+		{"Song (Live Recording)", "song"},
+		{"Song (Recording)", "song recording"},
 		// Exclusion markers are stripped too, so the version is recognised.
 		{"Battery (Demo)", "battery"},
 		{"Battery - Instrumental", "battery"},

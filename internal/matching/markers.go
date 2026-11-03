@@ -10,8 +10,8 @@ package matching
 // versionMarkers mark a trailing title segment as a version suffix to strip
 // before comparing titles (MATCH-4). "live" also makes a suffix live
 // (MATCH-6); it's liveMarker, defined once below, so the stripping and the
-// live check can't drift apart. A year followed by "version" (e.g. "2016
-// Version") is a marker too; see isYearVersion.
+// live check can't drift apart. A year followed by one of yearVersionWords
+// (e.g. "2016 Version", "2015 Recording") is a marker too; see isYearVersion.
 var versionMarkers = []string{
 	"remaster",
 	"remastered",
@@ -24,6 +24,11 @@ var versionMarkers = []string{
 	"radio edit",
 	"edit",
 }
+
+// yearVersionWords make "‹year› ‹word›" a version marker (the spec's
+// "‹year› Version"). "recording" was added in step 09 for re-recordings such
+// as Steven Wilson's "Lazarus (2015 Recording)".
+var yearVersionWords = []string{"version", "recording"}
 
 // excludedMarkers identify a version that must never be chosen (MATCH-5),
 // whether they're in a title suffix or the album title. A title segment that

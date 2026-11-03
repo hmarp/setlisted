@@ -1,0 +1,97 @@
+{
+  "setlistId": "3b4e249c",
+  "comment": "Every entry checked by hand: studio original chosen ahead of the many live, compilation and deluxe copies. Drafted by Claude from the recorded data and the spec rules; every entry checked by hand. Owner review pending.",
+  "entries": [
+    {
+      "position": 1,
+      "name": "South of Heaven",
+      "status": "found",
+      "trackId": "3U9gogDStAfWxSm91PJuxb",
+      "comment": "\"South Of Heaven\" by Slayer on \"South Of Heaven\""
+    },
+    {
+      "position": 2,
+      "name": "Hate Worldwide",
+      "status": "found",
+      "trackId": "37n9zBD7h4IKimhkOfoFwf",
+      "comment": "\"Hate Worldwide\" by Slayer on \"World Painted Blood\""
+    },
+    {
+      "position": 3,
+      "name": "Jihad",
+      "status": "found",
+      "trackId": "5Oe7wHPL4hdEXeF4AOayCi",
+      "comment": "\"Jihad\" by Slayer on \"Christ Illusion\""
+    },
+    {
+      "position": 4,
+      "name": "War Ensemble",
+      "status": "found",
+      "trackId": "1E0yt5XSdjE9NOu897RilW",
+      "comment": "\"War Ensemble\" by Slayer on \"Seasons In The Abyss\""
+    },
+    {
+      "position": 5,
+      "name": "Mandatory Suicide",
+      "status": "found",
+      "trackId": "2KPcujYDaukvtfRR0Zmu0O",
+      "comment": "\"Mandatory Suicide\" by Slayer on \"South Of Heaven\""
+    },
+    {
+      "position": 6,
+      "name": "Born of Fire",
+      "status": "found",
+      "trackId": "6UQIYxDuejNz8HP2sjOVGU",
+      "comment": "\"Born Of Fire\" by Slayer on \"Seasons In The Abyss\""
+    },
+    {
+      "position": 7,
+      "name": "Dead Skin Mask",
+      "status": "found",
+      "trackId": "0t1lDXmMWBzF6mfnQ6KwqZ",
+      "comment": "\"Dead Skin Mask\" by Slayer on \"Seasons In The Abyss\""
+    },
+    {
+      "position": 8,
+      "name": "Hell Awaits",
+      "status": "found",
+      "trackId": "3UKGPk85EhjqJSqePrSYeR",
+      "comment": "\"Hell Awaits\" by Slayer on \"Hell Awaits\". Not a judgement call, but a near miss: \"Hell Awaits (40th Anniversary Edition)\" is dated 1985-04-08, earlier than the original 1985-06-19. \"Anniversary Edition\" is not a marker, so it is not a candidate; if it were, MATCH-8 would pick it."
+    },
+    {
+      "position": 9,
+      "name": "Angel of Death",
+      "status": "found",
+      "trackId": "5ohfpKB5tt275f4Y4lQ9F7",
+      "comment": "\"Angel Of Death\" by Slayer on \"Reign In Blood (Expanded)\". \"Reign In Blood (Expanded)\" (1986-10-07) beats the 2015-dated \"Reign In Blood\" on date. Both are the studio recording."
+    },
+    {
+      "position": 10,
+      "name": "Altar of Sacrifice",
+      "status": "found",
+      "trackId": "4LvQil7PXdldIl2jwrMCcV",
+      "comment": "\"Altar Of Sacrifice\" by Slayer on \"Reign In Blood (Expanded)\""
+    },
+    {
+      "position": 11,
+      "name": "Jesus Saves",
+      "status": "found",
+      "trackId": "47YR9X6SpcI4jYA2DOOhZm",
+      "comment": "\"Jesus Saves\" by Slayer on \"Reign In Blood (Expanded)\""
+    },
+    {
+      "position": 12,
+      "name": "Postmortem",
+      "status": "found",
+      "trackId": "28ILqSCrIeWvU52pyZfsxx",
+      "comment": "\"Postmortem\" by Slayer on \"Reign In Blood (Expanded)\""
+    },
+    {
+      "position": 13,
+      "name": "Raining Blood",
+      "status": "found",
+      "trackId": "4fiOTntQKr24p07FvQDHZE",
+      "comment": "\"Raining Blood\" by Slayer on \"Reign In Blood (Expanded)\""
+    }
+  ]
+}

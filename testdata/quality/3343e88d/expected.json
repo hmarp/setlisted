@@ -1,0 +1,148 @@
+{
+  "setlistId": "3343e88d",
+  "comment": "Drafted by Claude from the recorded data and the spec rules; every entry checked by hand. Owner review pending.",
+  "entries": [
+    {
+      "position": 1,
+      "name": "War Pigs",
+      "status": "cover_fallback",
+      "tape": true,
+      "trackId": "6TYQRlRci6AkVrN9a5C7ne",
+      "comment": "\"War Pigs - 2009 Remaster\" by Black Sabbath on \"Paranoid\". JUDGEMENT CALL: Walk-on tape of Black Sabbath's War Pigs. The band pass only has \"War Pigs - Charity Version\" (Judas Priest with Ozzy Osbourne, 2025). \"Charity Version\" is not a marker (only \"‹year› Version\" is), so it is not a candidate and the fallback picks Sabbath's studio original on \"Paranoid\" (2009 Remaster). Matches what is actually played. If \"‹anything› Version\" were stripped, the charity single would be found under the band instead."
+    },
+    {
+      "position": 2,
+      "name": "Faithkeepers Intro",
+      "status": "not_found",
+      "tape": true,
+      "comment": "Tape with no Spotify recording: Not found, with the Tape label."
+    },
+    {
+      "position": 3,
+      "name": "You've Got Another Thing Comin'",
+      "status": "found",
+      "trackId": "4f3RDq9nYPBeR1yMSgnmBm",
+      "comment": "\"You've Got Another Thing Comin'\" by Judas Priest on \"Screaming For Vengeance (Expanded Edition)\". \"Screaming For Vengeance (Expanded Edition)\" and \"Screaming For Vengeance\" are both dated 1982 (year only) and both albums, so Spotify's order decides (MATCH-8 tie). Both are the studio recording."
+    },
+    {
+      "position": 4,
+      "name": "Metal Gods",
+      "status": "found",
+      "trackId": "0VFfZVCFNe1I2IIChVBR5m",
+      "comment": "\"Metal Gods\" by Judas Priest on \"British Steel\""
+    },
+    {
+      "position": 5,
+      "name": "Breaking the Law",
+      "status": "found",
+      "trackId": "2RaA6kIcvomt77qlIgGhCT",
+      "comment": "\"Breaking the Law\" by Judas Priest on \"British Steel\""
+    },
+    {
+      "position": 6,
+      "name": "The Ripper",
+      "status": "found",
+      "trackId": "2yopMqEC6dKePLpRTUbzJN",
+      "comment": "\"The Ripper\" by Judas Priest on \"Sad Wings of Destiny\""
+    },
+    {
+      "position": 7,
+      "name": "The Sentinel",
+      "status": "found",
+      "trackId": "6noDJ06v7z8bCsBitjxFG2",
+      "comment": "\"The Sentinel\" by Judas Priest on \"Defenders Of The Faith\""
+    },
+    {
+      "position": 8,
+      "name": "Desert Plains",
+      "status": "found",
+      "trackId": "1zMXCwfwiIGPZA4kq7ideV",
+      "comment": "\"Desert Plains\" by Judas Priest on \"Point Of Entry\""
+    },
+    {
+      "position": 9,
+      "name": "Lightning Strike",
+      "status": "found",
+      "trackId": "6qopop1Rc9r1RjEIBQhc8d",
+      "comment": "\"Lightning Strike\" by Judas Priest on \"Firepower\""
+    },
+    {
+      "position": 10,
+      "name": "Turbo Lover",
+      "status": "found",
+      "trackId": "1i5yWGXgtFABa0czv2pbZH",
+      "comment": "\"Turbo Lover - Remastered\" by Judas Priest on \"Turbo 30\". The original \"Turbo\" album is not in the results; the studio recording on \"Turbo 30\" (dated 1986-04-07) is chosen."
+    },
+    {
+      "position": 11,
+      "name": "Steeler",
+      "status": "found",
+      "trackId": "62ckogL6wRdFuiPWV8c1U3",
+      "comment": "\"Steeler\" by Judas Priest on \"British Steel\""
+    },
+    {
+      "position": 12,
+      "name": "Delivering the Goods",
+      "status": "found",
+      "trackId": "2ygCZPsdNy7xp0UHIYzXPq",
+      "comment": "\"Delivering the Goods\" by Judas Priest on \"Killing Machine\""
+    },
+    {
+      "position": 13,
+      "name": "Panic Attack",
+      "status": "found",
+      "trackId": "2CAR6gkbtAZECBiuzssea8",
+      "comment": "\"Panic Attack\" by Judas Priest on \"Invincible Shield (Deluxe Edition)\""
+    },
+    {
+      "position": 14,
+      "name": "Victim of Changes",
+      "status": "found",
+      "trackId": "47TDklBWuYmP1CNQyTIioz",
+      "comment": "\"Victim of Changes\" by Judas Priest on \"Sad Wings of Destiny\""
+    },
+    {
+      "position": 15,
+      "name": "Halls of Valhalla",
+      "status": "found",
+      "trackId": "4zX2bEgFHUIZV8rR3qsLor",
+      "comment": "\"Halls of Valhalla\" by Judas Priest on \"Redeemer of Souls (Deluxe)\""
+    },
+    {
+      "position": 16,
+      "name": "Painkiller",
+      "status": "found",
+      "trackId": "0L7zm6afBEtrNKo6C6Gj08",
+      "comment": "\"Painkiller\" by Judas Priest on \"Painkiller\""
+    },
+    {
+      "position": 17,
+      "name": "The Hellion",
+      "status": "found",
+      "tape": true,
+      "trackId": "7LLQxMvAYOpoC2PKe3VQn5",
+      "comment": "\"The Hellion\" by Judas Priest on \"Screaming For Vengeance (Expanded Edition)\". Tape not attributed to another artist, so it is the band's own studio track (MATCH-1)."
+    },
+    {
+      "position": 18,
+      "name": "Electric Eye",
+      "status": "found",
+      "trackId": "3w9zHVKI28aUPZTxq8oDC6",
+      "comment": "\"Electric Eye\" by Judas Priest on \"Screaming For Vengeance (Expanded Edition)\""
+    },
+    {
+      "position": 19,
+      "name": "Hell Bent for Leather",
+      "status": "found",
+      "trackId": "0SEd8AUWG3j4YFsFEVmGjW",
+      "comment": "\"Hell Bent for Leather\" by Judas Priest on \"Killing Machine\""
+    },
+    {
+      "position": 20,
+      "name": "Living After Midnight",
+      "status": "found",
+      "trackId": "0IXpUl1fn2QZcBavfuq0H4",
+      "comment": "\"Living After Midnight\" by Judas Priest on \"British Steel\""
+    }
+  ]
+}
