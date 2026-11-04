@@ -89,7 +89,8 @@ The build sandbox can't reach setlist.fm or Spotify, so this is the **first use 
   - [x] Re-check on this branch after logging in again with `user-read-private` (2026-11-04): **`200`**. Show `3b4890b8` (Gojira, Life Stage, Louisville, 20 Sep 2026, no tour): **11 of 11 found**, all `found`, all studio recordings credited to Gojira on the right albums; main set 1–10 and `Encore 1` with 11; the note "With Remembrance outro" carried through; `trackIds` has the 11 IDs in order. The show had no cover fallback, live match, tape, medley or skipped entry, so those are covered by the handler tests only.
   - setlist.fm quirk seen: "Mea culpa (Ah! Ça ira!)" has the cover artist **`[traditional]`**, so `originalArtist` is `"[traditional]"`. It was found under the band (plain `found`), so no "Cover →" label applies. Had the band pass failed, the fallback would have searched Spotify for the artist `[traditional]`, which finds nothing (a wasted search, not a wrong match). Worth treating setlist.fm's bracketed placeholders (`[traditional]`, `[unknown]`) as "not a cover" in step 06's rules later; not changed here.
 - [ ] After the merge deploys: the same on Cloud Run.
-- [ ] Typical response time (the request log's `duration_ms`): ___ ms for a ___-song show (local), ___ ms (Cloud Run, warm).
+- [x] Typical response time (the request log's `duration_ms`), local on `127.0.0.1`: **about 600–800 ms** across repeated loads of the 11-song show `3b4890b8` (one setlist.fm call and 11 searches, 4 at a time). Well inside the 50 s budget and spec §9's one-minute journey.
+- [ ] Cloud Run, warm, after the merge deploys: ___ ms.
 
 ## Notes for later steps
 
