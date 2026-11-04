@@ -102,6 +102,7 @@ An **extremely basic**, functional UI that covers the whole journey on phone and
    - create posts `showId` and the preview's `trackIds`, unchanged (ADR-005);
    - `partial_create` shows the failure message with a link to the partial playlist (ERR-3);
    - error text comes from the API's `message` field (already user-safe).
+   - *From step 10:* the preview's labels come from three fields (`docs/api.md` has the table): "Cover → ‹originalArtist›" **only** when `status` is `cover_fallback` (`originalArtist` is also set for covers found under the band, which are plain Found); "Live version" from `live` (it can be true together with `cover_fallback`); "Tape" from `tape`. The main set has `heading: ""` and shows no heading. `note`, `tour` and `originalArtist` are `null` when absent.
 4. **Navigation:**
    - Back to shows;
    - New search;

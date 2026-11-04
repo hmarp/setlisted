@@ -20,6 +20,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/hmarp/setlisted/internal/matching"
 )
@@ -306,7 +308,11 @@ func (c *Client) do(ctx context.Context, token, path string, v any) (time.Durati
 		io.Copy(io.Discard, io.LimitReader(resp.Body, maxBody))
 		return 0, ErrUnauthorized
 	case resp.StatusCode != http.StatusOK:
+		reason := spotifyReason(resp.Body, req.URL.Query().Get("q"), token)
 		io.Copy(io.Discard, io.LimitReader(resp.Body, maxBody))
+		if reason != "" {
+			return 0, fmt.Errorf("%w: status %d, Spotify says %q", ErrUnavailable, resp.StatusCode, reason)
+		}
 		return 0, fmt.Errorf("%w: status %d", ErrUnavailable, resp.StatusCode)
 	}
 	if err := json.NewDecoder(io.LimitReader(resp.Body, maxBody)).Decode(v); err != nil {
@@ -315,6 +321,48 @@ func (c *Client) do(ctx context.Context, token, path string, v any) (time.Durati
 	// Read to EOF so the connection can be reused for the next search.
 	io.Copy(io.Discard, io.LimitReader(resp.Body, maxBody))
 	return 0, nil
+}
+
+// maxReason caps the Spotify error message kept in error text.
+const maxReason = 120
+
+// spotifyReason returns the message of Spotify's error body,
+// {"error": {"status": 403, "message": "…"}}, so a refusal can be diagnosed
+// from the logs. It's kept only if it's short, plain text and contains
+// neither the search query's names nor the token; otherwise it's "".
+// It goes into error text for logs only: handlers never show it to users
+// (ERR-5).
+func spotifyReason(body io.Reader, q, token string) string {
+	var e struct {
+		Error struct {
+			Message string `json:"message"`
+		} `json:"error"`
+	}
+	if json.NewDecoder(io.LimitReader(body, 16<<10)).Decode(&e) != nil {
+		return ""
+	}
+	msg := strings.TrimSpace(e.Error.Message)
+	if msg == "" || utf8.RuneCountInString(msg) > maxReason {
+		return ""
+	}
+	for _, r := range msg {
+		if !unicode.IsPrint(r) {
+			return ""
+		}
+	}
+	lower := strings.ToLower(msg)
+	sensitive := []string{token}
+	// q is track:"<track>" artist:"<artist>" (see Query).
+	if rest, ok := strings.CutPrefix(q, `track:"`); ok {
+		track, artist, _ := strings.Cut(rest, `" artist:"`)
+		sensitive = append(sensitive, track, strings.TrimSuffix(artist, `"`))
+	}
+	for _, s := range sensitive {
+		if s != "" && strings.Contains(lower, strings.ToLower(s)) {
+			return ""
+		}
+	}
+	return msg
 }
 
 // backoff is base doubled attempt times, never more than limit (and so

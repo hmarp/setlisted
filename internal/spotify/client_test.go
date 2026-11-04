@@ -359,3 +359,34 @@ func TestSearchTracksReusesConnection(t *testing.T) {
 		t.Errorf("connections = %d, want 1", n)
 	}
 }
+
+func TestSearchTracks_SpotifyReasonLogged(t *testing.T) {
+	long := strings.Repeat("x", maxReason+1)
+	tests := []struct {
+		name, body, want string
+	}{
+		{"message kept", `{"error":{"status":403,"message":"Insufficient client scope"}}`, `status 403, Spotify says "Insufficient client scope"`},
+		{"message naming the track dropped", `{"error":{"status":403,"message":"No access to battery"}}`, "status 403"},
+		{"message naming the artist dropped", `{"error":{"status":403,"message":"METALLICA blocked"}}`, "status 403"},
+		{"message holding the token dropped", `{"error":{"status":403,"message":"bad ` + testToken + `"}}`, "status 403"},
+		{"long message dropped", `{"error":{"status":403,"message":"` + long + `"}}`, "status 403"},
+		{"control characters dropped", `{"error":{"status":403,"message":"a\nb"}}`, "status 403"},
+		{"not JSON", "Forbidden", "status 403"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.WriteHeader(http.StatusForbidden)
+				w.Write([]byte(tt.body))
+			}))
+			defer srv.Close()
+			_, err := testClient(srv, 0, nil).SearchTracks(context.Background(), testToken, "Battery", "Metallica", "GB")
+			if !errors.Is(err, ErrUnavailable) {
+				t.Fatalf("err = %v, want ErrUnavailable", err)
+			}
+			if got := strings.TrimPrefix(err.Error(), ErrUnavailable.Error()+": "); got != tt.want {
+				t.Errorf("err = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}

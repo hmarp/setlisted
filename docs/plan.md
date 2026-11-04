@@ -1,7 +1,7 @@
 # Plan
 
 - **Status:** Approved (2026-10-08)
-- **Covers:** the MVP, as defined in [`intent.md`](intent.md) and [`spec.md`](spec.md), built according to ADR-001 to ADR-009.
+- **Covers:** the MVP, as defined in [`intent.md`](intent.md) and [`spec.md`](spec.md), built according to ADR-001 to ADR-010.
 
 ## How this plan works
 
@@ -26,7 +26,7 @@
 | 07 | [Matching rules (pure)](plan/07-matching-rules/brief.md) | 06 | Done |
 | 08 | [Spotify search client and matching pipeline](plan/08-spotify-search-pipeline/brief.md) | 04, 07 | Done |
 | 09 | [Test setlist fixtures and matching-quality test](plan/09-matching-quality-tests/brief.md) | 05, 08 | Done |
-| 10 | [Preview API](plan/10-preview-api/brief.md) | 05, 08 | Not started |
+| 10 | [Preview API](plan/10-preview-api/brief.md) | 05, 08 | Done |
 | 11 | [Create playlist API](plan/11-create-playlist-api/brief.md) | 10 | Not started |
 | 12 | [Throwaway UI](plan/12-throwaway-ui/brief.md) | 11 | Not started |
 | 13 | [MVP acceptance](plan/13-mvp-acceptance/brief.md) | 09, 12 | Not started |

@@ -19,6 +19,7 @@ import (
 	"github.com/hmarp/setlisted/internal/config"
 	"github.com/hmarp/setlisted/internal/httpapi"
 	"github.com/hmarp/setlisted/internal/setlistfm"
+	"github.com/hmarp/setlisted/internal/spotify"
 	"github.com/hmarp/setlisted/web"
 )
 
@@ -59,9 +60,13 @@ func run(logger *slog.Logger) error {
 		return err
 	}
 
-	sfm := setlistfm.New(setlistfm.Config{APIKey: cfg.SetlistFMAPIKey})
-
-	srv := httpapi.NewServer(net.JoinHostPort("", cfg.Port), logger, web.Static(), a, sfm)
+	srv := httpapi.NewServer(net.JoinHostPort("", cfg.Port), httpapi.Deps{
+		Logger:    logger,
+		Static:    web.Static(),
+		Auth:      a,
+		SetlistFM: setlistfm.New(setlistfm.Config{APIKey: cfg.SetlistFMAPIKey}),
+		Spotify:   spotify.New(spotify.Config{}),
+	})
 
 	errc := make(chan error, 1)
 	go func() {
