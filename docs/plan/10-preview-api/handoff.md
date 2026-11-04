@@ -46,6 +46,7 @@ Plus "Tape" whenever `tape` is true. `originalArtist` is set for **every** cover
 - **`null` for absent text** (see above), rather than `""`, to match the show list.
 - **One budget for the whole request: 50 s** (`previewBudget`), covering the setlist.fm fetch and all searches, leaving 10 s of the 60 s write timeout. A single budget rather than separate ones, because the setlist.fm part is one call and normally takes well under a second; if it's slow, Spotify gets what's left, and an overrun is a 503 either way.
 - **A client that goes away** (tab closed, Retry clicked, navigation) is recorded as status **`499`** in the request log, with an INFO line `preview abandoned by the client` and **no** WARN. Nobody receives the 499. The check is `r.Context().Err() != nil`, so the budget running out (the request's own deadline, not the client's) is still a logged 503.
+- **Spotify's reason is now logged (changes a step 08 rule).** The first live run got `spotify unavailable: status 403` with no way to tell why, so `internal/spotify` now adds Spotify's error `message` to the error text, e.g. `status 403, Spotify says "…"`. It's kept only if it's ≤ 120 characters of printable text and contains neither the track or artist name searched nor the token; otherwise it's left out as before. Users still see only "Couldn't reach Spotify. Try again." (ERR-5). Tested in `TestSearchTracks_SpotifyReasonLogged`; step 08's `…_ERR5_NoDetailsInErrors` (a non-JSON body) still passes. Step 11's playlist calls go through the same `do`, so they get it too.
 - **Spotify 401** logs an INFO line (`Spotify rejected the session; logging out`) and calls `auth.SpotifyUnauthorized(w)`.
 
 ## Error mapping
@@ -83,6 +84,7 @@ Through the real router, with a fake setlist.fm (`httptest`) and the real `spoti
 The build sandbox can't reach setlist.fm or Spotify, so this is the **first use of a user token with `market=from_token`**. Fill in:
 
 - [ ] Local, on `http://127.0.0.1:8080`, logged in through the browser: a real show's preview returns `200` with sensible matches.
+  - 2026-11-04, first attempt (show `3b4890b8`): `503` "Couldn't reach Spotify" after 475 ms; the log had `spotify unavailable: status 403`. The owner's account **is** in User Management, and an app-token search (`market=GB`) answered `200` the same day, so Spotify refuses the **user** token's search. Reason not yet known; the logging above was added to find it.
 - [ ] After the merge deploys: the same on Cloud Run.
 - [ ] Typical response time (the request log's `duration_ms`): ___ ms for a ___-song show (local), ___ ms (Cloud Run, warm).
 
