@@ -41,7 +41,7 @@ A protected endpoint that creates a **new private playlist** in the user's Spoti
   - the `tracks` field and parameters were renamed to `items`.
 - **ADR-004:**
   - POST is subject to the **`Origin` check**;
-  - the scope is `playlist-modify-private`;
+  - the scopes are `playlist-modify-private` (needed here) and `user-read-private` (for the preview's `market=from_token`, ADR-010);
   - Spotify 401 → step 04's helper.
 
 ## What to build

@@ -29,9 +29,10 @@ const (
 	SpotifyAPIBaseURL = "https://api.spotify.com/v1"
 )
 
-// Scope is the only Spotify permission requested (AUTH-2): creating a
-// private playlist. Reading the user's ID and searching need no scope.
-const Scope = "playlist-modify-private"
+// Scopes are the Spotify permissions requested (AUTH-2, ADR-010):
+// creating a private playlist, and reading the user's country so searches
+// can use market=from_token. Reading the user's ID needs no scope.
+var Scopes = []string{"playlist-modify-private", "user-read-private"}
 
 // CallbackPath is the redirect URI's path, registered in the Spotify app.
 const CallbackPath = "/auth/callback"
@@ -99,7 +100,7 @@ func New(cfg Config) (*Auth, error) {
 				AuthStyle: oauth2.AuthStyleInHeader,
 			},
 			RedirectURL: base + CallbackPath,
-			Scopes:      []string{Scope},
+			Scopes:      Scopes,
 		},
 		sealer: s,
 		origin: base,

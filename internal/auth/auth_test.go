@@ -119,7 +119,7 @@ func (f *fakeSpotify) token(w http.ResponseWriter, r *http.Request) {
 		"access_token":  "access-" + code,
 		"token_type":    "Bearer",
 		"refresh_token": testRefreshToken,
-		"scope":         Scope,
+		"scope":         strings.Join(Scopes, " "),
 	}
 	if expiresIn != 0 {
 		body["expires_in"] = expiresIn
@@ -222,7 +222,7 @@ func TestLoginRedirect(t *testing.T) {
 		"client_id":             testClientID,
 		"redirect_uri":          testBaseURL + "/auth/callback",
 		"response_type":         "code",
-		"scope":                 "playlist-modify-private",
+		"scope":                 "playlist-modify-private user-read-private",
 		"code_challenge_method": "S256",
 	}
 	for k, v := range want {

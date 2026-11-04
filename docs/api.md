@@ -204,7 +204,7 @@ These are browser navigations, not `fetch` calls (except logout).
 
 ### `GET /auth/login`
 
-Starts the Spotify login: sets a short-lived login cookie (state and PKCE verifier, 10 minutes) and redirects (`302`) to Spotify's authorise page, asking only for `playlist-modify-private`. The UI links to it ("Log in with Spotify").
+Starts the Spotify login: sets a short-lived login cookie (state and PKCE verifier, 10 minutes) and redirects (`302`) to Spotify's authorise page, asking for `playlist-modify-private` and `user-read-private` (ADR-010: the second lets searches use the user's country). The UI links to it ("Log in with Spotify").
 
 ### `GET /auth/callback`
 

@@ -4,6 +4,7 @@
 
 - **`GET /api/shows/{id}/preview`** (protected), in `internal/httpapi/preview.go`: fetches the setlist (step 05), converts and classifies it (`Setlist.Show()`, step 06), runs `pipeline.MatchShow` with the session's token and `market=from_token` (step 08), and returns the preview. Fully documented in `docs/api.md`.
 - **`httpapi.Deps`**: `NewHandler(d Deps)` and `NewServer(addr, d Deps)` now take one dependencies struct (`Logger`, `Static`, `Auth`, `SetlistFM`, `Spotify`), as steps 01 and 05 suggested. `main` builds **one** `spotify.New(spotify.Config{})` and passes it in. Existing tests use a `testDeps(...)` helper.
+- **ADR-010**: login now also requests **`user-read-private`**, which `market=from_token` needs (found in the live check, below). `auth.Scope` became `auth.Scopes`; ADR-004's status line points to ADR-010.
 - No new dependencies, configuration, error codes or cloud resources.
 
 ## Response shape
@@ -84,7 +85,8 @@ Through the real router, with a fake setlist.fm (`httptest`) and the real `spoti
 The build sandbox can't reach setlist.fm or Spotify, so this is the **first use of a user token with `market=from_token`**. Fill in:
 
 - [ ] Local, on `http://127.0.0.1:8080`, logged in through the browser: a real show's preview returns `200` with sensible matches.
-  - 2026-11-04, first attempt (show `3b4890b8`): `503` "Couldn't reach Spotify" after 475 ms; the log had `spotify unavailable: status 403`. The owner's account **is** in User Management, and an app-token search (`market=GB`) answered `200` the same day, so Spotify refuses the **user** token's search. Reason not yet known; the logging above was added to find it.
+  - 2026-11-04, first attempt (show `3b4890b8`): `503` "Couldn't reach Spotify" after 475 ms; the log had `spotify unavailable: status 403`. The owner's account **is** in User Management, and an app-token search (`market=GB`) answered `200` the same day, so Spotify refuses the **user** token's search. With the reason logged, Spotify said **"Insufficient client scope"**. Two temporary local experiments: the same login with `market=GB` → `200`; `from_token` with `user-read-private` added to the login → `200`. So `from_token` needs `user-read-private` (Spotify reads the user's country). The owner chose to request it (**ADR-010**) rather than fix the market in configuration.
+  - [ ] Re-check on this branch after logging out and in again (the consent screen lists the new permission): `200`, sensible matches.
 - [ ] After the merge deploys: the same on Cloud Run.
 - [ ] Typical response time (the request log's `duration_ms`): ___ ms for a ___-song show (local), ___ ms (Cloud Run, warm).
 
@@ -98,6 +100,8 @@ The build sandbox can't reach setlist.fm or Spotify, so this is the **first use 
 - **Step 12:** render from the tables above: no heading for `heading == ""`; `note` as secondary text when not `null`; "Cover → ‹originalArtist›" only when `status == "cover_fallback"`; "Live version" from `live`; "Tape" from `tape`; the summary from `summary`; disable "Create playlist" and show PREV-7's message when `canCreate` is false; `show.setlistUrl` for the setlist.fm link; post `show.id` and `trackIds` unchanged. A `401` means log in again; a `503` means show `message` with Retry (repeat the same GET).
 
 ## Known gaps
+
+- **Sessions from before ADR-010** hold a token without `user-read-private`, so their previews answer "Couldn't reach Spotify" (logged as `status 403, Spotify says "Insufficient client scope"`) until the user logs in again. Sessions last at most an hour, so this clears itself within an hour of the deploy. Not worth special handling for a few friends.
 
 - **Not run against live setlist.fm or Spotify in this session** (no network from the sandbox). The owner's local and Cloud Run checks above are the first real runs with a user token and `from_token`.
 - A preview's searches are bounded by the 50 s budget only; there's no shared back-off between parallel searches on a 429 (step 08's gap).
