@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"slices"
 	"time"
 
 	"golang.org/x/oauth2"
@@ -29,10 +30,13 @@ const (
 	SpotifyAPIBaseURL = "https://api.spotify.com/v1"
 )
 
-// Scopes are the Spotify permissions requested (AUTH-2, ADR-010):
+// scopes are the Spotify permissions requested (AUTH-2, ADR-010):
 // creating a private playlist, and reading the user's country so searches
 // can use market=from_token. Reading the user's ID needs no scope.
-var Scopes = []string{"playlist-modify-private", "user-read-private"}
+var scopes = []string{"playlist-modify-private", "user-read-private"}
+
+// Scopes returns a copy of the Spotify permissions requested at login.
+func Scopes() []string { return slices.Clone(scopes) }
 
 // CallbackPath is the redirect URI's path, registered in the Spotify app.
 const CallbackPath = "/auth/callback"
@@ -100,7 +104,7 @@ func New(cfg Config) (*Auth, error) {
 				AuthStyle: oauth2.AuthStyleInHeader,
 			},
 			RedirectURL: base + CallbackPath,
-			Scopes:      Scopes,
+			Scopes:      Scopes(),
 		},
 		sealer: s,
 		origin: base,

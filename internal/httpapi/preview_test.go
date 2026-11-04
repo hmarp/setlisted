@@ -17,6 +17,9 @@ import (
 	"time"
 
 	"github.com/hmarp/setlisted/internal/auth"
+	"github.com/hmarp/setlisted/internal/pipeline"
+	"github.com/hmarp/setlisted/internal/setlist"
+	"github.com/hmarp/setlisted/internal/setlistfm"
 	"github.com/hmarp/setlisted/internal/spotify"
 )
 
@@ -394,8 +397,8 @@ func TestPreviewBudget(t *testing.T) {
 	if d := time.Since(start); d > 2*time.Second {
 		t.Errorf("took %v, want the budget to end it", d)
 	}
-	if !strings.Contains(logs.String(), `"level":"WARN"`) {
-		t.Errorf("budget overrun not logged as a failure: %s", logs.String())
+	if !strings.Contains(logs.String(), `"level":"WARN"`) || !strings.Contains(logs.String(), "budget") {
+		t.Errorf("budget overrun not logged as one: %s", logs.String())
 	}
 }
 
@@ -445,4 +448,29 @@ func TestPreviewLogsNoUserData(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestBuildPreviewMisalignedRows(t *testing.T) {
+	// The pipeline returns one row per non-skipped entry. If that ever
+	// breaks, the preview fails rather than misplacing rows.
+	show := setlistfmShow(t, previewSetlistJSON)
+	results := make([]pipeline.EntryResult, 9) // the show has 10 shown entries
+	if _, err := buildPreview(show, results); err == nil {
+		t.Error("too few rows: want an error")
+	}
+	if _, err := buildPreview(show, make([]pipeline.EntryResult, 11)); err == nil {
+		t.Error("too many rows: want an error")
+	}
+	if _, err := buildPreview(show, make([]pipeline.EntryResult, 10)); err != nil {
+		t.Errorf("matching rows: %v", err)
+	}
+}
+
+func setlistfmShow(t *testing.T, body string) setlist.Show {
+	t.Helper()
+	var sl setlistfm.Setlist
+	if err := json.Unmarshal([]byte(body), &sl); err != nil {
+		t.Fatal(err)
+	}
+	return sl.Show()
 }

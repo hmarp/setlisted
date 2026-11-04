@@ -119,7 +119,7 @@ func (f *fakeSpotify) token(w http.ResponseWriter, r *http.Request) {
 		"access_token":  "access-" + code,
 		"token_type":    "Bearer",
 		"refresh_token": testRefreshToken,
-		"scope":         strings.Join(Scopes, " "),
+		"scope":         strings.Join(Scopes(), " "),
 	}
 	if expiresIn != 0 {
 		body["expires_in"] = expiresIn

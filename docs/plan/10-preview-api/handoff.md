@@ -4,7 +4,7 @@
 
 - **`GET /api/shows/{id}/preview`** (protected), in `internal/httpapi/preview.go`: fetches the setlist (step 05), converts and classifies it (`Setlist.Show()`, step 06), runs `pipeline.MatchShow` with the session's token and `market=from_token` (step 08), and returns the preview. Fully documented in `docs/api.md`.
 - **`httpapi.Deps`**: `NewHandler(d Deps)` and `NewServer(addr, d Deps)` now take one dependencies struct (`Logger`, `Static`, `Auth`, `SetlistFM`, `Spotify`), as steps 01 and 05 suggested. `main` builds **one** `spotify.New(spotify.Config{})` and passes it in. Existing tests use a `testDeps(...)` helper.
-- **ADR-010**: login now also requests **`user-read-private`**, which `market=from_token` needs (found in the live check, below). `auth.Scope` became `auth.Scopes`; ADR-004's status line points to ADR-010.
+- **ADR-010**: login now also requests **`user-read-private`**, which `market=from_token` needs (found in the live check, below). the constant `auth.Scope` became `auth.Scopes()` (it returns a copy, so nothing can change the login's scopes by accident); ADR-004's status line points to ADR-010.
 - No new dependencies, configuration, error codes or cloud resources.
 
 ## Response shape
@@ -60,9 +60,10 @@ Plus "Tape" whenever `tape` is true. `originalArtist` is set for **every** cover
 | Spotify `ErrUnauthorized` (wins over other errors, step 08) | `401 not_logged_in`, session cookie cleared | INFO |
 | Spotify anything else, or the budget used up during matching | `503 upstream_unavailable`, `service: "Spotify"`, "Couldn't reach Spotify. Try again." | WARN `Spotify call failed`, `op: preview`, `err` (budget overruns say so) |
 | No session | `401 not_logged_in` (step 04's middleware) | request line only |
-| Client gone during either call | `499` (logged only) | INFO `preview abandoned by the client` |
+| Client gone during either call | `499` (logged only) | INFO `preview abandoned by the client`, with `service` and `err` (so an upstream failure just before the tab closed is still visible) |
+| Result rows don't line up with the show's entries (a bug; not reachable today) | `500 internal_error`, rather than rows under the wrong heading | ERROR `building the preview failed` |
 
-No partial preview is ever returned. Logs never contain names, notes, track details, search text or the token (tested); the request line has the path, so the setlist ID is logged (a public ID, like step 05's MBID).
+Only the budget context's own deadline is logged as "preview budget … used up"; a client's 10 s per-call timeout is logged as what it is. No partial preview is ever returned. Logs never contain names, notes, track details, search text or the token (tested); the request line has the path, so the setlist ID is logged (a public ID, like step 05's MBID).
 
 ## How `trackIds` is built
 
@@ -100,6 +101,15 @@ The build sandbox can't reach setlist.fm or Spotify, so this is the **first use 
   - The Spotify client is `d.Spotify` in `httpapi.Deps`; add the playlist calls to `internal/spotify` (see step 08's note) and the route on the `api` mux.
   - Reuse the preview's pattern: one budget under the 60 s write timeout for the whole request, and `previewHandler.fail`'s client-gone check (`r.Context().Err() != nil` → 499, no WARN). For create, think about a client that goes away **after** the playlist exists: the playlist stays (no rollback, ERR-3), and nobody sees the response.
 - **Step 12:** render from the tables above: no heading for `heading == ""`; `note` as secondary text when not `null`; "Cover → ‹originalArtist›" only when `status == "cover_fallback"`; "Live version" from `live`; "Tape" from `tape`; the summary from `summary`; disable "Create playlist" and show PREV-7's message when `canCreate` is false; `show.setlistUrl` for the setlist.fm link; post `show.id` and `trackIds` unchanged. A `401` means log in again; a `503` means show `message` with Retry (repeat the same GET).
+
+## Code review
+
+A fresh-context `/code-review` (high effort) found 9 points, none critical. Fixed: (1) a per-call HTTP timeout was logged as the budget running out; (3) the client-gone INFO line now carries the error; (4) misaligned rows now fail with a 500 instead of being silently skipped (`TestBuildPreviewMisalignedRows`); (7) `auth.Scopes` is now a function returning a copy; (9) `docs/plan.md` now says ADR-001 to ADR-010. Not changed:
+
+- **(2) Map Spotify's 403 "Insufficient client scope" to log-in-again.** It only affects sessions from before ADR-010, for at most an hour after the deploy (known gap below), and would mean branching on Spotify's message text.
+- **(5) `spotifyReason` drops a message containing a very short track name** (e.g. "A"). That errs on the side of not logging user data; only the diagnostic is lost, for that search.
+- **(6) The artist endpoints (step 05) still log a closed tab as a setlist.fm WARN.** Outside this step; step 11 is the natural point to share one helper for both.
+- **(8) ADR-004's status line was edited** to point to ADR-010, the same pointer ADR-009 added; the decision text is untouched.
 
 ## Known gaps
 

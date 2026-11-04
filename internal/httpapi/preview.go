@@ -109,7 +109,7 @@ func (h *previewHandler) serve(w http.ResponseWriter, r *http.Request) {
 		jsonapi.WriteError(w, jsonapi.NotFound())
 		return
 	case err != nil:
-		h.fail(w, r, jsonapi.ServiceSetlistFM, err)
+		h.fail(w, r, ctx, jsonapi.ServiceSetlistFM, err)
 		return
 	}
 	show := sl.Show()
@@ -122,24 +122,32 @@ func (h *previewHandler) serve(w http.ResponseWriter, r *http.Request) {
 		auth.SpotifyUnauthorized(w)
 		return
 	default:
-		h.fail(w, r, jsonapi.ServiceSpotify, err)
+		h.fail(w, r, ctx, jsonapi.ServiceSpotify, err)
 		return
 	}
 
-	jsonapi.WriteJSON(w, http.StatusOK, buildPreview(show, results))
+	p, err := buildPreview(show, results)
+	if err != nil {
+		h.logger.Error("building the preview failed", "op", "preview", "err", err.Error())
+		jsonapi.WriteError(w, jsonapi.InternalError())
+		return
+	}
+	jsonapi.WriteJSON(w, http.StatusOK, p)
 }
 
 // fail writes ERR-1's 503 for service, or, if the browser has gone away,
-// only records 499 so the request isn't logged as an outage. Error text
-// from both clients holds no IDs, names, tokens or bodies, so it's safe to
-// log.
-func (h *previewHandler) fail(w http.ResponseWriter, r *http.Request, service string, err error) {
+// only records 499 so the request isn't logged as an outage (the error is
+// still logged at INFO, in case a real failure came first). ctx is the
+// request's budget context: only its own deadline counts as the budget
+// running out, not a client's per-call timeout. Error text from both
+// clients holds no IDs, names, tokens or bodies, so it's safe to log.
+func (h *previewHandler) fail(w http.ResponseWriter, r *http.Request, ctx context.Context, service string, err error) {
 	if r.Context().Err() != nil {
-		h.logger.Info("preview abandoned by the client", "service", service)
+		h.logger.Info("preview abandoned by the client", "service", service, "err", err.Error())
 		w.WriteHeader(statusClientClosed)
 		return
 	}
-	if errors.Is(err, context.DeadlineExceeded) {
+	if errors.Is(ctx.Err(), context.DeadlineExceeded) {
 		err = fmt.Errorf("preview budget of %v used up: %w", h.budget, err)
 	}
 	h.logger.Warn(service+" call failed", "op", "preview", "err", err.Error())
@@ -152,8 +160,10 @@ func (h *previewHandler) fail(w http.ResponseWriter, r *http.Request, service st
 // Sets follow show.Sets: each set takes as many result rows as it has
 // non-skipped entries, so a set with nothing to show is left out (no
 // heading with nothing under it), and two adjacent sets that happen to
-// share a heading stay apart.
-func buildPreview(show setlist.Show, results []pipeline.EntryResult) previewJSON {
+// share a heading stay apart. If the rows don't line up with the show's
+// non-skipped entries (a bug), it returns an error rather than put rows
+// under the wrong heading.
+func buildPreview(show setlist.Show, results []pipeline.EntryResult) (previewJSON, error) {
 	p := previewJSON{
 		Show: previewShowJSON{
 			ID:         show.ID,
@@ -177,8 +187,11 @@ func buildPreview(show setlist.Show, results []pipeline.EntryResult) previewJSON
 				n++
 			}
 		}
-		if n == 0 || next+n > len(results) {
+		if n == 0 {
 			continue
+		}
+		if next+n > len(results) {
+			return previewJSON{}, fmt.Errorf("%d result rows for at least %d entries", len(results), next+n)
 		}
 		out := previewSetJSON{Heading: set.Heading, Entries: make([]previewEntryJSON, 0, n)}
 		for _, res := range results[next : next+n] {
@@ -192,8 +205,11 @@ func buildPreview(show setlist.Show, results []pipeline.EntryResult) previewJSON
 		next += n
 		p.Sets = append(p.Sets, out)
 	}
+	if next != len(results) {
+		return previewJSON{}, fmt.Errorf("%d result rows for %d entries", len(results), next)
+	}
 	p.CanCreate = p.Summary.Found > 0 // PREV-7
-	return p
+	return p, nil
 }
 
 func toPreviewEntry(r pipeline.EntryResult) previewEntryJSON {

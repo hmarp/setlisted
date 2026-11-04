@@ -1,7 +1,7 @@
 # Plan
 
 - **Status:** Approved (2026-10-08)
-- **Covers:** the MVP, as defined in [`intent.md`](intent.md) and [`spec.md`](spec.md), built according to ADR-001 to ADR-009.
+- **Covers:** the MVP, as defined in [`intent.md`](intent.md) and [`spec.md`](spec.md), built according to ADR-001 to ADR-010.
 
 ## How this plan works
 
