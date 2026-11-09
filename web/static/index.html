@@ -4,50 +4,72 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Setlisted</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+  <!-- Throwaway UI (ADR-002): plain HTML and JS on the JSON API in docs/api.md. -->
+  <header>
+    <h1>Setlisted</h1>
+    <button id="logout" type="button" hidden>Log out</button>
+  </header>
+
   <main>
-    <h1>Setlisted - Welcome!</h1>
-    <!-- Bare controls for testing login (step 04). The real UI is step 12. -->
-    <p id="status">Checking session…</p>
-    <p id="login-result" hidden></p>
-    <p><a href="/auth/login">Log in with Spotify</a></p>
-    <p><button id="logout" type="button">Log out</button></p>
+    <section id="view-login" hidden>
+      <p>Turn a band's live setlist into a Spotify playlist.</p>
+      <p id="login-message" class="message" hidden></p>
+      <p><a class="button" href="/auth/login">Log in with Spotify</a></p>
+    </section>
+
+    <p id="loading" class="message" hidden></p>
+
+    <div id="error" class="error" role="alert" hidden>
+      <p id="error-message"></p>
+      <p id="error-link" hidden><a id="error-link-a" href="#"></a></p>
+      <button id="error-retry" type="button" hidden>Retry</button>
+      <button id="error-nav" type="button" class="secondary" hidden></button>
+    </div>
+
+    <section id="view-search" hidden>
+      <form id="search-form" autocomplete="off">
+        <label for="search-input">Band name</label>
+        <input id="search-input" type="search" maxlength="200" enterkeyhint="search">
+        <button id="search-button" type="submit" disabled>Search</button>
+      </form>
+      <p id="search-message" class="message" hidden></p>
+      <ul id="picker" class="choices" hidden></ul>
+    </section>
+
+    <section id="view-shows" hidden>
+      <h2 id="shows-title"></h2>
+      <p><button id="shows-new-search" type="button" class="secondary">New search</button></p>
+      <p id="shows-empty" class="message" hidden></p>
+      <ul id="shows-list" class="choices"></ul>
+    </section>
+
+    <section id="view-preview" hidden>
+      <h2 id="preview-band"></h2>
+      <p id="preview-where"></p>
+      <p id="preview-tour" hidden></p>
+      <p><a id="preview-setlist-link" href="#">This show on setlist.fm</a></p>
+      <p id="preview-summary" class="summary"></p>
+      <p id="preview-none" class="message" hidden>None of these songs were found on Spotify.</p>
+      <p><button id="create" type="button">Create playlist</button></p>
+      <p id="create-status" class="message" hidden>Creating playlist…</p>
+      <p><button id="back-to-shows" type="button" class="secondary">Back to shows</button></p>
+      <div id="preview-sets"></div>
+    </section>
+
+    <section id="view-done" hidden>
+      <p id="done-message" class="message"></p>
+      <p><a id="done-link" class="button" href="#">Open in Spotify</a></p>
+      <p><button id="done-new-search" type="button" class="secondary">Search another band</button></p>
+    </section>
   </main>
+
   <footer>
     <p>Setlist data from <a href="https://www.setlist.fm">setlist.fm</a></p>
   </footer>
-  <script>
-    const statusEl = document.getElementById("status");
-    async function showStatus() {
-      try {
-        const res = await fetch("/api/session");
-        const body = await res.json();
-        statusEl.textContent = body.loggedIn ? "Logged in." : "Not logged in.";
-      } catch {
-        statusEl.textContent = "Couldn't check the session.";
-      }
-    }
-    const login = new URLSearchParams(location.search).get("login");
-    if (login) {
-      const el = document.getElementById("login-result");
-      el.textContent = "Login result: " + login;
-      el.hidden = false;
-    }
-    document.getElementById("logout").addEventListener("click", async () => {
-      try {
-        const res = await fetch("/auth/logout", { method: "POST" });
-        if (!res.ok) {
-          statusEl.textContent = "Log out failed (" + res.status + "). Is the page open at BASE_URL?";
-          return;
-        }
-      } catch {
-        statusEl.textContent = "Log out failed.";
-        return;
-      }
-      showStatus();
-    });
-    showStatus();
-  </script>
+
+  <script src="/app.js"></script>
 </body>
 </html>
