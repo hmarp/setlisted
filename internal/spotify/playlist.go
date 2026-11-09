@@ -46,13 +46,18 @@ type playlistJSON struct {
 // library: POST /me/playlists with name, description and public: false
 // (PL-1, PL-4). It never reuses an existing playlist.
 //
+// sensitive are extra strings that must never reach error text, such as
+// the parts the name and description were built from (band, venue, …);
+// the name and description themselves always are.
+//
 // A response without an ID or a link wraps ErrUnavailable, like any other
 // failure. Note that a network failure or timeout can't tell whether
 // Spotify created the playlist before the connection was lost.
-func (c *Client) CreatePlaylist(ctx context.Context, token, name, description string) (Playlist, error) {
+func (c *Client) CreatePlaylist(ctx context.Context, token, name, description string, sensitive ...string) (Playlist, error) {
 	var resp playlistJSON
 	req := createPlaylistRequest{Name: name, Description: description, Public: false}
-	if err := c.post(ctx, token, "/me/playlists", req, &resp, name, description); err != nil {
+	sensitive = append([]string{name, description}, sensitive...)
+	if err := c.post(ctx, token, "/me/playlists", req, &resp, sensitive...); err != nil {
 		return Playlist{}, err
 	}
 	if resp.ID == "" || resp.ExternalURLs.Spotify == "" {
@@ -72,16 +77,21 @@ type addItemsRequest struct {
 //
 // added is the number of tracks in the batches Spotify accepted before an
 // error (all of them on success). The first failed batch stops it; nothing
-// is retried except a 429, and nothing is undone.
+// is retried except a 429, and nothing is undone. Spotify's reason for a
+// failure is kept in the error only if it quotes neither the playlist ID
+// nor any of the batch's track IDs.
 func (c *Client) AddTracks(ctx context.Context, token, playlistID string, trackIDs []string) (added int, err error) {
 	path := "/playlists/" + url.PathEscape(playlistID) + "/items"
 	for start := 0; start < len(trackIDs); start += MaxItemsPerRequest {
 		end := min(start+MaxItemsPerRequest, len(trackIDs))
-		uris := make([]string, 0, end-start)
-		for _, id := range trackIDs[start:end] {
+		batch := trackIDs[start:end]
+		uris := make([]string, 0, len(batch))
+		for _, id := range batch {
 			uris = append(uris, "spotify:track:"+id)
 		}
-		if err := c.post(ctx, token, path, addItemsRequest{URIs: uris}, nil); err != nil {
+		// The bare IDs cover the URIs too.
+		sensitive := append([]string{playlistID}, batch...)
+		if err := c.post(ctx, token, path, addItemsRequest{URIs: uris}, nil, sensitive...); err != nil {
 			return added, err
 		}
 		added = end

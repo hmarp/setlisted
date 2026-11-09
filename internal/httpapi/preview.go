@@ -153,11 +153,19 @@ func failUpstream(logger *slog.Logger, w http.ResponseWriter, r *http.Request, c
 		w.WriteHeader(statusClientClosed)
 		return
 	}
-	if errors.Is(ctx.Err(), context.DeadlineExceeded) {
-		err = fmt.Errorf("%s budget of %v used up: %w", op, budget, err)
-	}
+	err = budgetUsedUp(ctx, op, budget, err)
 	logger.Warn(service+" call failed", "op", op, "err", err.Error())
 	jsonapi.WriteError(w, jsonapi.UpstreamUnavailable(service))
+}
+
+// budgetUsedUp says in err that op's budget ran out, if ctx (the budget's
+// context) ended by its own deadline. A client's per-call timeout isn't
+// reported as one.
+func budgetUsedUp(ctx context.Context, op string, budget time.Duration, err error) error {
+	if errors.Is(ctx.Err(), context.DeadlineExceeded) {
+		return fmt.Errorf("%s budget of %v used up: %w", op, budget, err)
+	}
+	return err
 }
 
 // buildPreview turns the show and its match results (in setlist order,

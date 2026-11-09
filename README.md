@@ -58,7 +58,9 @@ Then open <http://127.0.0.1:8080/> or check <http://127.0.0.1:8080/api/health>, 
 const p = await (await fetch('/api/shows/<show id>/preview')).json();
 const r = await fetch('/api/playlists', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ showId: p.show.id, trackIds: p.trackIds }) });
 console.log(r.status, await r.json());
-``` Chrome, Edge and Firefox accept the session's `Secure` cookie over plain HTTP on `127.0.0.1`; Safari may not. The login lasts until the browser is closed or an hour has passed.
+```
+
+Chrome, Edge and Firefox accept the session's `Secure` cookie over plain HTTP on `127.0.0.1`; Safari may not. The login lasts until the browser is closed or an hour has passed.
 
 ### Test
 

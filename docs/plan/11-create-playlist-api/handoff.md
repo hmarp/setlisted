@@ -33,7 +33,7 @@ An empty `trackIds` gets PREV-7's message, "None of these songs were found on Sp
 - **Description (PL-3):** `Venue, City, DD Mon YYYY. Setlist: URL. Created by Setlisted.`
 - The date is `Header.Date`, which `setlistfm.Setlist.DisplayDate` already formats.
 - Blank parts (a missing city or venue) are left out rather than leaving `, ,`. setlist.fm always has them, so this is only a safety net.
-- **Length limits:** the name is cut to **100** characters and the description to **300**. Cuts count runes, so a multi-byte character is never split, and the cut text ends in `…`. Text is cut, never refused. See below for how sure these figures are.
+- **Length limits:** the name is cut to **100** characters and the description to **300**. Cuts count runes, so a multi-byte character is never split, and the cut text ends in `…`. For the description, only the venue, city and date part is cut, so the setlist.fm link and "Created by Setlisted." always stay whole. Text is cut, never refused. See below for how sure these figures are.
 
 ## Spotify facts, and what still needs confirming
 
@@ -53,7 +53,7 @@ The build sandbox can't reach `developer.spotify.com` or the API, so these are f
 
 ## Decisions taken in this step
 
-- **Spotify 401 while adding tracks (after the playlist exists) → `502 partial_create`, and the session cookie is cleared too.** ERR-3 says the user must get the partial playlist's link. A bare `401` would lose it, so the link wins. The next request then answers `401` and the user logs in again (AUTH-8). A 401 when *creating* is a plain `401 not_logged_in` (nothing exists yet). In practice a token can hardly expire in the second between the two calls.
+- **Spotify 401 while adding tracks (after the playlist exists) → `502 partial_create`, and the session cookie is cleared too.** This differs from the brief, which said a Spotify 401 → `401`. It was flagged to the owner in the code review, and they approved it. The brief now notes the change. ERR-3 says the user must get the partial playlist's link. A bare `401` would lose it, so the link wins. The next request then answers `401` and the user logs in again (AUTH-8). A 401 when *creating* is a plain `401 not_logged_in` (nothing exists yet). In practice a token can hardly expire in the second between the two calls.
 - **The browser going away:**
   - **Before the Spotify calls** (during validation or the setlist.fm fetch): the request stops, with nothing created. It's logged as `499` at INFO, as in the preview.
   - **Once the Spotify calls start**, the browser's cancellation is ignored (`context.WithoutCancel`, still bounded by the same 50 s budget deadline). The playlist is created and **every batch added**, even with nobody waiting for the response, so a closed tab or a navigation never leaves an empty or half-filled playlist. This includes the create call itself, because cutting it off mid-way could leave a playlist on Spotify that we'd never fill.
@@ -84,7 +84,12 @@ The step 12 brief now has a *From step 11* note with this.
   - WARN `setlist.fm call failed` / `Spotify call failed` (`op: create_playlist`);
   - WARN `Spotify call failed after the playlist was created`, with `added`, `tracks` and `client_gone`;
   - INFO `Spotify rejected the session; logging out`.
-- **Never logged:** names, venue, city, description, track IDs, the token, and the playlist's link or ID. A test checks this on success, a create failure, a 401 and a partial create. The request line has only the path, `/api/playlists`, and the show ID is in the body, so it isn't logged either.
+- **Never logged:** names, venue, city, description, track IDs, the token, and the playlist's link or ID. A test checks this on success, a create failure, a 401 and a partial create.
+- **Spotify's reason** (step 10's `Spotify says "…"`) is dropped when it quotes anything sent:
+  - for create: the name, the description, or any part they were built from (band, tour, venue, city, setlist URL);
+  - for adding tracks: the playlist ID or any of the batch's track IDs.
+
+  `TestCreatePlaylistReasonOmitsShowDetails` checks four such messages. The request line has only the path, `/api/playlists`, and the show ID is in the body, so it isn't logged either.
 
 ## Tests
 
@@ -146,6 +151,23 @@ Not run in this session: the sandbox has no network access to setlist.fm or Spot
   - For `partial_create`, don't offer a plain Retry that looks harmless: it creates another playlist.
   - The confirmation doesn't list unmatched entries (PL-9).
 - **Step 13:** each acceptance run creates real playlists. Delete the test playlists in Spotify by hand afterwards (the app never deletes anything).
+
+## Code review
+
+A fresh-context `/code-review` of this branch found 9 points. Fixed:
+
+1. The README's console example never closed its code block, so everything after it showed as code on GitHub.
+2. A Spotify reason quoting a track URI or the playlist ID could be logged. The batch's IDs and the playlist ID are now filtered (see Logging).
+3. A Spotify reason quoting only part of the name (the band, venue, …) could be logged. The parts are now filtered too.
+5. A very long venue could get the setlist.fm link cut off. The venue part is cut instead (tested).
+7. The "budget used up" wrapping was written three times. It's now one helper, `budgetUsedUp`.
+8. `partial()` built the error twice.
+9. The client's `CheckRedirect` comment mentioned search only.
+
+Not changed:
+
+- **(4) The 401-after-creation behaviour differs from the brief.** The owner kept it; the brief now has a note (see Decisions).
+- **(6) A body over 32 KB gets the generic 400**, with no log line. Only a hand-made request can be that big, and the message is still right.
 
 ## Not done (left as they were)
 

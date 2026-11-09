@@ -4,11 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/hmarp/setlisted/internal/auth"
 	"github.com/hmarp/setlisted/internal/jsonapi"
@@ -119,7 +119,9 @@ func (h *playlistHandler) create(w http.ResponseWriter, r *http.Request) {
 	spotifyCtx, cancelSpotify := context.WithDeadline(context.WithoutCancel(r.Context()), deadline)
 	defer cancelSpotify()
 
-	pl, err := h.spotify.CreatePlaylist(spotifyCtx, s.AccessToken, name, description)
+	// The parts the text was built from mustn't be logged either (GEN-5).
+	pl, err := h.spotify.CreatePlaylist(spotifyCtx, s.AccessToken, name, description,
+		header.Band, header.Tour, header.Venue, header.City, header.URL)
 	switch {
 	case err == nil:
 	case errors.Is(err, spotify.ErrUnauthorized):
@@ -130,9 +132,7 @@ func (h *playlistHandler) create(w http.ResponseWriter, r *http.Request) {
 		// ERR-4: nothing was created (as far as we can tell), so Retry.
 		// The browser going away didn't cause this (see above), so it's a
 		// real failure even if the tab has closed meanwhile.
-		if errors.Is(spotifyCtx.Err(), context.DeadlineExceeded) {
-			err = fmt.Errorf("create_playlist budget of %v used up: %w", h.budget, err)
-		}
+		err = budgetUsedUp(spotifyCtx, "create_playlist", h.budget, err)
 		h.logger.Warn("Spotify call failed", "op", "create_playlist", "client_gone", r.Context().Err() != nil, "err", err.Error())
 		jsonapi.WriteError(w, jsonapi.UpstreamUnavailable(jsonapi.ServiceSpotify))
 		return
@@ -160,13 +160,12 @@ func (h *playlistHandler) partial(w http.ResponseWriter, r *http.Request, ctx co
 	if errors.Is(err, spotify.ErrUnauthorized) {
 		auth.EndSession(w)
 	}
-	if errors.Is(ctx.Err(), context.DeadlineExceeded) {
-		err = fmt.Errorf("create_playlist budget of %v used up: %w", h.budget, err)
-	}
+	err = budgetUsedUp(ctx, "create_playlist", h.budget, err)
 	h.logger.Warn("Spotify call failed after the playlist was created", "op", "create_playlist",
 		"added", added, "tracks", total, "client_gone", r.Context().Err() != nil, "err", err.Error())
-	jsonapi.WriteJSON(w, jsonapi.PartialCreate().Status, partialCreateJSON{
-		Error:    jsonapi.PartialCreate(),
+	e := jsonapi.PartialCreate()
+	jsonapi.WriteJSON(w, e.Status, partialCreateJSON{
+		Error:    e,
 		Playlist: createdPlaylistJSON{ID: pl.ID, Name: name, URL: pl.URL},
 	})
 }
@@ -219,9 +218,18 @@ func playlistName(h setlist.Header) string {
 // playlistDescription is PL-3's description, cut to maxDescriptionLength:
 //
 //	‹Venue›, ‹City›, ‹DD Mon YYYY›. Setlist: ‹setlist.fm URL›. Created by Setlisted.
+//
+// If it's too long, the venue, city and date part is cut, so the setlist.fm
+// link stays whole. Only if the link part alone is too long (never, for a
+// real setlist.fm URL) is the whole text cut.
 func playlistDescription(h setlist.Header) string {
-	d := joinNonEmpty(", ", h.Venue, h.City, h.Date) + ". Setlist: " + h.URL + ". Created by Setlisted."
-	return truncate(d, maxDescriptionLength)
+	head := joinNonEmpty(", ", h.Venue, h.City, h.Date)
+	tail := ". Setlist: " + h.URL + ". Created by Setlisted."
+	room := maxDescriptionLength - utf8.RuneCountInString(tail)
+	if room < 10 {
+		return truncate(head+tail, maxDescriptionLength)
+	}
+	return truncate(head, room) + tail
 }
 
 // joinNonEmpty joins the parts that aren't blank, so a missing city or

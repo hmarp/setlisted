@@ -234,8 +234,16 @@ func TestPlaylistTextLimits(t *testing.T) {
 	if n := len([]rune(name)); n != maxNameLength || !strings.HasSuffix(name, "…") {
 		t.Errorf("name: %d characters %q, want %d ending in …", n, name, maxNameLength)
 	}
-	if n := len([]rune(desc)); n != maxDescriptionLength || !strings.HasSuffix(desc, "…") {
-		t.Errorf("description: %d characters, want %d ending in …", n, maxDescriptionLength)
+	// The venue part is cut, so the setlist.fm link stays whole.
+	tail := "…. Setlist: https://www.setlist.fm/s.html. Created by Setlisted."
+	if n := len([]rune(desc)); n != maxDescriptionLength || !strings.HasSuffix(desc, tail) {
+		t.Errorf("description: %d characters %q, want %d ending in %q", n, desc, maxDescriptionLength, tail)
+	}
+	// A short description is untouched, link and all.
+	short := long
+	short.Venue = "Haus Auensee"
+	if got, want := playlistDescription(short), "Haus Auensee, Leipzig, 14 Mar 2026. Setlist: https://www.setlist.fm/s.html. Created by Setlisted."; got != want {
+		t.Errorf("description = %q, want %q", got, want)
 	}
 	if !strings.HasPrefix(name, long.Band+" – ") {
 		t.Error("name lost its start")
@@ -575,6 +583,46 @@ func TestCreatePlaylistLogsNoUserData(t *testing.T) {
 				if strings.Contains(logs.String(), secret) {
 					t.Errorf("logs contain %q: %s", secret, logs.String())
 				}
+			}
+		})
+	}
+}
+
+func TestCreatePlaylistReasonOmitsShowDetails(t *testing.T) {
+	// Spotify's reason is logged only if it quotes no part the name or
+	// description was built from, nor any ID sent.
+	for name, tt := range map[string]struct {
+		createMsg, addMsg string
+	}{
+		"create quotes the band":     {createMsg: "Invalid name near Gojira"},
+		"create quotes the venue":    {createMsg: "Bad description: Haus Auensee"},
+		"add quotes a track URI":     {addMsg: "Invalid track uri: spotify:track:0000000000000000000001"},
+		"add quotes the playlist ID": {addMsg: "Playlist " + testPlaylistID + " is not modifiable"},
+	} {
+		t.Run(name, func(t *testing.T) {
+			var logs bytes.Buffer
+			sp := newFakePlaylistSpotify(t)
+			reply := func(msg string) http.HandlerFunc {
+				return func(w http.ResponseWriter, r *http.Request) {
+					io.Copy(io.Discard, r.Body)
+					w.WriteHeader(http.StatusBadRequest)
+					fmt.Fprintf(w, `{"error":{"status":400,"message":%q}}`, msg)
+				}
+			}
+			msg := tt.createMsg
+			if msg != "" {
+				sp.createFn = reply(msg)
+			} else {
+				msg = tt.addMsg
+				sp.addFn = func(_ int, w http.ResponseWriter, r *http.Request) bool { reply(msg)(w, r); return true }
+			}
+			postPlaylist(t, newFakeSetlistFM(t, serveSetlist(previewSetlistJSON)), sp, slog.New(slog.NewJSONHandler(&logs, nil)),
+				createBody(testSetlistID, testTrackIDs(3)))
+			if !strings.Contains(logs.String(), `"level":"WARN"`) {
+				t.Fatalf("no WARN: %s", logs.String())
+			}
+			if strings.Contains(logs.String(), msg) {
+				t.Errorf("logs contain Spotify's message %q: %s", msg, logs.String())
 			}
 		})
 	}

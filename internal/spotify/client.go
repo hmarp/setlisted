@@ -114,7 +114,7 @@ func New(cfg Config) *Client {
 	if c.http == nil {
 		c.http = &http.Client{
 			Timeout: requestTimeout,
-			// The API doesn't redirect for search. Never follow one, so the
+			// The API doesn't redirect for these calls. Never follow one, so the
 			// bearer token is only ever sent to the configured host.
 			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
 		}

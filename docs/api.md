@@ -225,7 +225,7 @@ The body is at most 32 KB and must be one JSON object. Anything else is `400 inv
 
 **Description** (PL-3): `‹Venue›, ‹City›, ‹DD Mon YYYY›. Setlist: ‹setlist.fm URL›. Created by Setlisted.`
 
-The name is cut to 100 characters and the description to 300, ending in `…`, if they're longer (rare). The playlist is private (`public: false`) and keeps Spotify's default cover (PL-4).
+If they're longer (rare), the name is cut to 100 characters, ending in `…`, and the description to 300 by cutting the venue, city and date part, so the setlist.fm link stays whole. The playlist is private (`public: false`) and keeps Spotify's default cover (PL-4).
 
 **Response `201`:**
 
