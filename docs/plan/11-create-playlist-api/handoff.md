@@ -129,13 +129,15 @@ Not run in this session: the sandbox has no network access to setlist.fm or Spot
 - [ ] **Confirm in Spotify's Web API reference**:
   - "Add Items to Playlist": the endpoint is `POST /playlists/{playlist_id}/items`, the body takes `uris`, the maximum per request is ___ (we use 100), and success is `201`.
   - "Create Playlist": `POST /me/playlists` with `name`, `description`, `public`, and success is `201`. Is there any documented name or description length limit? ___ (we cut at 100 and 300).
-- [ ] **Local**, on `http://127.0.0.1:8080`, logged in through the browser: preview a real show, then create, from the console (see the README).
-  - [ ] `201`, and `name` and `trackCount` as expected;
-  - [ ] in Spotify the playlist is **private**, with the right name and the exact description including the setlist.fm link (check that Spotify didn't strip or escape the URL or the en dash), the tracks in setlist order, and the default cover;
-  - [ ] "Open in Spotify": the `url` opens the playlist.
-  - Anything odd in Spotify's responses: ___
+- [x] **Local**, on `http://127.0.0.1:8080`, logged in through the browser (2026-11-09): preview of a real show, then create from the console (see the README). The owner confirmed:
+  - [x] `201`, with the expected `name` and a `trackCount` equal to the number of found songs;
+  - [x] in Spotify the playlist is **private**, with the right name (en dash) and the exact description, including an intact setlist.fm link; the tracks are in setlist order, and it has the default cover;
+  - [x] the returned `url` opens the playlist.
+  - This was the first live use of `POST /me/playlists` and `/playlists/{id}/items`, so the endpoints, body fields and `201` answers in the table above work in practice. The batch maximum and the length limits are still unconfirmed: a show needs one batch, and its name and description are far below the cuts.
+  - Nothing odd reported in Spotify's responses.
+  - (First attempt: a `404 not_found`, because the local branch was still at `main` and the server didn't have the route yet. Not a bug.)
 - [ ] **After the merge deploys:** the same on Cloud Run, including opening `url` on a phone with the Spotify app (PL-8).
-- [ ] Typical response time (`duration_ms`), local ___ ms, Cloud Run ___ ms.
+- [ ] Typical response time (`duration_ms`): local not recorded; Cloud Run ___ ms.
 
 ## Notes for later steps
 
@@ -154,5 +156,5 @@ Not run in this session: the sandbox has no network access to setlist.fm or Spot
 
 - **A create that times out or loses its connection** gives `503`, but Spotify may already have created an empty playlist, and Retry then creates another. This can't be detected without listing the user's playlists, which would need another scope. It's rare, and the user can delete the empty one.
 - **No idempotency across presses:** PL-6 (one press, at most one playlist) relies on the UI disabling the button. Two separate requests always make two playlists, as PL-1 requires.
-- The Spotify facts table above hasn't been checked against the current docs.
+- The batch maximum (100) and the length limits (100 and 300) haven't been checked against the current docs. Everything else in the facts table worked in the local check.
 - Only `201` responses were seen in the fakes. Real responses haven't been seen yet.
