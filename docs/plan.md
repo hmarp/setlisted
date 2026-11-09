@@ -27,7 +27,7 @@
 | 08 | [Spotify search client and matching pipeline](plan/08-spotify-search-pipeline/brief.md) | 04, 07 | Done |
 | 09 | [Test setlist fixtures and matching-quality test](plan/09-matching-quality-tests/brief.md) | 05, 08 | Done |
 | 10 | [Preview API](plan/10-preview-api/brief.md) | 05, 08 | Done |
-| 11 | [Create playlist API](plan/11-create-playlist-api/brief.md) | 10 | Not started |
+| 11 | [Create playlist API](plan/11-create-playlist-api/brief.md) | 10 | Done |
 | 12 | [Throwaway UI](plan/12-throwaway-ui/brief.md) | 11 | Not started |
 | 13 | [MVP acceptance](plan/13-mvp-acceptance/brief.md) | 09, 12 | Not started |
 

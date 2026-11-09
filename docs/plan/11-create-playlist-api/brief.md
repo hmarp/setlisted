@@ -64,6 +64,7 @@ A protected endpoint that creates a **new private playlist** in the user's Spoti
      - setlist.fm unavailable or unknown show, or Spotify failing **before** the playlist exists → `503 upstream_unavailable` (or `404` for an unknown show), with nothing created (ERR-4);
      - adding tracks fails **after** creation → `502` with `code: "partial_create"`, a user-facing message, and `playlist.url` so the UI can link to it (ERR-3). **No rollback, no deletion**;
      - Spotify 401 → `401 not_logged_in`.
+     - *Changed during step 11:* this holds for a 401 **when creating**. A 401 while **adding tracks**, after the playlist exists, answers `502 partial_create` with the link and also clears the session cookie, because ERR-3 (spec, the source of truth) requires the link to the partial playlist, which a bare `401` would lose. The owner approved this (see the handoff).
    - *From step 10:*
      - `showId` is the preview's `show.id`. Validate it with step 10's `setlistIDPattern` (`internal/httpapi/preview.go`: letters and digits, 1–32 characters) so both endpoints agree; a malformed one is `400 invalid_request` here (a body field, not a path), an unknown one `404 not_found` (`setlistfm.ErrNotFound`).
      - `trackIds` is the preview's list unchanged: Spotify track IDs in setlist order, duplicates kept, not-found and medley entries already left out (PL-5). Re-fetching the show (`sl.Show().Header`) gives `Band`, `Tour` (`""` when none), `City`, `Date` (`DD Mon YYYY`), `Venue` and `URL` for PL-2/PL-3.
@@ -80,7 +81,7 @@ A protected endpoint that creates a **new private playlist** in the user's Spoti
 - **Failures:**
   - create fails → `503`, no add calls;
   - the second batch fails → `502 partial_create` with the URL;
-  - Spotify 401 → `401` with the cookie cleared.
+  - Spotify 401 → `401` with the cookie cleared (when creating; after creation it's `partial_create`, see above).
 
 ## Out of scope
 

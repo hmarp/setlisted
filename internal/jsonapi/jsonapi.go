@@ -21,6 +21,7 @@ const (
 	CodeNotLoggedIn         Code = "not_logged_in"
 	CodeForbiddenOrigin     Code = "forbidden_origin"
 	CodeUpstreamUnavailable Code = "upstream_unavailable"
+	CodePartialCreate       Code = "partial_create"
 )
 
 // External services named in an Error's Service field.
@@ -81,6 +82,19 @@ func UpstreamUnavailable(service string) *Error {
 		Code:    CodeUpstreamUnavailable,
 		Message: "Couldn't reach " + service + ". Try again.",
 		Service: service,
+	}
+}
+
+// PartialCreate returns a 502 partial_create error: the playlist was
+// created on Spotify but adding its tracks failed (ERR-3). The response
+// also carries the playlist so the UI can link to it; nothing is rolled
+// back, and Retry creates a new playlist (PL-1).
+func PartialCreate() *Error {
+	return &Error{
+		Status:  http.StatusBadGateway,
+		Code:    CodePartialCreate,
+		Message: "Creating the playlist failed part-way: it was created on Spotify, but some songs may be missing.",
+		Service: ServiceSpotify,
 	}
 }
 
