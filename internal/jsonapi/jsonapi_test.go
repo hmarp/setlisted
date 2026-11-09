@@ -63,6 +63,12 @@ func TestWriteError(t *testing.T) {
 			wantStatus: http.StatusServiceUnavailable,
 			wantBody:   `{"error":{"code":"upstream_unavailable","message":"Couldn't reach setlist.fm. Try again.","service":"setlist.fm"}}`,
 		},
+		{
+			name:       "partial_create",
+			err:        PartialCreate(),
+			wantStatus: http.StatusBadGateway,
+			wantBody:   `{"error":{"code":"partial_create","message":"Creating the playlist failed part-way: it was created on Spotify, but some songs may be missing.","service":"Spotify"}}`,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

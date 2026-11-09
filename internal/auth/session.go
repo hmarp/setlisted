@@ -66,6 +66,14 @@ func (a *Auth) readSession(r *http.Request) (s Session, present, ok bool) {
 // clearSession deletes the session cookie.
 func clearSession(w http.ResponseWriter) { clearCookie(w, SessionCookie, "/") }
 
+// EndSession deletes the session cookie without writing a response. A
+// handler uses it when Spotify answers 401 but the response must be
+// something other than 401 not_logged_in: creating a playlist that already
+// exists when adding its tracks is refused still reports the partial
+// playlist (ERR-3), and the next request then goes to the login screen
+// (AUTH-8). Otherwise use SpotifyUnauthorized.
+func EndSession(w http.ResponseWriter) { clearSession(w) }
+
 // RequireSession lets the request through only with a valid session, which
 // handlers read with SessionFromContext. Otherwise it answers
 // 401 not_logged_in and deletes any unusable cookie (AUTH-8).

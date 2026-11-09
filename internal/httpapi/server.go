@@ -68,6 +68,8 @@ func NewHandler(d Deps) http.Handler {
 	api.HandleFunc("GET /api/artists/{id}/shows", setlists.artistShows)
 	preview := &previewHandler{logger: logger, setlistFM: d.SetlistFM, spotify: d.Spotify, budget: previewBudget}
 	api.HandleFunc("GET /api/shows/{id}/preview", preview.serve)
+	playlists := &playlistHandler{logger: logger, setlistFM: d.SetlistFM, spotify: d.Spotify, budget: createBudget}
+	api.HandleFunc("POST /api/playlists", playlists.create)
 	// Any other /api/ path (or method) is a JSON not_found error.
 	api.HandleFunc("/api/", handleNotFound)
 	mux.Handle("/api/", a.RequireSession(api))

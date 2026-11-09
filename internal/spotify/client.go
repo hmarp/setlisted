@@ -1,6 +1,7 @@
-// Package spotify is a client for the Spotify Web API calls the matching
-// pipeline makes: field-filtered track search (ADR-005). It uses the
-// standard library only (ADR-001).
+// Package spotify is a client for the Spotify Web API calls Setlisted
+// makes: field-filtered track search for the matching pipeline, and
+// creating a private playlist and adding tracks to it (ADR-005). It uses
+// the standard library only (ADR-001).
 //
 // A rate-limit response (429) is retried after Retry-After, a bounded
 // number of times. A 401 is ErrUnauthorized, so handlers can apply step 04's
@@ -10,6 +11,7 @@
 package spotify
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -158,7 +160,8 @@ func (c *Client) SearchTracks(ctx context.Context, token, track, artist, market 
 		"market": {market},
 	}
 	var resp searchResponse
-	if err := c.get(ctx, token, "/search?"+v.Encode(), &resp); err != nil {
+	// The names as searched (after cleaning) must not be logged.
+	if err := c.get(ctx, token, "/search?"+v.Encode(), &resp, clean(track), clean(artist)); err != nil {
 		return nil, err
 	}
 	var out []matching.Candidate
@@ -250,11 +253,28 @@ func (t *trackJSON) candidate() matching.Candidate {
 }
 
 // get calls path (relative to the base URL, with any query) with the bearer
-// token and decodes the JSON response into v, retrying a 429 up to
-// c.retries times.
-func (c *Client) get(ctx context.Context, token, path string, v any) error {
+// token and decodes the JSON response into v. See call.
+func (c *Client) get(ctx context.Context, token, path string, v any, sensitive ...string) error {
+	return c.call(ctx, token, http.MethodGet, path, nil, v, sensitive...)
+}
+
+// post sends body as JSON to path and decodes the JSON response into v
+// (nil to discard it). See call.
+func (c *Client) post(ctx context.Context, token, path string, body, v any, sensitive ...string) error {
+	b, err := json.Marshal(body)
+	if err != nil {
+		return fmt.Errorf("%w: encoding request", ErrUnavailable)
+	}
+	return c.call(ctx, token, http.MethodPost, path, b, v, sensitive...)
+}
+
+// call makes a request with the bearer token, retrying a 429 up to
+// c.retries times. A 429 means Spotify didn't act on the request, so
+// retrying a POST is safe. sensitive are strings that must never reach
+// error text (names sent in the request); the token always is one.
+func (c *Client) call(ctx context.Context, token, method, path string, body []byte, v any, sensitive ...string) error {
 	for attempt := 0; ; attempt++ {
-		retryAfter, err := c.do(ctx, token, path, v)
+		retryAfter, err := c.do(ctx, token, method, path, body, v, sensitive)
 		if !errors.Is(err, errRateLimited) {
 			return err
 		}
@@ -278,14 +298,22 @@ func (c *Client) get(ctx context.Context, token, path string, v any) error {
 var errRateLimited = errors.New("rate limited")
 
 // do makes one call. On a 429 it returns errRateLimited and the Retry-After
-// delay, if the header gave one in seconds.
-func (c *Client) do(ctx context.Context, token, path string, v any) (time.Duration, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.baseURL+path, nil)
+// delay, if the header gave one in seconds. Any 2xx is success: search
+// answers 200, creating a playlist and adding items answer 201.
+func (c *Client) do(ctx context.Context, token, method, path string, body []byte, v any, sensitive []string) (time.Duration, error) {
+	var rb io.Reader
+	if body != nil {
+		rb = bytes.NewReader(body)
+	}
+	req, err := http.NewRequestWithContext(ctx, method, c.baseURL+path, rb)
 	if err != nil {
 		return 0, fmt.Errorf("%w: building request", ErrUnavailable)
 	}
 	req.Header.Set("Authorization", "Bearer "+token)
 	req.Header.Set("Accept", "application/json")
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
 
 	resp, err := c.http.Do(req)
 	if err != nil {
@@ -307,16 +335,18 @@ func (c *Client) do(ctx context.Context, token, path string, v any) (time.Durati
 	case resp.StatusCode == http.StatusUnauthorized:
 		io.Copy(io.Discard, io.LimitReader(resp.Body, maxBody))
 		return 0, ErrUnauthorized
-	case resp.StatusCode != http.StatusOK:
-		reason := spotifyReason(resp.Body, req.URL.Query().Get("q"), token)
+	case resp.StatusCode < 200 || resp.StatusCode > 299:
+		reason := spotifyReason(resp.Body, token, sensitive)
 		io.Copy(io.Discard, io.LimitReader(resp.Body, maxBody))
 		if reason != "" {
 			return 0, fmt.Errorf("%w: status %d, Spotify says %q", ErrUnavailable, resp.StatusCode, reason)
 		}
 		return 0, fmt.Errorf("%w: status %d", ErrUnavailable, resp.StatusCode)
 	}
-	if err := json.NewDecoder(io.LimitReader(resp.Body, maxBody)).Decode(v); err != nil {
-		return 0, fmt.Errorf("%w: decoding response", ErrUnavailable)
+	if v != nil {
+		if err := json.NewDecoder(io.LimitReader(resp.Body, maxBody)).Decode(v); err != nil {
+			return 0, fmt.Errorf("%w: decoding response", ErrUnavailable)
+		}
 	}
 	// Read to EOF so the connection can be reused for the next search.
 	io.Copy(io.Discard, io.LimitReader(resp.Body, maxBody))
@@ -329,10 +359,11 @@ const maxReason = 120
 // spotifyReason returns the message of Spotify's error body,
 // {"error": {"status": 403, "message": "…"}}, so a refusal can be diagnosed
 // from the logs. It's kept only if it's short, plain text and contains
-// neither the search query's names nor the token; otherwise it's "".
+// neither the token nor any of sensitive (the names sent in the request);
+// otherwise it's "".
 // It goes into error text for logs only: handlers never show it to users
 // (ERR-5).
-func spotifyReason(body io.Reader, q, token string) string {
+func spotifyReason(body io.Reader, token string, sensitive []string) string {
 	var e struct {
 		Error struct {
 			Message string `json:"message"`
@@ -351,13 +382,7 @@ func spotifyReason(body io.Reader, q, token string) string {
 		}
 	}
 	lower := strings.ToLower(msg)
-	sensitive := []string{token}
-	// q is track:"<track>" artist:"<artist>" (see Query).
-	if rest, ok := strings.CutPrefix(q, `track:"`); ok {
-		track, artist, _ := strings.Cut(rest, `" artist:"`)
-		sensitive = append(sensitive, track, strings.TrimSuffix(artist, `"`))
-	}
-	for _, s := range sensitive {
+	for _, s := range append([]string{token}, sensitive...) {
 		if s != "" && strings.Contains(lower, strings.ToLower(s)) {
 			return ""
 		}

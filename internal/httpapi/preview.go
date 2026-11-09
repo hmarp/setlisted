@@ -135,22 +135,28 @@ func (h *previewHandler) serve(w http.ResponseWriter, r *http.Request) {
 	jsonapi.WriteJSON(w, http.StatusOK, p)
 }
 
-// fail writes ERR-1's 503 for service, or, if the browser has gone away,
-// only records 499 so the request isn't logged as an outage (the error is
-// still logged at INFO, in case a real failure came first). ctx is the
-// request's budget context: only its own deadline counts as the budget
-// running out, not a client's per-call timeout. Error text from both
-// clients holds no IDs, names, tokens or bodies, so it's safe to log.
+// fail writes ERR-1's 503 for service; see failUpstream.
 func (h *previewHandler) fail(w http.ResponseWriter, r *http.Request, ctx context.Context, service string, err error) {
+	failUpstream(h.logger, w, r, ctx, "preview", h.budget, service, err)
+}
+
+// failUpstream writes ERR-1's 503 for service, or, if the browser has gone
+// away, only records 499 so the request isn't logged as an outage (the
+// error is still logged at INFO, in case a real failure came first). ctx is
+// the request's budget context: only its own deadline counts as the budget
+// running out, not a client's per-call timeout. op names the endpoint in
+// the logs. Error text from both clients holds no IDs, names, tokens or
+// bodies, so it's safe to log.
+func failUpstream(logger *slog.Logger, w http.ResponseWriter, r *http.Request, ctx context.Context, op string, budget time.Duration, service string, err error) {
 	if r.Context().Err() != nil {
-		h.logger.Info("preview abandoned by the client", "service", service, "err", err.Error())
+		logger.Info(op+" abandoned by the client", "service", service, "err", err.Error())
 		w.WriteHeader(statusClientClosed)
 		return
 	}
 	if errors.Is(ctx.Err(), context.DeadlineExceeded) {
-		err = fmt.Errorf("preview budget of %v used up: %w", h.budget, err)
+		err = fmt.Errorf("%s budget of %v used up: %w", op, budget, err)
 	}
-	h.logger.Warn(service+" call failed", "op", "preview", "err", err.Error())
+	logger.Warn(service+" call failed", "op", op, "err", err.Error())
 	jsonapi.WriteError(w, jsonapi.UpstreamUnavailable(service))
 }
 
