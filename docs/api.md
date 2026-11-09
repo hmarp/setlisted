@@ -29,6 +29,8 @@ Every error response uses one format, with an HTTP status that matches the error
 | `message` | yes | Safe, user-facing text that the UI can show as-is. |
 | `service` | no | The external service involved (`setlist.fm` or `Spotify`), only when there is one. |
 
+The only error response with anything besides `error` is `partial_create`, which adds `playlist`.
+
 ### Codes
 
 | Code | HTTP status | When |
@@ -37,7 +39,8 @@ Every error response uses one format, with an HTTP status that matches the error
 | `not_found` | 404 | No such endpoint or resource. |
 | `not_logged_in` | 401 | No valid session (missing, invalid or expired cookie), or Spotify rejected the user's token. The session cookie is cleared. Message: "You're not logged in. Log in with Spotify." |
 | `forbidden_origin` | 403 | A request other than `GET`/`HEAD` with a missing or foreign `Origin` header. Message: "This request isn't allowed." |
-| `upstream_unavailable` | 503 | setlist.fm (or, from step 08, Spotify) couldn't be reached, returned an error, or was still rate-limiting after the server's quiet retries. `service` names it. Message: "Couldn't reach setlist.fm. Try again." (or "…Spotify…"). The UI shows it with a **Retry** action that repeats the same request (ERR-1, ERR-2). |
+| `upstream_unavailable` | 503 | setlist.fm or Spotify couldn't be reached, returned an error, or was still rate-limiting after the server's quiet retries. `service` names it. Message: "Couldn't reach setlist.fm. Try again." (or "…Spotify…"). The UI shows it with a **Retry** action that repeats the same request (ERR-1, ERR-2). |
+| `partial_create` | 502 | Only from `POST /api/playlists`: the playlist was created on Spotify, but adding its tracks failed (ERR-3). `service` is `Spotify`. The response also has a top-level `playlist` with the link to the partial playlist (see the endpoint). Nothing is rolled back. |
 | `internal_error` | 500 | An unexpected server error. Message: "Something went wrong. Try again." |
 
 ## Endpoints
@@ -155,7 +158,7 @@ The preview of one show (PREV-2 to PREV-4, PREV-7): the setlist fetched from set
 
 | Field | Meaning |
 |---|---|
-| `show.id` | The setlist.fm setlist ID (the same as `{id}`). Create (step 11) takes it. |
+| `show.id` | The setlist.fm setlist ID (the same as `{id}`). `POST /api/playlists` takes it as `showId`. |
 | `show.band`, `show.venue`, `show.city` | As setlist.fm has them (PREV-2). |
 | `show.date` | `DD Mon YYYY`, as in the show list (or setlist.fm's text if it doesn't parse). |
 | `show.tour` | The tour name, or `null` when there's none. |
@@ -172,7 +175,7 @@ The preview of one show (PREV-2 to PREV-4, PREV-7): the setlist fetched from set
 | `entries[].live` | `true` when the chosen track is a live version: always with `status: "live"`, and possibly with `cover_fallback`. |
 | `entries[].originalArtist` | The covered artist for **every cover** (setlist.fm's `cover`), else `null`. Only show "Cover → …" when `status` is `cover_fallback`: a cover found under the band itself is a plain Found. |
 | `entries[].track` | The matched Spotify track (`id`, `title`, `artists` in Spotify's order, `album`), present exactly when the status is a Found one, else `null`. |
-| `trackIds` | The ordered `track.id`s of every found entry, in setlist order, **duplicates kept** (ENT-7), not-found and medley entries left out. Send it unchanged with `show.id` to create (step 11). `[]` when nothing was found. |
+| `trackIds` | The ordered `track.id`s of every found entry, in setlist order, **duplicates kept** (ENT-7), not-found and medley entries left out. Send it unchanged with `show.id` to `POST /api/playlists`. `[]` when nothing was found. |
 
 **Status values and labels (PREV-4):**
 
@@ -197,6 +200,70 @@ Add "Tape" to any of them when `tape` is `true`. The preview is read-only (PREV-
 | `401` | `not_logged_in` | no valid session, or Spotify rejected the user's token (the session cookie is cleared) | the login screen (AUTH-8) |
 
 Any error means no partial preview: Retry fetches and matches the whole show again.
+
+### `POST /api/playlists`
+
+Creates a **new, private** playlist in the logged-in user's Spotify library from a previewed show (PL-1 to PL-5). Needs a session and the app's `Origin`. Every call creates a new playlist: it never reuses or updates one. The server doesn't re-run matching (ADR-005): it fetches the show from setlist.fm again for the name and description, creates the playlist and adds the given tracks in order.
+
+**Request body** (`Content-Type: application/json`):
+
+```json
+{ "showId": "63de4613", "trackIds": ["4uLU6hMCjMI75M1A2tKUQC", "…"] }
+```
+
+| Field | Rule |
+|---|---|
+| `showId` | Required. The preview's `show.id`: letters and digits, 1–32 characters (the same rule as the preview's `{id}`). |
+| `trackIds` | Required. The preview's `trackIds`, **unchanged**: Spotify track IDs (22 letters and digits each), in setlist order, duplicates kept. 1 to 200 of them. Empty is refused: an empty playlist is never created (PREV-7). |
+
+The body is at most 32 KB and must be one JSON object. Anything else is `400 invalid_request`, without calling setlist.fm or Spotify. The track IDs aren't checked against the show: changing them only changes the user's own playlist (ADR-005).
+
+**Playlist name** (PL-2), with an en dash (`–`):
+
+- with a tour: `‹Band› – ‹Tour Name› (Setlist)`, e.g. `Gojira – Mea Culpa Tour (Setlist)`;
+- without: `‹Band› – ‹City›, ‹DD Mon YYYY›`, e.g. `Gojira – Leipzig, 14 Mar 2026`.
+
+**Description** (PL-3): `‹Venue›, ‹City›, ‹DD Mon YYYY›. Setlist: ‹setlist.fm URL›. Created by Setlisted.`
+
+The name is cut to 100 characters and the description to 300, ending in `…`, if they're longer (rare). The playlist is private (`public: false`) and keeps Spotify's default cover (PL-4).
+
+**Response `201`:**
+
+```json
+{ "playlist": { "id": "37i9dQZF1DXcBWIGoYBM5M", "name": "Gojira – Mea Culpa Tour (Setlist)", "trackCount": 18,
+                "url": "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M" } }
+```
+
+| Field | Meaning |
+|---|---|
+| `playlist.name` | The name given to the playlist. Show "Playlist created: ‹name›, ‹trackCount› tracks" (PL-7). |
+| `playlist.trackCount` | Tracks added: the number of `trackIds` sent, duplicates included. |
+| `playlist.url` | Spotify's link to the playlist (`open.spotify.com`). Use it as a plain link for "Open in Spotify": on a phone with the Spotify app it opens the app, otherwise Spotify on the web (PL-8). |
+| `playlist.id` | Spotify's playlist ID. Not needed by the UI. |
+
+**Errors:**
+
+| Status | Code | When | Playlist created? | UI |
+|---|---|---|---|---|
+| `400` | `invalid_request` | the body is invalid (see above); with no tracks the message is "None of these songs were found on Spotify." | no | show `message` |
+| `404` | `not_found` | setlist.fm doesn't know `showId` | no | — |
+| `503` | `upstream_unavailable`, `service: "setlist.fm"` | setlist.fm failed, timed out or kept rate-limiting | no | `message` with Retry (ERR-1, ERR-4) |
+| `503` | `upstream_unavailable`, `service: "Spotify"` | creating the playlist failed, or the server's budget (50 s for the whole request) ran out first | no (see below) | `message` with Retry (ERR-4) |
+| `401` | `not_logged_in` | no valid session, or Spotify rejected the token when creating (the session cookie is cleared) | no | the login screen (AUTH-8) |
+| `502` | `partial_create`, `service: "Spotify"` | the playlist was created, but adding tracks failed (including Spotify rejecting the token, or the budget running out) | **yes**, with some or none of the tracks | `message` and a link to `playlist.url` (ERR-3). A retry creates a **new** playlist (PL-1). |
+
+The `partial_create` body:
+
+```json
+{ "error": { "code": "partial_create", "message": "Creating the playlist failed part-way: it was created on Spotify, but some songs may be missing.", "service": "Spotify" },
+  "playlist": { "id": "37i9dQZF1DXcBWIGoYBM5M", "name": "Gojira – Mea Culpa Tour (Setlist)", "url": "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M" } }
+```
+
+It has no `trackCount`. If Spotify rejected the token while adding tracks, the session cookie is also cleared, so the next request answers `401`.
+
+- **Nothing is rolled back** or deleted after a failure (ERR-3).
+- **Closing the tab** before the Spotify calls start (while setlist.fm is answering) stops the request with nothing created. Once they've started, the server finishes creating and filling the playlist even if nobody is waiting for the response.
+- **A `503` from creating is "as far as the server can tell":** if the connection to Spotify was lost after Spotify had created the playlist, an empty playlist may exist, and Retry creates another.
 
 ## Login endpoints
 
