@@ -1,6 +1,6 @@
 # Plan
 
-- **Status:** MVP complete, pending criteria 6/7 (2026-11-10; see [step 13's results](plan/13-mvp-acceptance/results.md)). Plan approved 2026-10-08.
+- **Status:** MVP complete (2026-11-10; see [step 13's results](plan/13-mvp-acceptance/results.md)). Plan approved 2026-10-08.
 - **Covers:** the MVP, as defined in [`intent.md`](intent.md) and [`spec.md`](spec.md), built according to ADR-001 to ADR-010.
 
 ## How this plan works
@@ -29,7 +29,7 @@
 | 10 | [Preview API](plan/10-preview-api/brief.md) | 05, 08 | Done |
 | 11 | [Create playlist API](plan/11-create-playlist-api/brief.md) | 10 | Done |
 | 12 | [Throwaway UI](plan/12-throwaway-ui/brief.md) | 11 | Done |
-| 13 | [MVP acceptance](plan/13-mvp-acceptance/brief.md) | 09, 12 | Done (criteria 6/7 pending) |
+| 13 | [MVP acceptance](plan/13-mvp-acceptance/brief.md) | 09, 12 | Done |
 
 Steps 06 and 07 are pure code. They need only step 05's setlist.fm types and name normalisation, not live services.
 
