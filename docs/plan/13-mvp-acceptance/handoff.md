@@ -11,18 +11,19 @@ The deployed MVP was checked against every success criterion in [`spec.md`](../.
 | 3 | Matching quality | **pass** (`TestMatchingQuality`: 79 / 83 = 95.2%, 0 wrong artists, 0 mismatches; in CI on `main`) |
 | 4 | Phone and laptop | **pass** (owner, 2026-11-10: the manual checklist on both) |
 | 5 | Access control | **pass** (`curl`: every protected `/api/*` route `401` logged out, locally and on Cloud Run; owner: AUTH-4 message and logged-out screens) |
-| 6 | Cost | **pending until 2026-12-02** (November 2026 billing figure) |
-| 7 | Real use | **pending** until the owner's next gig |
+| 6 | Cost | **pass**, owner-accepted (2026-11-10, on a partial month; no figure recorded) |
+| 7 | Real use | **pass** (owner, 2026-11-10; gig details not recorded) |
 
-**The MVP is complete, pending criteria 6 and 7.** No open issue is MVP-blocking. No code changed in this step: the checks found nothing to fix.
+**The MVP is complete** (owner's decision, 2026-11-10). All seven criteria pass. No open issue is MVP-blocking. No code changed in this step: the checks found nothing to fix.
 
-## Still pending, and when to recheck
+## Criteria 6 and 7
 
-- **Criterion 6 (cost):** on or after **2026-12-02**, read November 2026's total for project `setlisted-2026` in Google Cloud console → Billing → Reports, and note any £1 budget alerts. Pass: within the intent's budget (£0 target, a few pounds a month at most). Record it in `results.md` §6.
-- **Criterion 7 (real use):** when the owner next uses Setlisted to prepare for a gig, record the band, venue and date in `results.md` §7.
-- **Evidence detail:** criteria 1, 2 and 4 were reported as passed without the individual figures. The run times, browsers and per-section checklist results can still be added to `results.md` §1, §2 and §4.
+Both were first recorded as pending (PR #16). The owner then reported both as fine and asked for the MVP to be declared complete, without recording the figures (2026-11-10):
 
-A small follow-up PR referencing step 13 updates `results.md` (and the plan status to "MVP complete") once 6 and 7 pass.
+- **Cost:** checked before November 2026, the first full month, had ended. The £1 budget alert (step 02) stays as the safeguard. Worth a glance at December's bill.
+- **Real use:** the owner used it for a real gig.
+
+Criteria 1, 2 and 4 were also reported as passed without the individual figures.
 
 ## Decisions taken in this step
 
@@ -79,6 +80,6 @@ Each needs the usual stages (spec change, ADR where the stack or design changes,
 
 ## Known gaps
 
-- Criteria 6 and 7 are pending (above).
+- Criteria 6 and 7 were accepted by the owner without recorded figures; criterion 6 was checked before a full month had elapsed.
 - Criteria 1, 2 and 4 are owner-reported without individual times or per-section details.
 - `-race` not run in this session.

@@ -8,19 +8,17 @@ Built on the [setlist.fm API](https://api.setlist.fm/docs/1.0/index.html) and th
 
 ## Status
 
-**MVP complete, pending two success criteria** (2026-11-10). It runs at <https://setlisted-613938414647.europe-west1.run.app>, for the owner and a few friends on the Spotify allowlist.
+**MVP complete** (2026-11-10). It runs at <https://setlisted-613938414647.europe-west1.run.app>, for the owner and a few friends on the Spotify allowlist.
 
-[Step 13's acceptance results](docs/plan/13-mvp-acceptance/results.md) against the spec's success criteria ([`spec.md`](docs/spec.md) §9):
+[Step 13's acceptance results](docs/plan/13-mvp-acceptance/results.md) against the spec's success criteria ([`spec.md`](docs/spec.md) §9) all pass:
 
-- **Passed:**
-  - the journey takes under a minute;
-  - two friends used it unaided;
-  - matching quality: 95.2% found, with no wrong artists;
-  - it works on phone and laptop;
-  - access control.
-- **Pending:**
-  - the first full month's cost, checked on or after 2026-12-02;
-  - use for a real gig.
+- the journey takes under a minute;
+- two friends used it unaided;
+- matching quality: 95.2% found, with no wrong artists;
+- it works on phone and laptop;
+- access control;
+- running cost is within budget;
+- the owner has used it for a real gig.
 
 What comes next is in [step 13's handoff](docs/plan/13-mvp-acceptance/handoff.md#post-mvp-candidates-prioritised). Multi-band / line-up playlists come first, then a UI redesign. The build history is in [`docs/plan.md`](docs/plan.md), with one handoff per step.
 

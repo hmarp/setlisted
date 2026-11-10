@@ -9,8 +9,8 @@ One row per success criterion from [`spec.md`](../../spec.md) §9 (the source is
 | 3 | Matching quality | **pass** | `TestMatchingQuality`: 79 / 83 = 95.2%, 0 wrong artists, 0 label or track mismatches. Passes locally and in CI on `main` ([details](#3-matching-quality)) | 2026-11-10 | Test set is **6 setlists, not ~10** (owner's choice, step 09) |
 | 4 | Phone and laptop | **pass** | Manual checklist passed on the owner's phone and laptop ([details](#4-phone-and-laptop)) | 2026-11-10 | Owner-reported |
 | 5 | Access control | **pass** | Every protected `/api/*` route returns `401` logged out, locally and on Cloud Run; a non-allowlisted account saw the AUTH-4 message; logged-out screens show only the login view ([details](#5-access-control)) | 2026-11-10 | Browser part owner-reported |
-| 6 | Cost | pending until **2026-12-02** | Billing figure for November 2026, the first full month since the first deploy (2026-10-27) ([details](#6-cost)) | | Budget: £0 target, a few pounds at most |
-| 7 | Real use | pending until the owner's next gig | A real gig ([details](#7-real-use)) | | Recheck at the next gig the owner goes to |
+| 6 | Cost | **pass** (owner-accepted) | Owner checked billing and accepted the cost as within budget; no figure recorded ([details](#6-cost)) | 2026-11-10 | A full month hadn't elapsed yet (see details) |
+| 7 | Real use | **pass** (owner-reported) | Owner used it to prepare for a real gig; details not recorded ([details](#7-real-use)) | 2026-11-10 | |
 
 ## 1. Under a minute end to end
 
@@ -103,15 +103,13 @@ The `401` body is `{"error":{"code":"not_logged_in","message":"You're not logged
 
 ## 6. Cost
 
-The first deploy was on 2026-10-27, so November 2026 is the first full month. Check the figure on or after **2026-12-02** (Google Cloud console → Billing → Reports, project `setlisted-2026`, November 2026). Pass: within the intent's budget (£0 target, a few pounds a month at most). The £1 budget alert is set (step 02).
+The first deploy was on 2026-10-27, so November 2026 is the first full month (Google Cloud console → Billing → Reports, project `setlisted-2026`). Pass: within the intent's budget (£0 target, a few pounds a month at most). The £1 budget alert is set (step 02).
 
-| Month | Cost | Budget alerts received | Date checked |
-|---|---|---|---|
-| November 2026 | | | |
+**Owner's decision (2026-11-10): accepted as passed.** The owner checked billing, reported the cost as fine and chose not to record a figure. On that date November 2026 hadn't ended, so the check covered a partial month, not a full one. The owner accepted that as enough. The £1 budget alert remains the safeguard: an alert would show if the cost goes over budget.
 
 ## 7. Real use
 
-Pending: no gig yet. Record the gig the next time the owner uses Setlisted to prepare for one.
+**Owner's report (2026-11-10): passed.** The owner has used Setlisted to prepare for a real gig and chose not to record its details.
 
 | Gig (band, venue) | Date | Playlist created | Notes |
 |---|---|---|---|
