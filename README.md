@@ -8,7 +8,33 @@ Built on the [setlist.fm API](https://api.setlist.fm/docs/1.0/index.html) and th
 
 ## Status
 
-In development. [Step 01](docs/plan/01-go-skeleton/handoff.md) (Go skeleton) is done: the server starts, validates its configuration, serves `GET /api/health` and a placeholder page. [Step 02](docs/plan/02-first-deploy/handoff.md) (first deploy) is done: the skeleton runs on Cloud Run at <https://setlisted-613938414647.europe-west1.run.app>, deployed manually with `scripts/deploy.sh`. [Step 03](docs/plan/03-continuous-deployment/handoff.md) (continuous deployment) is done: every merge to `main` deploys automatically through GitHub Actions. [Step 04](docs/plan/04-spotify-login/handoff.md) (Spotify login) is done: users log in with Spotify into a one-hour, browser-session cookie, and every `/api/` endpoint except health and session status needs a login. [Step 05](docs/plan/05-setlistfm-search-shows/handoff.md) (setlist.fm search and shows) is done: the API can search setlist.fm for a band (`GET /api/artists`) and list its 20 most recent shows with setlists (`GET /api/artists/{id}/shows`). [Step 06](docs/plan/06-entry-classification/handoff.md) (entry classification) is done: internal code (no endpoint yet) turns a setlist into numbered entries classified as songs, medleys or skipped, with the artists to match each against. [Step 07](docs/plan/07-matching-rules/handoff.md) (matching rules) is done: internal code (no endpoint yet) chooses the right Spotify track for an entry from search results, or decides there isn't one, following the spec's matching rules. [Step 08](docs/plan/08-spotify-search-pipeline/handoff.md) (Spotify search and matching pipeline) is done: internal code (no endpoint yet) searches Spotify for every song of a setlist, four searches at a time, and returns each entry's match or "not found", in setlist order. [Step 09](docs/plan/09-matching-quality-tests/handoff.md) (matching-quality tests) is done: six real setlists are recorded as test fixtures, and a test checks the matching against owner-approved expected outcomes in CI (95.2% found, no wrong artists). [Step 10](docs/plan/10-preview-api/handoff.md) (preview API) is done: `GET /api/shows/{id}/preview` fetches a show, matches every song on Spotify with the user's login and returns the preview, with the track IDs that playlist creation (step 11) will take. Login now asks Spotify for `user-read-private` as well as `playlist-modify-private`, so searches only return tracks playable in the user's country ([ADR-010](docs/adr/010-spotify-scope-user-read-private.md)). [Step 11](docs/plan/11-create-playlist-api/handoff.md) (create playlist API) is done: `POST /api/playlists` creates a new private playlist in the user's Spotify library from a previewed show, named and described as the spec says, and returns its link. [Step 12](docs/plan/12-throwaway-ui/handoff.md) (throwaway UI) is done: the app's screens, as plain HTML and JavaScript on the JSON API, cover the whole journey on phone and laptop. **MVP feature-complete, in acceptance** ([step 13](docs/plan/13-mvp-acceptance/brief.md)). Progress is tracked in [`docs/plan.md`](docs/plan.md), and the API is documented in [`docs/api.md`](docs/api.md).
+**MVP complete, pending two success criteria** (2026-11-10). It runs at <https://setlisted-613938414647.europe-west1.run.app>, for the owner and a few friends on the Spotify allowlist.
+
+[Step 13's acceptance results](docs/plan/13-mvp-acceptance/results.md) against the spec's success criteria ([`spec.md`](docs/spec.md) §9):
+
+- **Passed:**
+  - the journey takes under a minute;
+  - two friends used it unaided;
+  - matching quality: 95.2% found, with no wrong artists;
+  - it works on phone and laptop;
+  - access control.
+- **Pending:**
+  - the first full month's cost, checked on or after 2026-12-02;
+  - use for a real gig.
+
+What comes next is in [step 13's handoff](docs/plan/13-mvp-acceptance/handoff.md#post-mvp-candidates-prioritised). Multi-band / line-up playlists come first, then a UI redesign. The build history is in [`docs/plan.md`](docs/plan.md), with one handoff per step.
+
+## Using it
+
+1. Open the app and **Log in with Spotify**. Your Spotify account must be on the owner's allowlist; anyone else sees "Setlisted is invite-only".
+2. Search for a band. If several artists share the name, pick yours.
+3. Choose one of its 20 most recent shows that have a setlist.
+4. Wait for "Matching songs…".
+   - The preview lists every song in setlist order.
+   - Each song's Spotify match is labelled: Found, Live version, Cover → original artist, Tape, Not found or Not found (medley).
+5. **Create playlist** makes a new private playlist of the found songs in your Spotify library. **Open in Spotify** takes you to it.
+
+The app stores nothing about you. The login lasts until you close the browser, or for one hour. **Log out** ends it straight away. Setlist data comes from [setlist.fm](https://www.setlist.fm).
 
 ## Running locally
 
@@ -173,14 +199,26 @@ The script:
 
 Project, region, `BASE_URL` and `SPOTIFY_CLIENT_ID` come from [`scripts/deploy-config.sh`](scripts/deploy-config.sh), which holds no secrets. Unlike the workflow, the script re-applies every setting, and it doesn't move traffic after a rollback: run `update-traffic --to-latest` afterwards if traffic was pinned.
 
-## Stack
+## Architecture
+
+One Go service serves a JSON API ([`docs/api.md`](docs/api.md)) and a static UI from the same origin, on Google Cloud Run. There's no database and nothing is cached.
+
+```
+browser ── static UI (web/static) ──► JSON API (/api/*) ──► setlist.fm API
+                                         │   (Go, net/http)  └─► Spotify Web API
+                                         └─ encrypted session cookie (Spotify token)
+```
 
 - **Backend:** Go, standard library first, exposing a JSON API ([ADR-001](docs/adr/001-go-backend-json-api.md))
 - **UI (MVP):** throwaway static HTML and plain JavaScript in [`web/static/`](web/static/), served by the Go backend and using only the JSON API ([ADR-002](docs/adr/002-throwaway-static-ui.md))
-- **Hosting:** Google Cloud Run ([ADR-003](docs/adr/003-hosting-google-cloud-run.md))
-- **setlist.fm:** one rate-limited client, calls spaced 600 ms apart, no caching ([ADR-005](docs/adr/005-matching-and-api-call-strategy.md))
-- **Spotify search:** one field-filtered search per entry and pass (`limit=10`), up to 4 at once, `Retry-After` honoured, no caching ([ADR-005](docs/adr/005-matching-and-api-call-strategy.md))
-- **Login:** Spotify only, with a stateless encrypted-cookie session ([ADR-004](docs/adr/004-spotify-login-encrypted-cookie-session.md)), lasting for the browser session or one hour ([ADR-009](docs/adr/009-session-cookie-lifetime.md))
+- **Hosting:** Google Cloud Run, max 1 instance, scales to zero ([ADR-003](docs/adr/003-hosting-google-cloud-run.md))
+- **Login:** Spotify only, with a stateless encrypted-cookie session ([ADR-004](docs/adr/004-spotify-login-encrypted-cookie-session.md)), lasting for the browser session or one hour ([ADR-009](docs/adr/009-session-cookie-lifetime.md)). Scopes are `playlist-modify-private` and `user-read-private` ([ADR-010](docs/adr/010-spotify-scope-user-read-private.md))
+- **Matching and API calls** ([ADR-005](docs/adr/005-matching-and-api-call-strategy.md)):
+  - setlist.fm: one rate-limited client, with calls spaced 600 ms apart;
+  - Spotify: one field-filtered search per entry and pass (`limit=10`), up to 4 at once, with `Retry-After` honoured;
+  - the matching rules are pure Go in `internal/setlist` and `internal/matching`.
+- **Testing:** table-driven unit tests named after spec IDs, `httptest` for the HTTP layers, an offline matching-quality test on recorded setlists, and a manual UI checklist ([ADR-006](docs/adr/006-testing-strategy.md))
+- **Configuration:** environment variables only, with secrets in Secret Manager ([ADR-007](docs/adr/007-configuration-and-secrets.md))
 - **Delivery:** every merge to `main` deploys automatically via GitHub Actions ([ADR-008](docs/adr/008-continuous-deployment-on-merge.md))
 
 ## Workflow
@@ -190,6 +228,9 @@ Project, region, `BASE_URL` and `SPOTIFY_CLIENT_ID` come from [`scripts/deploy-c
 3. **Architecture**: stack and design decisions are recorded as ADRs in [`docs/adr/`](docs/adr/)
 4. **Plan**: [`docs/plan.md`](docs/plan.md) lists the implementation steps. Each step has a self-contained folder under `docs/plan/` with a brief for the session that implements it.
 5. **Implement**: one step per branch/PR, reviewed manually before merging. Each step ends with a handoff note and an updated README.
+6. **Accept**: the last step checks the deployed app against the spec's success criteria ([step 13](docs/plan/13-mvp-acceptance/results.md)).
+
+`CLAUDE.md` holds the rules for the AI coding sessions that implemented the steps. Lessons from the process are in [step 13's handoff](docs/plan/13-mvp-acceptance/handoff.md#lessons-learned-for-the-portfolio-write-up).
 
 ## Licence
 
