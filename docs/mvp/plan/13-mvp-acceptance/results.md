@@ -55,7 +55,7 @@ At least 2 friends, unaided, log in and create a playlist in their own library.
 
 ## 4. Phone and laptop
 
-[`docs/manual-test-checklist.md`](../../manual-test-checklist.md) on Cloud Run, on the owner's phone and laptop in the browsers they actually use.
+[`docs/manual-test-checklist.md`](../../../manual-test-checklist.md) on Cloud Run, on the owner's phone and laptop in the browsers they actually use.
 
 **Owner's report (2026-11-10): every section passed on both.** No issues were reported. The per-section table below wasn't filled in.
 
@@ -92,7 +92,7 @@ Date: ______ · App revision: ______
 | `POST /api/artists` (wrong method) | **401** |
 | `GET /api/artists?q=Gojira` with a forged `setlisted_session` cookie | **401** |
 
-The `401` body is `{"error":{"code":"not_logged_in","message":"You're not logged in. Log in with Spotify."}}`. Unknown routes and wrong methods answer `401` rather than `404`/`405` when logged out, so the API's shape isn't revealed. A `POST` **without** an `Origin` header gets `403 forbidden_origin` before the session check, as [`docs/api.md`](../../api.md) documents. It's still refused, and a browser always sends `Origin`.
+The `401` body is `{"error":{"code":"not_logged_in","message":"You're not logged in. Log in with Spotify."}}`. Unknown routes and wrong methods answer `401` rather than `404`/`405` when logged out, so the API's shape isn't revealed. A `POST` **without** an `Origin` header gets `403 forbidden_origin` before the session check, as [`docs/api.md`](../../../api.md) documents. It's still refused, and a browser always sends `Origin`.
 
 ### In the browser (owner)
 

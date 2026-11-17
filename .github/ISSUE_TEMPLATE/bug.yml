@@ -1,0 +1,34 @@
+name: Bug
+description: Something in Setlisted doesn't work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Issues are public: don't include personal details, Spotify account names or tokens."
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, including any message on screen.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The band, show or song if it's a matching problem (a setlist.fm link helps).
+      placeholder: |
+        1. Search for …
+        2. Choose …
+        3. …
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      placeholder: e.g. Android phone, Chrome

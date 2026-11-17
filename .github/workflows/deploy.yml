@@ -6,7 +6,7 @@ name: Deploy
 #
 # Authentication is Workload Identity Federation: no key files, no secrets.
 # The settings are repository variables (Settings → Secrets and variables →
-# Actions → Variables); see docs/plan/03-continuous-deployment/setup.md.
+# Actions → Variables); see docs/setup.md, part 2.
 
 on:
   push:
@@ -52,7 +52,7 @@ jobs:
           missing=0
           for name in PROJECT_ID REGION GCP_WIF_PROVIDER GCP_DEPLOY_SERVICE_ACCOUNT; do
             if [ -z "${!name}" ]; then
-              echo "::error::Repository variable for $name is not set (see docs/plan/03-continuous-deployment/setup.md)"
+              echo "::error::Repository variable for $name is not set (see docs/setup.md, part 2)"
               missing=1
             fi
           done

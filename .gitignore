@@ -3,6 +3,11 @@
 .env.*
 !.env.example
 
+# Claude Code: personal settings and session worktrees (project settings,
+# hooks and skills under .claude/ are committed)
+.claude/settings.local.json
+.claude/worktrees/
+
 # OS / editor
 .DS_Store
 Thumbs.db

@@ -10,7 +10,7 @@ Built on the [setlist.fm API](https://api.setlist.fm/docs/1.0/index.html) and th
 
 **MVP complete** (2026-11-10). It runs at <https://setlisted-613938414647.europe-west1.run.app>, for the owner and a few friends on the Spotify allowlist.
 
-[Step 13's acceptance results](docs/plan/13-mvp-acceptance/results.md) against the spec's success criteria ([`spec.md`](docs/spec.md) §9) all pass:
+[Step 13's acceptance results](docs/mvp/plan/13-mvp-acceptance/results.md) against the spec's success criteria ([`spec.md`](docs/mvp/spec.md) §9) all pass:
 
 - the journey takes under a minute;
 - two friends used it unaided;
@@ -20,7 +20,7 @@ Built on the [setlist.fm API](https://api.setlist.fm/docs/1.0/index.html) and th
 - running cost is within budget;
 - the owner has used it for a real gig.
 
-What comes next is in [step 13's handoff](docs/plan/13-mvp-acceptance/handoff.md#post-mvp-candidates-prioritised). Multi-band / line-up playlists come first, then a UI redesign. The build history is in [`docs/plan.md`](docs/plan.md), with one handoff per step.
+Work since the MVP is tracked in [GitHub issues](https://github.com/hmarp/setlisted/issues): bugs, features and matching improvements. How the MVP was specified and built is archived in [`docs/mvp/`](docs/mvp/).
 
 ## Using it
 
@@ -59,11 +59,11 @@ openssl rand -base64 32   # paste the output into SESSION_KEY
 | `SETLISTFM_API_KEY` | yes | setlist.fm API key ([settings](https://www.setlist.fm/settings/api)). Free for non-commercial use. |
 | `SESSION_KEY` | yes | Base64 of 32 random bytes (`openssl rand -base64 32`). |
 
-The app starts with placeholder Spotify and setlist.fm values, but logging in needs the real Spotify client ID and secret (see [Spotify app](#spotify-app) below), and the search and show list endpoints need a real setlist.fm key ([step 05's setup](docs/plan/05-setlistfm-search-shows/setup.md)); with a placeholder they answer `503 upstream_unavailable`. If a variable is missing or invalid, the app refuses to start and names the variable (never its value).
+The app starts with placeholder Spotify and setlist.fm values, but logging in needs the real Spotify client ID and secret (see [Spotify app](#spotify-app) below), and the search and show list endpoints need a real setlist.fm key ([step 05's setup](docs/setup.md#part-4-setlistfm-api-key)); with a placeholder they answer `503 upstream_unavailable`. If a variable is missing or invalid, the app refuses to start and names the variable (never its value).
 
 ### Spotify app
 
-Login uses one Spotify developer app for local and production ([ADR-007](docs/adr/007-configuration-and-secrets.md)). The owner sets it up by following [`docs/plan/04-spotify-login/setup.md`](docs/plan/04-spotify-login/setup.md):
+Login uses one Spotify developer app for local and production ([ADR-007](docs/adr/007-configuration-and-secrets.md)). The owner sets it up by following [part 3 of `docs/setup.md`](docs/setup.md#part-3-spotify-app-and-credentials):
 
 - redirect URIs `http://127.0.0.1:8080/auth/callback` and `https://setlisted-613938414647.europe-west1.run.app/auth/callback`;
 - the users allowed to log in, under **User Management**. In development mode that's at most 5, and the owner needs Spotify Premium.
@@ -111,7 +111,7 @@ The market defaults to `GB`; set `SPOTIFY_TEST_MARKET` to change it. The token i
 go test ./internal/quality -run TestMatchingQuality -v
 ```
 
-Each setlist folder holds `setlist.json` (from setlist.fm), `searches.json` (every Spotify search the pipeline makes for it, both passes for covers) and `expected.json` (written by hand). The recorded data is trimmed to the fields the app reads; the decision to commit it is in [step 09's handoff](docs/plan/09-matching-quality-tests/handoff.md).
+Each setlist folder holds `setlist.json` (from setlist.fm), `searches.json` (every Spotify search the pipeline makes for it, both passes for covers) and `expected.json` (written by hand). The recorded data is trimmed to the fields the app reads; the decision to commit it is in [step 09's handoff](docs/mvp/plan/09-matching-quality-tests/handoff.md).
 
 **Recording or refreshing fixtures** (never in CI; needs the real setlist.fm key and Spotify client ID and secret in `.env`; works in Git Bash):
 
@@ -140,8 +140,8 @@ The app runs on Google Cloud Run at its `*.run.app` HTTPS address ([ADR-003](doc
 
 The owner sets up:
 
-- the Google Cloud project, billing, the £1 budget alert, Artifact Registry, the runtime service account and the secrets, by following [`docs/plan/02-first-deploy/setup.md`](docs/plan/02-first-deploy/setup.md);
-- Workload Identity Federation, the deploy service account, the image clean-up policy, the GitHub repository variables and the `main` ruleset, by following [`docs/plan/03-continuous-deployment/setup.md`](docs/plan/03-continuous-deployment/setup.md).
+- the Google Cloud project, billing, the £1 budget alert, Artifact Registry, the runtime service account and the secrets, by following [part 1 of `docs/setup.md`](docs/setup.md#part-1-google-cloud-project-and-first-deploy);
+- Workload Identity Federation, the deploy service account, the image clean-up policy, the GitHub repository variables and the `main` ruleset, by following [part 2 of `docs/setup.md`](docs/setup.md#part-2-continuous-deployment).
 
 ### Merging deploys
 
@@ -161,7 +161,7 @@ gcloud run services describe setlisted --region=europe-west1 --format='yaml(stat
 
 A failed run can be re-run from its page (Re-run jobs).
 
-**Changing a non-secret setting** (such as `SPOTIFY_CLIENT_ID`): merges don't change env vars. Update [`scripts/deploy-config.sh`](scripts/deploy-config.sh) and apply it once with `scripts/deploy.sh` (or `gcloud run services update setlisted --region=europe-west1 --update-env-vars NAME=value`). A new **secret version** needs no deploy-config change: the next revision reads `latest`. The Spotify client ID and secret commands are in [step 04's setup](docs/plan/04-spotify-login/setup.md#6-cloud-run-settings).
+**Changing a non-secret setting** (such as `SPOTIFY_CLIENT_ID`): merges don't change env vars. Update [`scripts/deploy-config.sh`](scripts/deploy-config.sh) and apply it once with `scripts/deploy.sh` (or `gcloud run services update setlisted --region=europe-west1 --update-env-vars NAME=value`). A new **secret version** needs no deploy-config change: the next revision reads `latest`. The Spotify client ID and secret commands are in [step 04's setup](docs/setup.md#6-cloud-run-settings).
 
 ### Rolling back
 
@@ -221,14 +221,29 @@ browser ── static UI (web/static) ──► JSON API (/api/*) ──► setl
 
 ## Workflow
 
-1. **Intent**: idea-grilling session produces [`docs/intent.md`](docs/intent.md)
-2. **Spec**: [`docs/spec.md`](docs/spec.md) is derived from the intent
-3. **Architecture**: stack and design decisions are recorded as ADRs in [`docs/adr/`](docs/adr/)
-4. **Plan**: [`docs/plan.md`](docs/plan.md) lists the implementation steps. Each step has a self-contained folder under `docs/plan/` with a brief for the session that implements it.
-5. **Implement**: one step per branch/PR, reviewed manually before merging. Each step ends with a handoff note and an updated README.
-6. **Accept**: the last step checks the deployed app against the spec's success criteria ([step 13](docs/plan/13-mvp-acceptance/results.md)).
+Work is driven by [GitHub issues](https://github.com/hmarp/setlisted/issues) and built with AI coding sessions (Claude Code), following [`CLAUDE.md`](CLAUDE.md):
 
-`CLAUDE.md` holds the rules for the AI coding sessions that implemented the steps. Lessons from the process are in [step 13's handoff](docs/plan/13-mvp-acceptance/handoff.md#lessons-learned-for-the-portfolio-write-up).
+1. **Issue:** every bug, feature or idea starts as an issue, using the Bug or Feature templates. Labels: `bug`, `feature`, `matching`, `refactor`, `idea`.
+2. **Spec (non-trivial changes only):** `/idea <issue#>` interviews the owner and writes `docs/features/<issue#>-<slug>/spec.md`, plus a `plan.md` for work spanning several PRs. Non-trivial means user-visible behaviour, a matching rule, an endpoint or a new dependency. Specs are frozen once the feature ships.
+3. **Build:** `/implement <issue#>` in a fresh session: branch `<issue#>-<slug>`, plan, tests first, code, checks, a code review, and a PR with `Closes #<issue#>`.
+4. **Merge:** CI must pass; the merge deploys automatically.
+
+Decisions that outlast a feature (stack, hosting, security, testing) are ADRs in [`docs/adr/`](docs/adr/). Two hooks in [`.claude/settings.json`](.claude/settings.json) apply in every session: Go files are formatted with `gofmt` after each edit, and shell commands that name `.env` are blocked.
+
+The MVP was built differently: intent → spec → ADRs → a 13-step plan, one step per PR, each with a brief and a handoff. That record is in [`docs/mvp/`](docs/mvp/), and the lessons from it are in [step 13's handoff](docs/mvp/plan/13-mvp-acceptance/handoff.md#lessons-learned-for-the-portfolio-write-up).
+
+### Documentation
+
+| File | For | Contents |
+|---|---|---|
+| `README.md` | Everyone | What it is, how to use, run, test and deploy it, and the workflow |
+| [`CLAUDE.md`](CLAUDE.md) | AI sessions | The rules every session follows |
+| [`docs/api.md`](docs/api.md) | API clients (the UI) | The JSON API contract |
+| [`docs/adr/`](docs/adr/) | Anyone changing the design | Architecture decisions, with their reasons |
+| [`docs/manual-test-checklist.md`](docs/manual-test-checklist.md) | The owner | The hand-run UI test, after any UI change |
+| [`docs/setup.md`](docs/setup.md) | The owner | Runbooks for Google Cloud, CI/CD, the Spotify app and the setlist.fm key |
+| [`docs/features/`](docs/features/) | AI sessions | One spec per non-trivial issue, frozen once shipped |
+| [`docs/mvp/`](docs/mvp/) | History | The MVP's intent, spec, plan and step handoffs; not maintained |
 
 ## Licence
 

@@ -34,7 +34,7 @@ const (
 
 // Playlist text limits, in characters. Spotify's Web API reference doesn't
 // state a name limit; these are the lengths Spotify's own apps allow (see
-// docs/plan/11-create-playlist-api/handoff.md). A longer name or
+// docs/mvp/plan/11-create-playlist-api/handoff.md). A longer name or
 // description is cut, never refused.
 const (
 	maxNameLength        = 100

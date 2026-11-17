@@ -1,0 +1,30 @@
+name: Feature or idea
+description: A new feature, an improvement, a matching change or a rough idea.
+labels: [idea]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Rough is fine: `/idea <issue#>` turns it into a spec before anything is built.
+        Issues are public: don't include personal details.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What's missing or annoying, and when it happens.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Rough idea
+      description: How it might work. Examples help (bands, shows, songs).
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - New feature
+        - Matching improvement
+        - Refactor or tech debt
+        - Not sure yet

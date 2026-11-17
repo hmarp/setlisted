@@ -9,7 +9,7 @@ import (
 
 // MaxItemsPerRequest is the most track URIs one "add items to playlist"
 // request may carry (Spotify's documented maximum, historically 100; see
-// docs/plan/11-create-playlist-api/handoff.md). AddTracks sends larger lists
+// docs/mvp/plan/11-create-playlist-api/handoff.md). AddTracks sends larger lists
 // in batches of this size.
 const MaxItemsPerRequest = 100
 
