@@ -28,7 +28,7 @@ Criteria 1, 2 and 4 were also reported as passed without the individual figures.
 ## Decisions taken in this step
 
 - **Owner-reported results are recorded as such.** Criteria 1, 2, 4 and the browser part of 5 rest on the owner's report of 2026-11-10. Criteria 3 and the API part of 5 were checked by the session.
-- **`POST` without `Origin` answers `403`, not `401`.** The same-origin check runs before the session check, as [`docs/api.md`](../../api.md) documents. The request is refused either way, and a browser always sends `Origin`, so this meets AUTH-1. No change.
+- **`POST` without `Origin` answers `403`, not `401`.** The same-origin check runs before the session check, as [`docs/api.md`](../../../api.md) documents. The request is refused either way, and a browser always sends `Origin`, so this meets AUTH-1. No change.
 - **Logged out, unknown `/api/` routes and wrong methods answer `401`**, not `404`/`405` (the session middleware wraps the whole `/api/` tree). Recorded as intended: it doesn't reveal the API's shape.
 - **The test set stays at 6 setlists** (owner's choice, step 09), recorded in the notes for criterion 3.
 
@@ -37,7 +37,7 @@ Criteria 1, 2 and 4 were also reported as passed without the individual figures.
 Each needs the usual stages (spec change, ADR where the stack or design changes, plan).
 
 1. **Multi-band / full line-up playlists** (headliner plus supports). Intent Out #1, the first candidate after the MVP.
-2. **UI redesign** (intent Out #13), with a new ADR superseding [ADR-002](../../adr/002-throwaway-static-ui.md). Fold in step 12's rough edges:
+2. **UI redesign** (intent Out #13), with a new ADR superseding [ADR-002](../../../adr/002-throwaway-static-ui.md). Fold in step 12's rough edges:
    - the confirmation isn't in the hash;
    - a clear-match search isn't in history;
    - labels are text only;

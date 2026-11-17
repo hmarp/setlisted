@@ -2,10 +2,10 @@
 
 ## What was built
 
-- The MVP's screens as static HTML, plain JavaScript and a little CSS in `web/static/` ([ADR-002](../../adr/002-throwaway-static-ui.md)). There's no framework, build step or npm. It's embedded in the binary and served at `/` as before (step 01).
+- The MVP's screens as static HTML, plain JavaScript and a little CSS in `web/static/` ([ADR-002](../../../adr/002-throwaway-static-ui.md)). There's no framework, build step or npm. It's embedded in the binary and served at `/` as before (step 01).
 - It covers login (with the cancel, invite-only and failed messages), search, the artist picker, the show list, the preview with "Matching songs…", creation and confirmation, errors with Retry, Log out and the setlist.fm footer.
-- It's built only on [`docs/api.md`](../../api.md). **No API gaps were found**, and the backend is unchanged.
-- [`docs/manual-test-checklist.md`](../../manual-test-checklist.md): the whole journey for phone and laptop, with the requirement IDs.
+- It's built only on [`docs/api.md`](../../../api.md). **No API gaps were found**, and the backend is unchanged.
+- [`docs/manual-test-checklist.md`](../../../manual-test-checklist.md): the whole journey for phone and laptop, with the requirement IDs.
 
 ## File structure
 
@@ -83,7 +83,7 @@ web/static/style.css    readability and phone use only
 
 ## Checklist results (owner, after the merge deploys)
 
-To fill in from [`docs/manual-test-checklist.md`](../../manual-test-checklist.md):
+To fill in from [`docs/manual-test-checklist.md`](../../../manual-test-checklist.md):
 
 - [ ] Local on `http://127.0.0.1:8080` (optional, before merging): browser ______, result ______
 - [ ] Cloud Run, **laptop**: browser ______, date ______, result ______

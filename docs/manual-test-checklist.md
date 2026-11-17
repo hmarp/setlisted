@@ -7,7 +7,7 @@ The whole journey, run by hand on the owner's **phone** and **laptop**, in the b
 - **Bands:** the examples are only suggestions. Any band that gives the described result will do. The example results come from setlist.fm today and may change.
 - **Recording results:** tick each box, or note what happened instead. Copy the filled-in table at the end into the handoff or the step 13 results.
 
-Each check names the spec requirement it covers ([`spec.md`](spec.md)).
+Each check names the spec requirement it covers ([`spec.md`](mvp/spec.md)).
 
 ## 0. Every screen
 
